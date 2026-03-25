@@ -76,7 +76,7 @@ The platform will also include basic workplace language support to help students
 
 ## 6. System Architecture
 
-Users (Students / Employers)
+Users (Students / Employers / Business Owner)
 
 ↓
 
