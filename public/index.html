@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>StudentBridge</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h2>StudentBridge</h2>
+  <div>
+    <button>Log in</button>
+    <button class="signup">Sign up</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="left">
+    <h1>Bridge the gap to your <span>local career</span></h1>
+    <p>Find part-time jobs, internships and freelance work.</p>
+
+    <input type="text" placeholder="Job title">
+    <button onclick="loadJobs()">Search Jobs</button>
+  </div>
+</section>
+
+<section class="features">
+  <div class="card">For Students</div>
+  <div class="card">For Employers</div>
+  <div class="card">Community</div>
+</section>
+
+<section>
+  <h2>Latest Opportunities</h2>
+  <div id="jobs"></div>
+</section>
+
+<section class="cta">
+  <h2>Ready to take the next step?</h2>
+  <button>Join as Student</button>
+  <button>Post a Job</button>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>

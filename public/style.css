@@ -1,0 +1,55 @@
+body {
+  font-family: Arial;
+  margin: 0;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 40px;
+}
+
+.signup {
+  background: blue;
+  color: white;
+}
+
+.hero {
+  padding: 60px;
+  background: #f0f6ff;
+}
+
+.hero h1 span {
+  color: blue;
+}
+
+.features {
+  display: flex;
+  justify-content: space-around;
+  margin: 40px;
+}
+
+.card {
+  padding: 30px;
+  border-radius: 10px;
+  background: #eee;
+}
+
+#jobs {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.job {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.cta {
+  text-align: center;
+  padding: 60px;
+  background: linear-gradient(blue, darkblue);
+  color: white;
+}
