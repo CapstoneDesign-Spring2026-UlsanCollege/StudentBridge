@@ -215,3 +215,34 @@ body {
   border-radius: 6px;
   cursor: pointer;
 }
+@media (max-width: 768px) {
+
+  .navbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .hero {
+    padding: 40px 20px;
+  }
+
+  .hero h1 {
+    font-size: 28px;
+  }
+
+  .search-box {
+    flex-direction: column;
+  }
+
+  .features {
+    flex-direction: column;
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .jobs-container {
+    flex-direction: column;
+  }
+}
