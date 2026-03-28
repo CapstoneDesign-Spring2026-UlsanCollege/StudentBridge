@@ -1,46 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>StudentBridge</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<header>
-  <h2>StudentBridge</h2>
-  <div>
-    <button>Log in</button>
+<!-- Navbar -->
+<header class="navbar">
+  <div class="logo">🎓 StudentBridge</div>
+
+  <nav>
+    <a href="#">Find Jobs</a>
+  </nav>
+
+  <div class="auth">
+    <button class="login">Log in</button>
     <button class="signup">Sign up</button>
   </div>
 </header>
 
+<!-- Hero Section -->
 <section class="hero">
-  <div class="left">
-    <h1>Bridge the gap to your <span>local career</span></h1>
-    <p>Find part-time jobs, internships and freelance work.</p>
+  <div class="hero-left">
+    <p class="tag">#1 Job Platform for International Students</p>
 
-    <input type="text" placeholder="Job title">
-    <button onclick="loadJobs()">Search Jobs</button>
+    <h1>
+      Bridge the gap to your <span>local career</span>
+    </h1>
+
+    <p class="desc">
+      Find part-time jobs, internships, and freelance opportunities with local employers.
+    </p>
+
+    <div class="search-box">
+      <input type="text" placeholder="Job title or keyword">
+      <input type="text" placeholder="City or region">
+      <button onclick="loadJobs()">Search Jobs</button>
+    </div>
+
+    <div class="popular">
+      <span>Popular:</span>
+      <button>Part-time</button>
+      <button>Internships</button>
+    </div>
   </div>
 </section>
 
+<!-- Features -->
 <section class="features">
-  <div class="card">For Students</div>
-  <div class="card">For Employers</div>
-  <div class="card">Community</div>
+  <div class="card">
+    🎓
+    <h3>For Students</h3>
+    <p>Build your network and earn while studying.</p>
+  </div>
+
+  <div class="card">
+    💼
+    <h3>For Employers</h3>
+    <p>Hire skilled international students easily.</p>
+  </div>
+
+  <div class="card">
+    🌍
+    <h3>Community</h3>
+    <p>Connect and grow with others.</p>
+  </div>
 </section>
 
-<section>
-  <h2>Latest Opportunities</h2>
-  <div id="jobs"></div>
+<!-- Jobs Section -->
+<section class="jobs-section">
+  <div class="jobs-header">
+    <h2>Latest Opportunities</h2>
+    <a href="#">View all jobs →</a>
+  </div>
+
+  <div id="jobs" class="jobs-container"></div>
 </section>
 
+<!-- CTA -->
 <section class="cta">
   <h2>Ready to take the next step?</h2>
-  <button>Join as Student</button>
-  <button>Post a Job</button>
+  <p>Join StudentBridge and start your journey today.</p>
+
+  <div class="cta-buttons">
+    <button class="primary">Join as Student</button>
+    <button class="secondary">Post a Job</button>
+  </div>
 </section>
 
 <script src="script.js"></script>
+
 </body>
 </html>
