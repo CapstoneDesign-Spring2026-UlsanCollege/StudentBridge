@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Job Application</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      padding: 25px;
+      width: 350px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .error {
+      color: red;
+      font-size: 12px;
+    }
+
+    .success {
+      color: green;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Apply for Job</h2>
+
+  <form id="applyForm">
+    <input type="text" id="name" placeholder="Full Name">
+    <div id="nameError" class="error"></div>
+
+    <input type="email" id="email" placeholder="Email">
+    <div id="emailError" class="error"></div>
+
+    <textarea id="message" placeholder="Why should we hire you?" rows="4"></textarea>
+    <div id="messageError" class="error"></div>
+
+    <button type="submit">Submit Application</button>
+  </form>
+
+  <div id="successMessage" class="success"></div>
+</div>
+
+<script>
+  const form = document.getElementById("applyForm");
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    // Get values
+    let name = document.getElementById("name").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let message = document.getElementById("message").value.trim();
+
+    // Error elements
+    let nameError = document.getElementById("nameError");
+    let emailError = document.getElementById("emailError");
+    let messageError = document.getElementById("messageError");
+    let successMessage = document.getElementById("successMessage");
+
+    // Reset errors
+    nameError.textContent = "";
+    emailError.textContent = "";
+    messageError.textContent = "";
+    successMessage.textContent = "";
+
+    let isValid = true;
+
+    // Validation
+    if (name === "") {
+      nameError.textContent = "Name is required";
+      isValid = false;
+    }
+
+    if (email === "") {
+      emailError.textContent = "Email is required";
+      isValid = false;
+    } else if (!email.includes("@")) {
+      emailError.textContent = "Invalid email format";
+      isValid = false;
+    }
+
+    if (message === "") {
+      messageError.textContent = "Message is required";
+      isValid = false;
+    }
+
+    // If valid
+    if (isValid) {
+      // Simulate storing data
+      let application = {
+        name,
+        email,
+        message
+      };
+
+      console.log("Application Submitted:", application);
+
+      // Optional: Save to localStorage (demo purpose)
+      localStorage.setItem("application", JSON.stringify(application));
+
+      successMessage.textContent = "Application submitted successfully!";
+
+      form.reset();
+    }
+  });
+</script>
+
+</body>
+</html>
