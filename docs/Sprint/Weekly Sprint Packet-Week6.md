@@ -16,7 +16,7 @@ Apply Feature Implementation
 
 * Mezbah Uddin
 * ALI MOHAMAD ASHRAF
-* Member 3
+* CHAULAGAIN DIPESH
 
 ## Definition of Done
 
