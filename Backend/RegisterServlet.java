@@ -1,36 +1,48 @@
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.util.Scanner;
 
-public class RegisterServlet extends HttpServlet {
+public class RegisterUser {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
-    protected void doPost(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException {
+        System.out.print("Enter name: ");
+        String name = sc.nextLine();
 
-        String name = req.getParameter("name");
-        String email = req.getParameter("email");
-        String phone = req.getParameter("phone");
-        String password = req.getParameter("password");
+        System.out.print("Enter email: ");
+        String email = sc.nextLine();
+
+        System.out.print("Enter phone: ");
+        String phone = sc.nextLine();
+
+        System.out.print("Enter password: ");
+        String password = sc.nextLine();
 
         try {
             Connection con = DBConnection.getConnection();
 
-            PreparedStatement ps = con.prepareStatement(
-                "INSERT INTO users(name,email,phone,password) VALUES(?,?,?,?)"
-            );
+            String sql = "INSERT INTO users (name, email, phone, password) VALUES (?, ?, ?, ?)";
+            PreparedStatement ps = con.prepareStatement(sql);
 
             ps.setString(1, name);
             ps.setString(2, email);
             ps.setString(3, phone);
-            ps.setString(4, password); // later we hash
+            ps.setString(4, password);
 
-            ps.executeUpdate();
+            int rows = ps.executeUpdate();
 
-            res.sendRedirect("login.html");
+            if (rows > 0) {
+                System.out.println("User registered successfully!");
+            } else {
+                System.out.println("Registration failed.");
+            }
 
+            ps.close();
+            con.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        sc.close();
     }
 }

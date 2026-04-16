@@ -6,8 +6,8 @@
 }
 
 body {
-  background: #f3f4f6;
-  color: #1f2937;
+  background: linear-gradient(to right, #a34237, #140603);
+  color: #fafbfc;
 }
 
 /* Navbar */
@@ -16,7 +16,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 15px 40px;
-  background: white;
+  background: rgb(31, 41, 32);
 }
 
 .logo {
@@ -30,7 +30,7 @@ body {
 }
 
 .nav-center .active {
-  color: #2563eb;
+  color: #f8f9fa;
   font-weight: 600;
 }
 
@@ -56,7 +56,7 @@ body {
 
 /* Login button (outline) */
 .btn-outline{
-  background: #2563EB;
+  background: #079017;
   color: white;
   border: none;
 }
@@ -67,7 +67,7 @@ body {
 
 /* Register button (primary) */
 .btn-primary {
-  background: #2563EB;
+  background: #309728;
   color: white;
   border: none;
 }
@@ -118,6 +118,7 @@ body {
   padding: 25px;
   border-radius: 12px;
   width: 250px;
+  color: black;
 }
 
 .icon {
@@ -165,7 +166,7 @@ body {
 
 /* CTA */
 .cta {
-  background: linear-gradient(to right, #3b82f6, #2563eb);
+  background: linear-gradient(to right, #0d192e, #57428b);
   color: white;
   text-align: center;
   padding: 80px 20px;
@@ -176,7 +177,7 @@ body {
 }
 
 .btn-light {
-  background: white;
+  background: rgb(26, 196, 17);
   color: black;
   padding: 10px 18px;
   border-radius: 8px;
@@ -184,14 +185,14 @@ body {
   margin-right: 10px;
 }
 
-.btn-outline {
-  background: transparent;
-  border: 1px solid white;
-  color: white;
+.btn-browse {
+  background: rgb(26, 196, 17);
+  color: black;
   padding: 10px 18px;
   border-radius: 8px;
+  border: none;
+  margin-right: 10px;
 }
-
 /* Footer */
 .footer {
   background: #0f172a;
