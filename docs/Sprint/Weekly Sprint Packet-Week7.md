@@ -16,11 +16,11 @@ I'll add later....
 - Verified project runs locally through Tomcat at localhost:8080
 
 ## Completed Issues
-- User registration connected to backend
-- MySQL database connection completed
-- Tomcat local deployment completed
-- Login page connected to backend
-- deploy.sh automation script created
+- #7 Setup Apache Tomcat Server
+- #8 Connect Java Application to MySQL Database
+- #9 Implement User Registration (RegisterServlet)
+- #10 Connect register.html to RegisterServlet
+- #11 Implement Login System (LoginServlet)
 
 ## Blockers
 - GitHub Pages cannot run Java/Tomcat/MySQL backend
