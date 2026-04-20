@@ -26,11 +26,11 @@ body {
 .nav-center a {
   margin: 0 15px;
   text-decoration: none;
-  color: #555;
+  color: #f0f3f0;
 }
 
 .nav-center .active {
-  color: #f8f9fa;
+  color: #06f31a;
   font-weight: 600;
 }
 
@@ -41,7 +41,7 @@ body {
 
 /* Navbar Scroll Effect */
 .navbar.scrolled {
-  background: #fff;
+  background: #f6f8f6;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
@@ -88,7 +88,7 @@ body {
 }
 
 .hero p {
-  color: #6b7280;
+  color: #c1cadf;
   margin-bottom: 20px;
 }
 

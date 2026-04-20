@@ -4,7 +4,7 @@
   ],
   "java.project.outputPath": "bin",
   "java.project.referencedLibraries": [
-    "docs/mysql-connector-j-9.3.0.jar",
-    "docs/servlet-api.jar"
+    "server/mysql-connector-j-9.3.0.jar",
+    "server/servlet-api.jar"
   ]
 }
