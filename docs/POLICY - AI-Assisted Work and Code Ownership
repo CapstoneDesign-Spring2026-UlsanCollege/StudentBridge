@@ -7,7 +7,7 @@
 - **Team:** StudentBridge Team
 - **Project name:** StudentBridge
 - **Current repo:** https://github.com/CapstoneDesign-Spring2026-UlsanCollege/StudentBridge
-- **Current demo link:** (add your demo link here)
+- **Current demo link:** (https://capstonedesign-spring2026-ulsancollege.github.io/StudentBridge/)
 - **Date updated:** 2026-04-29
 
 ---
@@ -38,8 +38,8 @@ Our main user can:
 | Homepage UI | index.html | Mezbah |
 | Register form → DB insert | RegisterServlet.java | Mezbah |
 | Login form → DB check | LoginServlet.java | Mezbah |
-| Job search page filtering | jobsearch.html | Team |
-| MySQL connection | DBConnection.java | Mezbah |
+| Job search page filtering | jobsearch.html | Sami |
+| MySQL connection | DBConnection.java | Team |
 
 ---
 
@@ -51,10 +51,10 @@ Our main user can:
 | Register Form | register.html | Collects user input and sends to backend | Mezbah | :contentReference[oaicite:1]{index=1} |
 | Login Form | login.html | Sends login data to backend servlet | Mezbah | :contentReference[oaicite:2]{index=2} |
 | Register Servlet | RegisterServlet.java | Saves user data into MySQL database | Mezbah | :contentReference[oaicite:3]{index=3} |
-| Login Servlet | LoginServlet.java | Checks user credentials from database | Mezbah | :contentReference[oaicite:4]{index=4} |
+| Login Servlet | LoginServlet.java | Checks user credentials from database | Ashraf| :contentReference[oaicite:4]{index=4} |
 | Database Connection | DBConnection.java | Connects Java backend to MySQL | Mezbah | :contentReference[oaicite:5]{index=5} |
-| Job Search UI | jobsearch.html | Displays and filters jobs | Team | :contentReference[oaicite:6]{index=6} |
-| Main JS logic | script.js | Handles navigation and UI actions | Mezbah | :contentReference[oaicite:7]{index=7} |
+| Job Search UI | jobsearch.html | Displays and filters jobs | Sami| :contentReference[oaicite:6]{index=6} |
+| Main JS logic | script.js | Handles navigation and UI actions | Team| :contentReference[oaicite:7]{index=7} |
 
 ---
 
