@@ -6,66 +6,350 @@
   <meta name="description" content="Create a StudentBridge account as a student or employer.">
   <title>Register | StudentBridge</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="./pages/register.css">
+  <link rel="stylesheet" href="./register.css">
 </head>
 <body>
-  <main class="container">
-    <section class="auth-box" aria-labelledby="register-title">
-      <a class="brand-link" href="../index.html">
-        <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-bridge"></i></span>
-        <span>StudentBridge</span>
-      </a>
+  <main class="auth-page">
+    <section class="auth-shell" aria-labelledby="register-title">
+      <div class="auth-intro">
+        <a class="brand-link" href="../index.html">
+          <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-bridge"></i></span>
+          <span>StudentBridge</span>
+        </a>
 
-      <h1 id="register-title">Create your account</h1>
-      <p>Join StudentBridge and start finding student-friendly opportunities.</p>
+        <p class="eyebrow">Create your account</p>
+        <h1 id="register-title">Join as a student or employer.</h1>
+        <p>Choose your account type first. StudentBridge will show the right fields for your profile.</p>
+      </div>
 
-      <form action="/RegisterServlet" method="post">
-        <div class="input-group">
-          <label for="name">Full name</label>
-          <input type="text" id="name" name="name" placeholder="Enter your full name" autocomplete="name" required>
+      <div class="auth-card">
+        <div class="account-tabs" role="tablist" aria-label="Choose account type">
+          <button type="button" class="account-tab active" id="studentTab" data-panel="studentPanel" role="tab" aria-selected="true" aria-controls="studentPanel">
+            <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
+            Student
+          </button>
+          <button type="button" class="account-tab" id="employerTab" data-panel="employerPanel" role="tab" aria-selected="false" aria-controls="employerPanel">
+            <i class="fa-solid fa-store" aria-hidden="true"></i>
+            Employer
+          </button>
         </div>
 
-        <div class="input-group">
-          <label for="email">Email address</label>
-          <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="email" required>
+        <p class="form-message" id="registerMessage" role="status" aria-live="polite"></p>
+
+        <form class="register-form active" id="studentPanel" action="/RegisterServlet" method="post" role="tabpanel" aria-labelledby="studentTab" novalidate>
+          <input type="hidden" name="accountType" value="Student">
+
+          <div class="form-grid">
+            <div class="input-group">
+              <label for="studentName">Full name</label>
+              <input type="text" id="studentName" name="name" placeholder="Mezbah Uddin" autocomplete="name" required>
+            </div>
+
+            <div class="input-group">
+              <label for="studentEmail">Email</label>
+              <input type="email" id="studentEmail" name="email" placeholder="student@email.com" autocomplete="email" required>
+            </div>
+
+            <div class="input-group">
+              <label for="studentPhone">Phone number</label>
+              <input type="tel" id="studentPhone" name="phone" placeholder="010-1234-5678" autocomplete="tel" required>
+            </div>
+
+            <div class="input-group">
+              <label for="studentUniversity">University name</label>
+              <input type="text" id="studentUniversity" name="universityName" placeholder="Ulsan College" required>
+            </div>
+
+            <div class="input-group">
+              <label for="studentMajor">Major</label>
+              <input type="text" id="studentMajor" name="major" placeholder="Computer Science" required>
+            </div>
+
+            <div class="input-group">
+              <label for="studentId">Student ID</label>
+              <input type="text" id="studentId" name="studentId" placeholder="20260001" required>
+            </div>
+
+            <div class="input-group">
+              <label for="studentCategory">Preferred job category</label>
+              <select id="studentCategory" name="preferredJobCategory" required>
+                <option value="">Select category</option>
+                <option value="Cafe">Cafe</option>
+                <option value="Restaurant">Restaurant</option>
+                <option value="Tutoring">Tutoring</option>
+                <option value="IT">IT</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Retail">Retail</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label for="studentAvailability">Available working time</label>
+              <select id="studentAvailability" name="availableWorkingTime" required>
+                <option value="">Select availability</option>
+                <option value="Weekday mornings">Weekday mornings</option>
+                <option value="Weekday evenings">Weekday evenings</option>
+                <option value="Weekends">Weekends</option>
+                <option value="Flexible">Flexible</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label for="studentKoreanLevel">Korean language level</label>
+              <select id="studentKoreanLevel" name="koreanLanguageLevel" required>
+                <option value="">Select level</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+                <option value="Native-like">Native-like</option>
+              </select>
+            </div>
+
+            <div class="input-group password-group">
+              <label for="studentPassword">Password</label>
+              <div class="password-row">
+                <input type="password" id="studentPassword" name="password" placeholder="Create password" autocomplete="new-password" required>
+                <button type="button" class="toggle-password" aria-label="Show password" aria-controls="studentPassword" aria-pressed="false">Show</button>
+              </div>
+            </div>
+
+            <div class="input-group password-group">
+              <label for="studentConfirmPassword">Confirm password</label>
+              <div class="password-row">
+                <input type="password" id="studentConfirmPassword" name="confirmPassword" placeholder="Confirm password" autocomplete="new-password" required>
+                <button type="button" class="toggle-password" aria-label="Show password" aria-controls="studentConfirmPassword" aria-pressed="false">Show</button>
+              </div>
+            </div>
+
+            <div class="upload-placeholder">
+              <i class="fa-solid fa-file-arrow-up" aria-hidden="true"></i>
+              <div>
+                <strong>Resume upload</strong>
+                <span>Placeholder only. File upload will be connected in a future update.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="terms">
+            <input type="checkbox" id="studentTerms" name="terms" value="accepted" required>
+            <label for="studentTerms">I agree to the Terms and Conditions.</label>
+          </div>
+
+          <button type="submit" class="submit-btn">Create Student Account</button>
+        </form>
+
+        <form class="register-form" id="employerPanel" action="/RegisterServlet" method="post" role="tabpanel" aria-labelledby="employerTab" novalidate hidden>
+          <input type="hidden" name="accountType" value="Employer">
+
+          <div class="form-grid">
+            <div class="input-group">
+              <label for="businessName">Company / Business name</label>
+              <input type="text" id="businessName" name="businessName" placeholder="CoffeeDay Ulsan" required>
+            </div>
+
+            <div class="input-group">
+              <label for="managerName">Owner / Manager name</label>
+              <input type="text" id="managerName" name="managerName" placeholder="John Kim" autocomplete="name" required>
+            </div>
+
+            <div class="input-group">
+              <label for="businessEmail">Business email</label>
+              <input type="email" id="businessEmail" name="businessEmail" placeholder="owner@business.com" autocomplete="email" required>
+            </div>
+
+            <div class="input-group">
+              <label for="businessPhone">Phone number</label>
+              <input type="tel" id="businessPhone" name="businessPhone" placeholder="010-9876-5432" autocomplete="tel" required>
+            </div>
+
+            <div class="input-group">
+              <label for="businessLocation">Business location</label>
+              <input type="text" id="businessLocation" name="businessLocation" placeholder="Ulsan, Nam-gu" required>
+            </div>
+
+            <div class="input-group">
+              <label for="businessType">Business type</label>
+              <select id="businessType" name="businessType" required>
+                <option value="">Select business type</option>
+                <option value="Cafe">Cafe</option>
+                <option value="Restaurant">Restaurant</option>
+                <option value="Convenience Store">Convenience Store</option>
+                <option value="Education">Education</option>
+                <option value="Office">Office</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label for="jobPostingCategory">Job posting category</label>
+              <select id="jobPostingCategory" name="jobPostingCategory" required>
+                <option value="">Select category</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Internship">Internship</option>
+                <option value="Tutoring">Tutoring</option>
+                <option value="Service">Service</option>
+                <option value="IT">IT</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label for="companyRegistrationNumber">Company registration number</label>
+              <input type="text" id="companyRegistrationNumber" name="companyRegistrationNumber" placeholder="Placeholder for future verification">
+            </div>
+
+            <div class="input-group password-group">
+              <label for="employerPassword">Password</label>
+              <div class="password-row">
+                <input type="password" id="employerPassword" name="password" placeholder="Create password" autocomplete="new-password" required>
+                <button type="button" class="toggle-password" aria-label="Show password" aria-controls="employerPassword" aria-pressed="false">Show</button>
+              </div>
+            </div>
+
+            <div class="input-group password-group">
+              <label for="employerConfirmPassword">Confirm password</label>
+              <div class="password-row">
+                <input type="password" id="employerConfirmPassword" name="confirmPassword" placeholder="Confirm password" autocomplete="new-password" required>
+                <button type="button" class="toggle-password" aria-label="Show password" aria-controls="employerConfirmPassword" aria-pressed="false">Show</button>
+              </div>
+            </div>
+
+            <div class="input-group full-width">
+              <label for="companyDescription">Short company description</label>
+              <textarea id="companyDescription" name="companyDescription" rows="4" placeholder="Tell students about your business and work environment." required></textarea>
+            </div>
+          </div>
+
+          <div class="terms">
+            <input type="checkbox" id="employerTerms" name="terms" value="accepted" required>
+            <label for="employerTerms">I agree to the Terms and Conditions.</label>
+          </div>
+
+          <button type="submit" class="submit-btn">Create Employer Account</button>
+        </form>
+
+        <div class="divider"><span>or continue with</span></div>
+
+        <div class="social-grid" aria-label="Social login options">
+          <button type="button" class="social-btn" data-social-placeholder>
+            <i class="fa-brands fa-google" aria-hidden="true"></i>
+            Google
+          </button>
+          <button type="button" class="social-btn" data-social-placeholder>
+            <i class="fa-brands fa-apple" aria-hidden="true"></i>
+            Apple
+          </button>
+          <button type="button" class="social-btn kakao" data-social-placeholder>
+            <span aria-hidden="true">K</span>
+            Kakao
+          </button>
+          <button type="button" class="social-btn" data-social-placeholder>
+            <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+            Instagram
+          </button>
         </div>
 
-        <div class="input-group">
-          <label for="phone">Phone number</label>
-          <input type="tel" id="phone" name="phone" placeholder="e.g. 010-1234-5678" autocomplete="tel" required>
-        </div>
-
-        <div class="input-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" placeholder="Create password" autocomplete="new-password" required>
-        </div>
-
-        <div class="input-group">
-          <label for="confirmPassword">Confirm password</label>
-          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" autocomplete="new-password" required>
-        </div>
-
-        <div class="input-group">
-          <label for="accountType">Account type</label>
-          <select id="accountType" name="accountType" required>
-            <option value="">Select type</option>
-            <option value="Student">Student</option>
-            <option value="Employer">Employer</option>
-          </select>
-        </div>
-
-        <div class="terms">
-          <input type="checkbox" id="terms" name="terms" value="accepted" required>
-          <label for="terms">I agree to the Terms and Conditions.</label>
-        </div>
-
-        <button type="submit" class="register-btn">Create Account</button>
-      </form>
-
-      <p class="switch">
-        Already have an account? <a href="./login.html">Login</a>
-      </p>
+        <p class="switch">
+          Already have an account? <a href="./login.html">Login</a>
+        </p>
+      </div>
     </section>
   </main>
+
+  <script>
+    const accountTabs = document.querySelectorAll(".account-tab");
+    const registerForms = document.querySelectorAll(".register-form");
+    const registerMessage = document.getElementById("registerMessage");
+
+    function showMessage(message, type = "info") {
+      registerMessage.textContent = message;
+      registerMessage.className = `form-message show ${type}`;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const serverError = params.get("error");
+
+    if (serverError === "password") {
+      showMessage("Passwords do not match.", "error");
+    } else if (serverError === "email") {
+      showMessage("Email is required.", "error");
+    } else if (serverError === "accountType") {
+      showMessage("Please choose an account type.", "error");
+    }
+
+    accountTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        accountTabs.forEach((item) => {
+          item.classList.remove("active");
+          item.setAttribute("aria-selected", "false");
+        });
+
+        registerForms.forEach((form) => {
+          form.classList.remove("active");
+          form.hidden = true;
+        });
+
+        const panel = document.getElementById(tab.dataset.panel);
+        tab.classList.add("active");
+        tab.setAttribute("aria-selected", "true");
+        panel.classList.add("active");
+        panel.hidden = false;
+        registerMessage.className = "form-message";
+        registerMessage.textContent = "";
+      });
+    });
+
+    document.querySelectorAll(".toggle-password").forEach((button) => {
+      button.addEventListener("click", () => {
+        const input = document.getElementById(button.getAttribute("aria-controls"));
+        const isHidden = input.type === "password";
+        input.type = isHidden ? "text" : "password";
+        button.textContent = isHidden ? "Hide" : "Show";
+        button.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+        button.setAttribute("aria-pressed", String(isHidden));
+      });
+    });
+
+    registerForms.forEach((form) => {
+      form.addEventListener("submit", (event) => {
+        const emailInput = form.querySelector('input[type="email"]');
+        const passwordInput = form.querySelector('input[name="password"]');
+        const confirmInput = form.querySelector('input[name="confirmPassword"]');
+        const accountTypeInput = form.querySelector('input[name="accountType"]');
+
+        if (!accountTypeInput.value) {
+          event.preventDefault();
+          showMessage("Please choose an account type.", "error");
+          return;
+        }
+
+        if (!emailInput.value.trim()) {
+          event.preventDefault();
+          showMessage("Email is required.", "error");
+          emailInput.focus();
+          return;
+        }
+
+        if (passwordInput.value !== confirmInput.value) {
+          event.preventDefault();
+          showMessage("Passwords do not match.", "error");
+          confirmInput.focus();
+          return;
+        }
+
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          showMessage("Please complete all required fields.", "error");
+          form.reportValidity();
+          return;
+        }
+      });
+    });
+
+    document.querySelectorAll("[data-social-placeholder]").forEach((button) => {
+      button.addEventListener("click", () => {
+        showMessage("Social login is prepared for future OAuth integration.", "info");
+      });
+    });
+  </script>
 </body>
 </html>
