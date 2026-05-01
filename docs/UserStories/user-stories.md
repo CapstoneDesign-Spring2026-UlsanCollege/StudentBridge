@@ -1,5 +1,7 @@
-* user-stories-1 As a student, I want to log in so that I can access my dashboard.
+# Legacy User Stories
 
-*user-stories-2 As a student, I want to log out so that my account remains secure.
+Canonical user stories are maintained in [`../USER_STORIES.md`](../USER_STORIES.md).
 
-*user-stories-3 As a student, I want to see an error message when login fails so that I know something is wrong.
+- As a student, I want to log in so that I can access my dashboard.
+- As a student, I want to log out so that my account remains secure.
+- As a student, I want to see an error message when login fails so that I know something is wrong.

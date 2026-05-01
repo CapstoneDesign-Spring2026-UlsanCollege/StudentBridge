@@ -1,3 +1,13 @@
-#planned:- Build  job apply system
-#Completed:- we have created a simple system with all the features log in , signup , join as student , post a job , job tittle , city region .
-#Issues:- Database connection error 
+# Sprint 6 Legacy Notes
+
+## Planned
+
+- Build the job application system.
+
+## Completed
+
+- Created a simple UI flow with login, signup, join-as-student, post-a-job planning, job title, and city/region fields.
+
+## Issues
+
+- Database connection errors need repeatable setup evidence and debugging notes.

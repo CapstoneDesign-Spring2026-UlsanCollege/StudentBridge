@@ -82,8 +82,8 @@ Students in foreign countries struggle to find trusted part-time jobs, while bus
   - User interface for students and owners
 
 - **backend:**
-  - Spring Boot (Java)
-  - Handles API, login, job logic
+  - Java Servlets on Apache Tomcat
+  - Handles register/login now and future job/application logic
 
 - **database:**
   - MySQL
@@ -297,4 +297,3 @@ footer {
     background: #2c3e50;
     color: white;
 }
-

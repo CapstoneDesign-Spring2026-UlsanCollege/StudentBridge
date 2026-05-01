@@ -1,9 +1,13 @@
-#sprint2 
+# Sprint 2 Legacy Notes
+
+> Canonical Sprint 2 document: [`../SPRINT_2.md`](../SPRINT_2.md). These notes are preserved from earlier planning and screenshot evidence.
+
+## Earlier Feature List
 ### Features
-#log in 
-#signup 
-#Join as a student 
-#post a job 
+#log in
+#signup
+#Join as a student
+#post a job
 # For Students ( when we click this ,description about this should appear )
 #simillarly for Employers and community.
 #Job tittle
@@ -11,7 +15,7 @@
 #search button for output
 
 
-### Definition of Done 
+### Definition of Done
 
 #🔐 1. Login Feature
 User can enter email & password
@@ -93,11 +97,10 @@ Can be opened in browser (local or live)
 -Invalid input
 -Empty form
 
-## Backup Demo Idea 
-<img width="1919" height="911" alt="Screenshot 2026-04-01 130822" src="https://github.com/user-attachments/assets/3db07e5c-6467-47ec-bcaf-55b716e5ce67" /> 
+## Backup Demo Idea
+<img width="1919" height="911" alt="Screenshot 2026-04-01 130822" src="https://github.com/user-attachments/assets/3db07e5c-6467-47ec-bcaf-55b716e5ce67" />
 <img width="1919" height="943" alt="Screenshot 2026-04-01 123302" src="https://github.com/user-attachments/assets/cc6385b3-76a1-4713-b8df-bab5208c0696" />
 
-#Next Step 
+#Next Step
 -Connect Frontend to backend
 -Connect to database
-

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Weekly work submission
+    about: Use the Weekly Sprint Packet issue template once per team each week.
+    url: https://github.com/CapstoneDesign-Spring2026-UlsanCollege/StudentBridge/issues/new/choose
+  - name: Help request reminder
+    about: When asking for help, include screenshots, logs, and links to the related issue or PR.
+    url: https://github.com/CapstoneDesign-Spring2026-UlsanCollege/StudentBridge/issues

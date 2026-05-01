@@ -1,0 +1,153 @@
+name: Weekly Sprint Packet
+description: One per team per week. This is the official weekly submission.
+title: "Weekly Sprint Packet - Week "
+labels: ["sprint-packet"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## How to use this form
+        - Create one Sprint Packet per team per week.
+        - Keep it updated during the week.
+        - Every student must add one comment with 2-3 evidence links.
+        - Your demo should be simple and repeatable.
+        - Always include a backup plan.
+
+        Evidence rule: If it is not linked, it did not happen.
+
+  - type: markdown
+    attributes:
+      value: |
+        **Team:**
+        **Week #:**
+        **PM:**
+        **Scribe:**
+        **QA Lead:**
+        **Demo Driver:**
+        **AI Steward:**
+
+  - type: input
+    id: demo_link
+    attributes:
+      label: Demo link
+      description: Link to a live deployment or short demo video.
+      placeholder: "https://..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: demo_script
+    attributes:
+      label: Demo script
+      description: What will you show in 60-120 seconds?
+      placeholder: |
+        - Show X and why it matters.
+        - Show Y as the new improvement.
+        - Show Z as proof it works.
+    validations:
+      required: true
+
+  - type: textarea
+    id: demo_backup
+    attributes:
+      label: Demo backup plan
+      description: If the live demo fails, what will you show instead?
+      placeholder: |
+        - Pre-recorded video link:
+        - Screenshots:
+        - Local fallback steps:
+    validations:
+      required: true
+
+  - type: input
+    id: board_link
+    attributes:
+      label: Board / Project link
+      description: Optional but recommended if you use GitHub Projects.
+      placeholder: "https://github.com/orgs/.../projects/..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: board_snapshot
+    attributes:
+      label: Board snapshot
+      description: Paste To Do / Doing / Done with owners.
+      placeholder: |
+        **To Do**
+        - [ ] Item - @owner
+
+        **Doing**
+        - [ ] Item - @owner
+
+        **Done**
+        - [x] Item - @owner
+    validations:
+      required: true
+
+  - type: textarea
+    id: definition_of_done
+    attributes:
+      label: Definition of Done
+      description: What must be true for work to count as done this week?
+      placeholder: |
+        - Merged through PR
+        - Works locally from setup steps
+        - Tests/checks completed
+        - Demo flow updated
+    validations:
+      required: true
+
+  - type: textarea
+    id: sprint_notes
+    attributes:
+      label: Sprint notes
+      placeholder: |
+        **Shipped:**
+        -
+
+        **Broke / Problems:**
+        -
+
+        **Next plan:**
+        -
+
+        **Risks / Blockers:**
+        -
+    validations:
+      required: true
+
+  - type: textarea
+    id: engineering_spine
+    attributes:
+      label: Engineering practice focus and evidence
+      description: Choose one practice focus and prove it with a link.
+      placeholder: |
+        **Focus:** testing / deployment / security / accessibility / documentation / AI-assisted workflow
+        **Evidence link(s):**
+        **Result:**
+    validations:
+      required: true
+
+  - type: textarea
+    id: ai_ownership
+    attributes:
+      label: AI use and code ownership
+      placeholder: |
+        **AI tools used:**
+        **What AI helped with:**
+        **What humans reviewed or changed:**
+        **Code we do not fully understand yet:**
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Individual Contribution Receipts
+        Each student must comment below with 2-3 links:
+        - PR authored
+        - Issue closed
+        - Review comment
+        - Docs update
+        - Screenshot/demo/test evidence

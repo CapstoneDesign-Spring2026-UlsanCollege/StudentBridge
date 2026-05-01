@@ -1,1 +1,18 @@
+# Weekly Vertical Slice Issue
+
+This legacy placeholder should be replaced by a real GitHub issue when the team plans a vertical slice.
+
+Recommended vertical slice for StudentBridge:
+
+1. Student opens the homepage.
+2. Student searches jobs.
+3. Student registers or logs in.
+4. Student submits a job application.
+5. Application is stored in MySQL.
+
+Evidence needed:
+
+- Issue link: `[TODO]`
+- Pull request link: `[TODO]`
+- Demo screenshot/video: `[TODO]`
 We can add Features here.
