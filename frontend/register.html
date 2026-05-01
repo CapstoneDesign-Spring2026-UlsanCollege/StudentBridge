@@ -36,7 +36,7 @@
 
         <p class="form-message" id="registerMessage" role="status" aria-live="polite"></p>
 
-        <form class="register-form active" id="studentPanel" action="/RegisterServlet" method="post" role="tabpanel" aria-labelledby="studentTab" novalidate>
+        <form class="register-form active" id="studentPanel" action="../RegisterServlet" method="post" role="tabpanel" aria-labelledby="studentTab" novalidate>
           <input type="hidden" name="accountType" value="Student">
 
           <div class="form-grid">
@@ -138,7 +138,7 @@
           <button type="submit" class="submit-btn">Create Student Account</button>
         </form>
 
-        <form class="register-form" id="employerPanel" action="/RegisterServlet" method="post" role="tabpanel" aria-labelledby="employerTab" novalidate hidden>
+        <form class="register-form" id="employerPanel" action="../RegisterServlet" method="post" role="tabpanel" aria-labelledby="employerTab" novalidate hidden>
           <input type="hidden" name="accountType" value="Employer">
 
           <div class="form-grid">
