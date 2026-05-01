@@ -1,112 +1,87 @@
-# 🎓 StudentBridge
+# StudentBridge
 
-> A web platform to help international students in Korea find part-time jobs easily.
+StudentBridge is a university capstone web platform that helps international students in South Korea find student-friendly part-time jobs and helps local employers reach student workers.
 
----
+The current implementation uses a static HTML/CSS/JavaScript frontend, Java Servlets running on Apache Tomcat, and a MySQL database accessed through JDBC.
 
-## 🚀 Live Demo
+## Current Status
 
-👉 http://localhost:8080/StudentBridge/
+| Area | Status | Notes |
+|---|---|---|
+| Homepage | Working | `index.html` presents the product, navigation, and calls to action. |
+| Job search UI | Working as frontend demo | `frontend/jobsearch.html` filters seeded in-browser job data. |
+| Registration | Partially working | `RegisterServlet` inserts users into MySQL when Tomcat and the database are configured. |
+| Login | Partially working | `LoginServlet` checks MySQL credentials and creates a servlet session. |
+| Job application | Not connected yet | The current job cards show an alert instead of storing applications. |
+| Live deployment | Needs verification | Local Tomcat is the reliable demo path for now. |
 
----
+## Demo Links
 
-## 🌍 Overview
+| Demo type | Link | Status |
+|---|---|---|
+| Local Tomcat demo | <http://localhost:8080/StudentBridge/> | Use for the midterm live demo after running setup. |
+| Static GitHub Pages demo | <https://capstonedesign-spring2026-ulsancollege.github.io/StudentBridge/> | Verify before using in a presentation. |
+| Demo video | `[TODO: add demo video link]` | Required backup evidence. |
+| Screenshots | `[TODO: add screenshot folder or issue links]` | Required for sprint packets and brochure QR support. |
 
-Finding part-time jobs in Korea is challenging for international students due to:
-- Language barriers
-- Lack of centralized job platforms
-- Limited local experience
+## Tech Stack
 
-### 💡 Our Solution
+| Layer | Technology |
+|---|---|
+| Frontend | HTML, CSS, JavaScript |
+| Backend | Java Servlets with Jakarta Servlet API |
+| Server | Apache Tomcat 10.1.x |
+| Database | MySQL with JDBC |
+| Driver/dependencies | `server/mysql-connector-j-9.3.0.jar`, `server/servlet-api.jar` |
 
-**StudentBridge** connects students with job opportunities through a simple, clean, and accessible web platform.
+## Core Demo Flow
 
----
+1. Open the StudentBridge homepage.
+2. Navigate to the job search page.
+3. Search/filter part-time jobs by title, location, category, or type.
+4. Open registration and create a test user after Tomcat/MySQL setup.
+5. Log in with the test user and return to the homepage.
+6. Explain that application storage is the next backend milestone.
 
-## 🎯 Objectives
+## Documentation Index
 
-- Provide a centralized platform for job search
-- Simplify the application process
-- Improve accessibility for international students
-- Build a scalable web system using modern web technologies
+| Document | Purpose |
+|---|---|
+| [Project Overview](docs/PROJECT_OVERVIEW.md) | Problem, users, solution, MVP scope, and evidence placeholders. |
+| [Architecture](docs/ARCHITECTURE.md) | Frontend/backend/database structure and key risks. |
+| [Setup Guide](docs/SETUP_GUIDE.md) | Java Servlet, Tomcat, and MySQL setup steps. |
+| [User Stories](docs/USER_STORIES.md) | MVP stories, acceptance criteria, and status. |
+| [Sprint 2](docs/SPRINT_2.md) | Midterm sprint goal, evidence needs, and blockers. |
+| [Testing Notes](docs/TESTING_NOTES.md) | Manual test plan and current test status. |
+| [Demo Plan](docs/DEMO_PLAN.md) | Live demo script, backup plan, and QR support. |
+| [Midterm Pitch Notes](docs/MIDTERM_PITCH_NOTES.md) | Investor-style pitch outline and ask. |
+| [Roadmap](docs/ROADMAP.md) | Path from current MVP to final presentation. |
+| [Team Roles](docs/TEAM_ROLES.md) | Team ownership, weekly role rotation, and responsibilities. |
+| [AI Code Ownership Audit](docs/AI_CODE_OWNERSHIP_AUDIT.md) | AI usage, code ownership, risks, and stabilization goals. |
 
----
+## Known Issues
 
-## ✨ Key Features
+- Database credentials are currently hard-coded in `Backend/DBConnection.java`; replace with safer local configuration before public deployment.
+- Passwords are stored as plain text; hashing is required before real users.
+- `frontend/register.html` and `frontend/login.html` use absolute form actions that may need adjustment under the Tomcat `/StudentBridge` context.
+- Job listings are currently seeded in frontend JavaScript, not loaded from MySQL.
+- Application submission is not implemented yet.
+- Evidence links in docs must be replaced with real GitHub issue, PR, screenshot, and demo links before submission.
 
-### 🔐 Authentication System
-- User registration with MySQL database
-- Secure login using Java Servlets
-- Form validation and error handling
+## Quick Start
 
-### 🔍 Job Search Interface
-- Dedicated job search page
-- Clean UI for browsing opportunities
-- Expandable for dynamic job loading
+Use the full [Setup Guide](docs/SETUP_GUIDE.md). The short version is:
 
-### ⚙️ Backend Integration
-- Java Servlet-based backend
-- Database connection using JDBC
-- Fully deployed on Apache Tomcat
+```bash
+./deploy.sh
+```
 
-### 🎨 UI/UX Design
-- Modern layout with structured sections
-- Responsive design
-- Improved navigation and usability
+Then start Tomcat and open:
 
----
+```text
+http://localhost:8080/StudentBridge/
+```
 
-## 🛠️ Tech Stack
+## Evidence Policy
 
-| Layer      | Technology              |
-|-----------|------------------------|
-| Frontend  | HTML, CSS, JavaScript  |
-| Backend   | Java Servlets          |
-| Server    | Apache Tomcat          |
-| Database  | MySQL                  |
-
-
-## 🧱 System Architecture
-
-Client (Browser)
-↓
-Frontend (HTML, CSS, JS)
-↓
-Backend (Java Servlets)
-↓
-MySQL Database
-
-
----
-
-## 🔄 Application Flow
-
-1. User opens homepage
-2. User navigates to Register/Login
-3. Form submits to Servlet
-4. Servlet processes request
-5. Data stored/retrieved from MySQL
-6. Response returned to user
-
----
-
-## 🛠️ Tech Stack
-
-### Frontend
-- HTML5
-- CSS3
-- JavaScript
-
-### Backend
-- Java (Servlets)
-- JDBC
-
-### Server
-- Apache Tomcat 10
-
-### Database
-- MySQL
-
----
-
-
+This project follows the class rule: if it is not linked, it did not happen. Add real links for GitHub issues, pull requests, board screenshots, demo videos, screenshots, and sprint packets before using the documentation for grading.

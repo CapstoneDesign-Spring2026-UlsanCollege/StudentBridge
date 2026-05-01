@@ -1,0 +1,55 @@
+name: Decision
+description: Record an important decision about tools, architecture, or scope.
+title: "Decision: "
+labels: ["decision"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## How to use this form
+        Use this when the team needs a durable decision about stack, architecture, scope, demo plan, or roadmap.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What problem are we solving? What constraints matter?
+      placeholder: |
+        - Need:
+        - Constraints:
+        - Deadline/demo impact:
+    validations:
+      required: true
+
+  - type: textarea
+    id: options
+    attributes:
+      label: Options considered
+      placeholder: |
+        1. Option A
+           - Pros:
+           - Cons:
+
+        2. Option B
+           - Pros:
+           - Cons:
+    validations:
+      required: true
+
+  - type: textarea
+    id: decision
+    attributes:
+      label: Decision
+      placeholder: "We will use ... because ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: consequences
+    attributes:
+      label: Consequences / follow-ups
+      placeholder: |
+        - What changes now?
+        - What tasks should be created next?
+    validations:
+      required: true

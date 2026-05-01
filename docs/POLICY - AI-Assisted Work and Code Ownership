@@ -1,131 +1,56 @@
-# AI Code Ownership Audit – StudentBridge
+# AI-Assisted Work and Code Ownership Policy
 
----
+Canonical audit: [`AI_CODE_OWNERSHIP_AUDIT.md`](AI_CODE_OWNERSHIP_AUDIT.md)
 
-## 1) Team + Project
+## Class Rule
 
-- **Team:** StudentBridge Team
-- **Project name:** StudentBridge
-- **Current repo:** https://github.com/CapstoneDesign-Spring2026-UlsanCollege/StudentBridge
-- **Current demo link:** (https://capstonedesign-spring2026-ulsancollege.github.io/StudentBridge/)
-- **Date updated:** 2026-04-29
+AI-assisted work only counts if the team can:
 
----
+- run it,
+- explain it,
+- test it,
+- debug it,
+- and link evidence.
 
-## 2) What Our App Currently Does
+## StudentBridge Policy
 
-StudentBridge is a web platform that helps international students in Korea find part-time jobs easily.
+StudentBridge may use AI tools for brainstorming, UI copy, code examples, debugging help, and documentation organization. AI output is never accepted as finished work until a team member reviews it, adapts it to the Java Servlet + Tomcat + MySQL stack, tests it, and links evidence in GitHub.
 
-- Feature / flow 1: User can register an account using the registration form.
-- Feature / flow 2: User can login using email and password.
-- Feature / flow 3: User can browse and search jobs using filters (location, category, type).
+## Required AI Use Note
 
-### Current MVP flow
+Every AI-assisted pull request or sprint packet should answer:
 
-Our main user can:
+| Question | Required answer |
+|---|---|
+| What AI tool was used? | Tool name and date if helpful. |
+| What did AI help with? | Specific code, docs, tests, or design suggestions. |
+| What did humans change? | Edits, corrections, simplifications, or rejected suggestions. |
+| How was it tested? | Commands, browser steps, screenshots, or database checks. |
+| What is still unclear? | Any code or behavior the team cannot fully explain yet. |
 
-1. Open homepage
-2. Click register and create account
-3. Login using credentials
-4. Search and view job listings
+## Ownership Expectations
 
----
+| Area | Owner should be able to explain |
+|---|---|
+| Frontend | Page structure, navigation, filters, and form behavior. |
+| Backend | Servlet mappings, request handling, redirects, sessions, and error paths. |
+| Database | Schema, connection settings, sample data, and query behavior. |
+| Deployment | How `deploy.sh` compiles/copies files and how Tomcat serves the app. |
+| Documentation | What evidence is real, what is placeholder, and what must be updated. |
 
-## 3) What Works Right Now
+## Evidence Required
 
-| Working item | Evidence link | Owner who can explain it |
-|---|---|---|
-| Homepage UI | index.html | Mezbah |
-| Register form → DB insert | RegisterServlet.java | Mezbah |
-| Login form → DB check | LoginServlet.java | Mezbah |
-| Job search page filtering | jobsearch.html | Sami |
-| MySQL connection | DBConnection.java | Team |
+Do not invent evidence links. Use real:
 
----
+- GitHub issues,
+- pull requests,
+- review comments,
+- screenshots,
+- demo videos,
+- test results,
+- sprint packet comments,
+- or commits.
 
-## 4) Code We Understand
+## Current StudentBridge AI Audit
 
-| Code area | File / folder | What it does | Who can explain it? | Evidence |
-|---|---|---|---|---|
-| Homepage UI | index.html | Displays landing page and navigation | Mezbah | :contentReference[oaicite:0]{index=0} |
-| Register Form | register.html | Collects user input and sends to backend | Mezbah | :contentReference[oaicite:1]{index=1} |
-| Login Form | login.html | Sends login data to backend servlet | Mezbah | :contentReference[oaicite:2]{index=2} |
-| Register Servlet | RegisterServlet.java | Saves user data into MySQL database | Mezbah | :contentReference[oaicite:3]{index=3} |
-| Login Servlet | LoginServlet.java | Checks user credentials from database | Ashraf| :contentReference[oaicite:4]{index=4} |
-| Database Connection | DBConnection.java | Connects Java backend to MySQL | Mezbah | :contentReference[oaicite:5]{index=5} |
-| Job Search UI | jobsearch.html | Displays and filters jobs | Sami| :contentReference[oaicite:6]{index=6} |
-| Main JS logic | script.js | Handles navigation and UI actions | Team| :contentReference[oaicite:7]{index=7} |
-
----
-
-## 5) Code We Do NOT Fully Understand Yet
-
-| Code area | What is confusing? | Risk level | Owner | Next step |
-|---|---|---|---|---|
-| Servlet routing | How Tomcat maps URL to servlet | High | Mezbah | Study servlet mapping and web.xml |
-| Session handling | Login session not implemented yet | High | Team | Learn session management |
-| Database security | Password stored as plain text | High | Team | Implement hashing |
-| Frontend-backend integration | Some pages use JS, some use servlet | Medium | Team | Standardize approach |
-
----
-
-## 6) AI-Assisted Work
-
-| Area | AI tool used | What AI helped with | What humans checked/changed | Evidence |
-|---|---|---|---|---|
-| UI design | ChatGPT | Generated HTML/CSS layout | Adjusted styles and layout | style.css :contentReference[oaicite:8]{index=8} |
-| Backend logic | ChatGPT | Helped write servlet code | Tested and fixed errors | RegisterServlet.java |
-| Database connection | ChatGPT | Provided JDBC connection code | Verified connection works | DBConnection.java |
-| JS logic | ChatGPT | Generated UI interactions | Modified navigation logic | script.js |
-
----
-
-## 7) Bugs / Unreliable Features
-
-| Bug / problem | Severity | Evidence link | Owner | Next action |
-|---|---|---|---|---|
-| Login sometimes fails | P1 | LoginServlet.java | Mezbah | Debug SQL query |
-| No session after login | P1 | login.html | Team | Implement session |
-| Back button shows 404 | P2 | jobsearch.html | Team | Fix routing |
-| Password not secure | P1 | RegisterServlet.java | Team | Add hashing |
-
----
-
-## 8) Risk List
-
-| Risk | Why it matters | Mitigation | Owner |
-|---|---|---|---|
-| Backend not fully stable | Core feature may fail in demo | Test all endpoints | Mezbah |
-| No authentication session | Users cannot stay logged in | Implement session | Team |
-| Database issues | App may crash | Add error handling | Team |
-
----
-
-## 9) Team Ownership Map
-
-| Student | Owned area | Can explain? | Evidence link | Needs help with |
-|---|---|---|---|---|
-| Mezbah | Backend + UI | Clear | Servlets + DB | Session handling |
-| Sami | UI pages | Needs work | HTML pages | Backend integration |
-| Ali | Job page | Needs work | jobsearch.html | API connection |
-| Guramg | Documentation | Clear | docs folder | Backend |
-| Dipesh | Testing | Needs work | Test cases | Debugging |
-
----
-
-## 10) Top 3 Stabilization Goals
-
-1. Fix login system and ensure it works correctly
-2. Implement session management after login
-3. Fix routing errors (404 pages)
-
----
-
-## 11) Definition of Done for Sprint 3
-
-- [x] Core MVP flow works
-- [x] Core MVP flow has evidence
-- [ ] P0 bugs fixed or documented
-- [x] Every member can explain one part
-- [x] AI-assisted work reviewed
-- [ ] Sprint Packet linked with this audit
+The current filled audit is in [`AI_CODE_OWNERSHIP_AUDIT.md`](AI_CODE_OWNERSHIP_AUDIT.md). Update that file before each major sprint submission.

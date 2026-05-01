@@ -1,0 +1,78 @@
+name: Bug
+description: Report a bug with reproducible steps and evidence.
+title: "Bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## How to use this form
+        Report bugs early. Include steps, expected behavior, actual behavior, and evidence.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      placeholder: "What is broken? One sentence."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      placeholder: "What should happen?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      placeholder: "What actually happens?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Link screenshots, logs, related issues, PRs, or commits.
+      placeholder: |
+        - Screenshot:
+        - Log snippet:
+        - Related PR/commit:
+    validations:
+      required: false
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - P0 - Blocks demo or cannot run
+        - P1 - Major feature broken
+        - P2 - Minor with workaround
+        - P3 - Cosmetic
+    validations:
+      required: true
+
+  - type: input
+    id: owner
+    attributes:
+      label: Owner
+      description: Put a GitHub handle so the bug has a first responder.
+      placeholder: "@github-handle"
+    validations:
+      required: false

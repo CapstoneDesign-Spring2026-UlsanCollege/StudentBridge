@@ -1,4 +1,6 @@
-# StudentBridge – Project Plan
+# StudentBridge - Project Plan
+
+> Canonical project overview: [`../PROJECT_OVERVIEW.md`](../PROJECT_OVERVIEW.md). This file is kept because earlier sprint materials referenced `docs/Project/Project.md`.
 
 ## 1. Project Overview
 
@@ -99,11 +101,15 @@ Database
 * HTML
 * CSS
 * JavaScript
-* React (optional)
 
 ### Backend
 
-* Node.js with Express
+* Java Servlets
+* JDBC
+
+### Server
+
+* Apache Tomcat 10.1.x
 
 ### Database
 
@@ -111,7 +117,8 @@ Database
 
 ### Deployment
 
-* Cloud hosting such as AWS, Render, or Vercel
+* Local Apache Tomcat for the reliable class demo
+* Static GitHub Pages only for frontend preview if verified before presentation
 
 ---
 

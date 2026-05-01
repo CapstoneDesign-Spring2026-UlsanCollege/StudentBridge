@@ -39,7 +39,7 @@ Validation Testing
 
 * Submit empty form → error message shown
 * Invalid email → rejected
-* 
+*
 Edge Cases
 
 * Refresh after submit → no duplicate submission
@@ -50,18 +50,18 @@ UI Testing
 * Form layout is readable and usable
 * Buttons are clickable and responsive
 
-Backup Demo Idea 
+Backup Demo Idea
 
 If backend fails:
 
 * Use local storage / mock data
-* Show fake success message after submission
+* Show a clearly labeled mock confirmation message after submission
 * Pre-recorded demo video of working version
 
 Next Step
 
 * Connect frontend form to real backend/database
-* Add user authentication 
+* Add user authentication
 * Store and display submitted applications
 
 
@@ -75,4 +75,3 @@ Next Step
 ## Status
 
 In Progress
-

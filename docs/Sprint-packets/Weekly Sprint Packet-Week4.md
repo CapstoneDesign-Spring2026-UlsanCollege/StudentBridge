@@ -1,4 +1,4 @@
-# StudentBridge 
+# StudentBridge
 
 ## 📌 Project Overview
 StudentBridge is a platform that connects international students with local business owners for part-time jobs.
@@ -22,7 +22,7 @@ StudentBridge is a platform that connects international students with local busi
   - Dashboard
 
 ## ⚙️ Backend
-- Node.js / Express (or any backend you use)
+- Java Servlets on Apache Tomcat
 - Handles:
   - Authentication
   - Job posting
@@ -30,7 +30,7 @@ StudentBridge is a platform that connects international students with local busi
   - Data processing
 
 ## 🗄️ Database
-- MongoDB / MySQL
+- MySQL
 - Tables/Collections:
   - Users
   - Jobs
@@ -44,12 +44,12 @@ StudentBridge is a platform that connects international students with local busi
 
 # 🔄 Main Data Flow
 
-1. User registers/logs in  
-2. Employer posts a job  
-3. Student views job list  
-4. Student applies for job  
-5. Data saved in database  
-6. Employer views applications  
+1. User registers/logs in
+2. Employer posts a job
+3. Student views job list
+4. Student applies for job
+5. Data saved in database
+6. Employer views applications
 
 ---
 

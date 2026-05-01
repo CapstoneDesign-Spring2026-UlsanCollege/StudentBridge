@@ -1,0 +1,80 @@
+name: Risk / Blocker
+description: Track risks early and unblock fast.
+title: "Risk/Blocker: "
+labels: ["risk", "blocker"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## How to use this form
+        Use this when the demo is at risk, someone is stuck, or a future problem is visible.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What is the risk/blocker?
+      placeholder: "Describe it clearly."
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      placeholder: |
+        - What could go wrong?
+        - What does it delay or break?
+        - Demo impact?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: Urgency
+      options:
+        - High - this week's demo is at risk
+        - Medium - likely pain soon
+        - Low - watchlist
+    validations:
+      required: true
+
+  - type: input
+    id: owner
+    attributes:
+      label: Owner
+      description: Who is responsible for the first action?
+      placeholder: "@github-handle"
+    validations:
+      required: true
+
+  - type: textarea
+    id: next_actions
+    attributes:
+      label: Next actions
+      description: Write the next 1-3 small steps.
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: help_needed
+    attributes:
+      label: Help needed
+      placeholder: "What do you need from instructor, TA, or another teammate?"
+    validations:
+      required: false
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence / context links
+      placeholder: |
+        - Related issue/PR:
+        - Error logs/screenshots:
+        - Docs link:
+    validations:
+      required: false
