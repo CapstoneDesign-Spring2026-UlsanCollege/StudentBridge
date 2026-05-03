@@ -127,11 +127,11 @@ Browser job page
 | File/folder | What it does | Owner who can explain it |
 |---|---|---|
 | `index.html` | Homepage and main navigation | Mezbah |
-| `frontend/jobsearch.html` | Job list, filters, and current Apply placeholder | Sami / Ali |
+| `frontend/jobsearch.html` | Job list, filters, and current Apply placeholder | Sami / Ali Ashraf |
 | `frontend/register.html` | Registration form | Mezbah |
-| `frontend/login.html` | Login form | Mezbah / Ali |
+| `frontend/login.html` | Login form | Mezbah / Ali Ashraf |
 | `Backend/RegisterServlet.java` | Registration backend | Mezbah |
-| `Backend/LoginServlet.java` | Login backend | Ali / Mezbah |
+| `Backend/LoginServlet.java` | Login backend | Ali Ashraf / Mezbah |
 | `Backend/DBConnection.java` | MySQL connection | Mezbah |
 | `deploy.sh` | Tomcat deployment script | Team |
 | `docs/` | Capstone evidence and handoff documents | Guramg / Team |
