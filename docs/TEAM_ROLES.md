@@ -10,7 +10,7 @@ The names below come from existing repository documentation. Verify spelling bef
 |---|---|---|
 | Mezbah Uddin | Backend, database connection, homepage support | `[TODO: commit/PR/issue links]` |
 | Sami Ul Alim | Frontend pages, job search support | `[TODO: commit/PR/issue links]` |
-| Ali Mohammed Ashraf | Login/job page support | `[TODO: commit/PR/issue links]` |
+| Ali Mohamad Ashraf | Login/job page support | `[TODO: commit/PR/issue links]` |
 | Guramg Roman | Documentation and sprint evidence | `[TODO: commit/PR/issue links]` |
 | Dipesh Chaulagain | Testing and QA support | `[TODO: commit/PR/issue links]` |
 
