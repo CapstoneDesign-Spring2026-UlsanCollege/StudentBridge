@@ -44,11 +44,11 @@ The job application flow is not fully connected yet.
 | Code area | File / folder | What it does | Who can explain it? | Evidence |
 |---|---|---|---|---|
 | Homepage | `index.html` | Provides product landing page and navigation. | Mezbah / Team | `[TODO: screenshot or PR]` |
-| Job search page | `frontend/jobsearch.html` | Filters seeded job cards by keyword, location, category, and type. | Sami / Ali | `[TODO: screenshot or PR]` |
+| Job search page | `frontend/jobsearch.html` | Filters seeded job cards by keyword, location, category, and type. | Sami / Ali Ashraf | `[TODO: screenshot or PR]` |
 | Registration form | `frontend/register.html` | Collects name, email, phone, password, confirmation, and account type. | Mezbah | `[TODO: test evidence]` |
-| Login form | `frontend/login.html` | Collects email/password and posts to servlet. | Mezbah / Ali | `[TODO: test evidence]` |
+| Login form | `frontend/login.html` | Collects email/password and posts to servlet. | Mezbah / Ali Ashraf | `[TODO: test evidence]` |
 | Register servlet | `Backend/RegisterServlet.java` | Checks password confirmation and inserts user into MySQL. | Mezbah | `[TODO: PR or walkthrough]` |
-| Login servlet | `Backend/LoginServlet.java` | Validates credentials, creates session, redirects. | Ali / Mezbah | `[TODO: PR or walkthrough]` |
+| Login servlet | `Backend/LoginServlet.java` | Validates credentials, creates session, redirects. | Ali Ashraf / Mezbah | `[TODO: PR or walkthrough]` |
 | Database connection | `Backend/DBConnection.java` | Opens local MySQL connection using JDBC. | Mezbah | `[TODO: DB test screenshot]` |
 | Deployment script | `deploy.sh` | Compiles servlets and copies files into Tomcat. | Team | `[TODO: terminal output screenshot]` |
 
