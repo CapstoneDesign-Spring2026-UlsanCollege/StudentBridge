@@ -6,4 +6,4 @@
 // - http://localhost:8080
 // - your future deployed domain
 
-window.STUDENTBRIDGE_KAKAO_MAP_KEY = "";
+window.STUDENTBRIDGE_KAKAO_MAP_KEY = "76075bd76d0f43c4a071cbafbebf07c8";
