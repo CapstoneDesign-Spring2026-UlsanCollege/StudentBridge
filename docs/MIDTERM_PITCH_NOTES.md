@@ -83,7 +83,7 @@ Use `docs/TEAM_ROLES.md` for the full table. Keep the slide simple:
 
 - Mezbah: backend, database, homepage support.
 - Sami: frontend/job search support.
-- Ali: login/job page support.
+- Ali Ashraf: login/job page support.
 - Guramg: documentation and evidence.
 - Dipesh: testing and QA.
 
