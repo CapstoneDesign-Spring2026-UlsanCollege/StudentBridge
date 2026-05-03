@@ -33,10 +33,10 @@ The job application flow is not fully connected yet.
 | Working item | Evidence link | Owner who can explain it |
 |---|---|---|
 | Homepage UI | `index.html` and `[TODO: screenshot link]` | Mezbah / Team |
-| Job search filters | `frontend/jobsearch.html` and `[TODO: screenshot link]` | Sami / Ali |
+| Job search filters | `frontend/jobsearch.html` and `[TODO: screenshot link]` | Sami / Ali Ashraf |
 | Register form UI | `frontend/register.html` and `[TODO: test evidence]` | Mezbah |
 | Register servlet code | `Backend/RegisterServlet.java` and `[TODO: PR link]` | Mezbah |
-| Login servlet code | `Backend/LoginServlet.java` and `[TODO: PR link]` | Ali / Mezbah |
+| Login servlet code | `Backend/LoginServlet.java` and `[TODO: PR link]` | Ali Ashraf / Mezbah |
 | MySQL connection helper | `Backend/DBConnection.java` and `[TODO: DB test screenshot]` | Mezbah |
 
 ## 4) Code We Understand
