@@ -107,6 +107,35 @@
           </div>
 
           <div class="input-group full-width">
+            <label for="address">Real business address *</label>
+            <div class="location-search-row">
+              <input type="text" id="address" name="address" placeholder="울산 남구 대학로 93" required>
+              <button type="button" class="secondary-btn" id="findJobAddressBtn">
+                <i class="fa-solid fa-location-crosshairs" aria-hidden="true"></i>
+                Find on Map
+              </button>
+            </div>
+            <p class="field-help">Use a full Korean road address for the most accurate map pin.</p>
+          </div>
+
+          <div class="map-panel full-width">
+            <div id="jobLocationMap" class="map-canvas" aria-label="Job location map"></div>
+            <p class="map-status" id="jobMapStatus" role="status" aria-live="polite"></p>
+          </div>
+
+          <div class="coordinate-grid full-width">
+            <div class="input-group">
+              <label for="latitude">Latitude</label>
+              <input type="text" id="latitude" name="latitude" placeholder="35.5384000" readonly>
+            </div>
+
+            <div class="input-group">
+              <label for="longitude">Longitude</label>
+              <input type="text" id="longitude" name="longitude" placeholder="129.3114000" readonly>
+            </div>
+          </div>
+
+          <div class="input-group full-width">
             <label for="description">Description *</label>
             <textarea id="description" name="description" rows="5" placeholder="Describe the work, schedule, and workplace environment." required></textarea>
           </div>
@@ -125,6 +154,8 @@
     </section>
   </main>
 
+  <script src="./map-config.js"></script>
+  <script src="./location-map.js"></script>
   <script>
     const message = document.getElementById("postJobMessage");
     const params = new URLSearchParams(window.location.search);
@@ -145,6 +176,15 @@
     } else if (params.get("error") === "db") {
       showMessage("The job could not be saved. Please check MySQL and try again.", "error");
     }
+
+    StudentBridgeLocationMap.initPicker({
+      mapId: "jobLocationMap",
+      addressInputId: "address",
+      latitudeInputId: "latitude",
+      longitudeInputId: "longitude",
+      searchButtonId: "findJobAddressBtn",
+      statusId: "jobMapStatus"
+    });
   </script>
 </body>
 </html>

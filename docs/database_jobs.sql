@@ -16,8 +16,12 @@ CREATE TABLE IF NOT EXISTS jobs (
   working_hours VARCHAR(150),
   requirements TEXT,
   contact_email VARCHAR(255),
+  address VARCHAR(255),
+  latitude DECIMAL(10, 7),
+  longitude DECIMAL(10, 7),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   INDEX idx_jobs_employer_email (employer_email),
+  INDEX idx_jobs_coordinates (latitude, longitude),
   INDEX idx_jobs_location (location),
   INDEX idx_jobs_category (category),
   INDEX idx_jobs_type (type)
@@ -30,7 +34,11 @@ CREATE TABLE IF NOT EXISTS jobs (
 -- ALTER TABLE jobs ADD COLUMN working_hours VARCHAR(150);
 -- ALTER TABLE jobs ADD COLUMN requirements TEXT;
 -- ALTER TABLE jobs ADD COLUMN contact_email VARCHAR(255);
+-- ALTER TABLE jobs ADD COLUMN address VARCHAR(255);
+-- ALTER TABLE jobs ADD COLUMN latitude DECIMAL(10, 7);
+-- ALTER TABLE jobs ADD COLUMN longitude DECIMAL(10, 7);
 -- CREATE INDEX idx_jobs_employer_email ON jobs (employer_email);
+-- CREATE INDEX idx_jobs_coordinates ON jobs (latitude, longitude);
 
 -- Sample data for local testing/demo.
 -- If you run this more than once, it will add duplicate demo rows.

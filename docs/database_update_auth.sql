@@ -36,9 +36,20 @@ CREATE TABLE IF NOT EXISTS student_profiles (
   preferred_job_category VARCHAR(100),
   available_working_time VARCHAR(100),
   korean_language_level VARCHAR(100),
+  address VARCHAR(255),
+  latitude DECIMAL(10, 7),
+  longitude DECIMAL(10, 7),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_student_profiles_coordinates (latitude, longitude),
   INDEX idx_student_profiles_user_email (user_email)
 );
+
+-- If student_profiles already exists, run these one time:
+--
+-- ALTER TABLE student_profiles ADD COLUMN address VARCHAR(255);
+-- ALTER TABLE student_profiles ADD COLUMN latitude DECIMAL(10, 7);
+-- ALTER TABLE student_profiles ADD COLUMN longitude DECIMAL(10, 7);
+-- CREATE INDEX idx_student_profiles_coordinates ON student_profiles (latitude, longitude);
 
 -- 3) Optional employer profile table
 -- This stores employer-only business details.

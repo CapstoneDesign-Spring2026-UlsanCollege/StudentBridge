@@ -304,6 +304,77 @@
       font-weight: 700;
     }
 
+    .map-preview-card {
+      max-width: 1120px;
+      margin: 0 auto 22px;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+    }
+
+    .map-preview-card h2 {
+      margin: 6px 6px 12px;
+      font-size: 20px;
+    }
+
+    .map-canvas {
+      width: 100%;
+      min-height: 320px;
+      border-radius: 18px;
+      background:
+        linear-gradient(135deg, rgba(47, 109, 246, 0.12), rgba(34, 211, 238, 0.12)),
+        #eaf1ff;
+    }
+
+    .map-status {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: #1f4ed8;
+      background: #eaf1ff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .map-status.success {
+      color: #0f766e;
+      background: #ccfbf1;
+    }
+
+    .map-status.error {
+      color: #b42318;
+      background: #fff1f0;
+    }
+
+    .map-btn {
+      width: 100%;
+      min-height: 42px;
+      margin-top: 10px;
+      border: 1px solid #b8c7e3;
+      border-radius: 999px;
+      color: var(--primary-dark);
+      background: #ffffff;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .map-btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+      box-shadow: 0 12px 28px rgba(47, 109, 246, 0.16);
+    }
+
+    .map-btn:disabled {
+      color: #94a3b8;
+      background: #f1f5f9;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
     @media (max-width: 980px) {
       .search-container {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -393,10 +464,19 @@
     </form>
 
     <section class="jobs" id="jobList" aria-live="polite" aria-label="Job listings"></section>
+
+    <section class="map-preview-card" aria-labelledby="job-map-title">
+      <h2 id="job-map-title">Job location map</h2>
+      <div id="jobMap" class="map-canvas" aria-label="Selected job location map"></div>
+      <p class="map-status" id="jobMapStatus" role="status" aria-live="polite"></p>
+    </section>
   </main>
 
+  <script src="./map-config.js"></script>
+  <script src="./location-map.js"></script>
   <script>
     let jobs = [];
+    let jobMapViewer = null;
     const jobList = document.getElementById("jobList");
     const jobSearchForm = document.getElementById("jobSearchForm");
 
@@ -459,6 +539,11 @@
         location.innerHTML = '<i class="fa-solid fa-location-dot" aria-hidden="true"></i> ';
         location.append(document.createTextNode(`${job.location} · ${job.type}`));
 
+        const address = document.createElement("p");
+        address.className = "location";
+        address.innerHTML = '<i class="fa-solid fa-map-pin" aria-hidden="true"></i> ';
+        address.append(document.createTextNode(job.address || "Detailed map address not added yet"));
+
         const tags = document.createElement("div");
         tags.className = "tags";
         tags.setAttribute("aria-label", "Job tags");
@@ -479,7 +564,16 @@
         applyButton.dataset.jobId = job.id;
         applyButton.textContent = "Apply Now";
 
-        article.append(salary, title, company, location, tags, description, applyButton);
+        const mapButton = document.createElement("button");
+        mapButton.type = "button";
+        mapButton.className = "map-btn";
+        mapButton.dataset.mapJobId = job.id;
+        mapButton.textContent = StudentBridgeLocationMap.hasCoordinates(job.latitude, job.longitude)
+          ? "View on Map"
+          : "Map Not Added";
+        mapButton.disabled = !StudentBridgeLocationMap.hasCoordinates(job.latitude, job.longitude);
+
+        article.append(salary, title, company, location, address, tags, description, mapButton, applyButton);
 
         fragment.appendChild(article);
       });
@@ -513,6 +607,19 @@
     });
 
     jobList.addEventListener("click", (event) => {
+      const mapButton = event.target.closest(".map-btn");
+
+      if (mapButton && jobMapViewer) {
+        const job = jobs.find((item) => String(item.id) === String(mapButton.dataset.mapJobId));
+
+        if (job) {
+          jobMapViewer.showLocation(job);
+          document.getElementById("jobMap").scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+
+        return;
+      }
+
       const applyButton = event.target.closest(".apply-btn");
 
       if (!applyButton) {
@@ -521,6 +628,13 @@
 
       const jobId = applyButton.dataset.jobId;
       alert(`Application flow is not connected yet. Selected job ID: ${jobId}`);
+    });
+
+    StudentBridgeLocationMap.initViewer({
+      mapId: "jobMap",
+      statusId: "jobMapStatus"
+    }).then((viewer) => {
+      jobMapViewer = viewer;
     });
 
     loadJobs();

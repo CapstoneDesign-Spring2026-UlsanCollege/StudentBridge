@@ -1,7 +1,9 @@
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -43,10 +45,13 @@ public class PostJobServlet extends HttpServlet {
         String workingHours = clean(request.getParameter("workingHours"));
         String requirements = clean(request.getParameter("requirements"));
         String contactEmail = clean(request.getParameter("contactEmail"));
+        String address = clean(request.getParameter("address"));
+        BigDecimal latitude = parseDecimal(request.getParameter("latitude"));
+        BigDecimal longitude = parseDecimal(request.getParameter("longitude"));
         String employerEmail = clean((String) session.getAttribute("userEmail"));
 
         if (title.isEmpty() || company.isEmpty() || location.isEmpty() || category.isEmpty()
-                || type.isEmpty() || salary.isEmpty() || description.isEmpty()) {
+                || type.isEmpty() || salary.isEmpty() || description.isEmpty() || address.isEmpty()) {
             response.sendRedirect("frontend/post-job.html?error=missing");
             return;
         }
@@ -57,8 +62,8 @@ public class PostJobServlet extends HttpServlet {
                 return;
             }
 
-            insertJob(con, title, company, location, category, type, salary, description,
-                    employerEmail, workingHours, requirements, contactEmail);
+            insertJob(con, title, company, location, category, type, salary, description, employerEmail,
+                    workingHours, requirements, contactEmail, address, latitude, longitude);
 
             response.sendRedirect("frontend/post-job.html?success=1");
 
@@ -70,11 +75,12 @@ public class PostJobServlet extends HttpServlet {
 
     private void insertJob(Connection con, String title, String company, String location, String category,
             String type, String salary, String description, String employerEmail, String workingHours,
-            String requirements, String contactEmail) throws SQLException {
+            String requirements, String contactEmail, String address, BigDecimal latitude, BigDecimal longitude)
+            throws SQLException {
 
         String extendedSql = "INSERT INTO jobs "
-                + "(title, company, location, category, type, salary, description, employer_email, working_hours, requirements, contact_email) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "(title, company, location, category, type, salary, description, employer_email, working_hours, requirements, contact_email, address, latitude, longitude) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = con.prepareStatement(extendedSql)) {
             ps.setString(1, title);
@@ -88,6 +94,9 @@ public class PostJobServlet extends HttpServlet {
             ps.setString(9, workingHours);
             ps.setString(10, requirements);
             ps.setString(11, contactEmail);
+            ps.setString(12, address);
+            setNullableDecimal(ps, 13, latitude);
+            setNullableDecimal(ps, 14, longitude);
             ps.executeUpdate();
             return;
         } catch (SQLException e) {
@@ -118,10 +127,36 @@ public class PostJobServlet extends HttpServlet {
                 || message.contains("employer_email")
                 || message.contains("working_hours")
                 || message.contains("requirements")
-                || message.contains("contact_email");
+                || message.contains("contact_email")
+                || message.contains("address")
+                || message.contains("latitude")
+                || message.contains("longitude");
     }
 
     private String clean(String value) {
         return value == null ? "" : value.trim();
+    }
+
+    private BigDecimal parseDecimal(String value) {
+        String cleanedValue = clean(value);
+
+        if (cleanedValue.isEmpty()) {
+            return null;
+        }
+
+        try {
+            return new BigDecimal(cleanedValue);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private void setNullableDecimal(PreparedStatement ps, int index, BigDecimal value) throws SQLException {
+        if (value == null) {
+            ps.setNull(index, Types.DECIMAL);
+            return;
+        }
+
+        ps.setBigDecimal(index, value);
     }
 }

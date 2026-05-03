@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Manage your StudentBridge student profile and saved address.">
+  <title>Student Profile | StudentBridge</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="./post-job.css">
+</head>
+<body>
+  <header class="navbar">
+    <a class="logo" href="../index.html">
+      <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-bridge"></i></span>
+      <span>StudentBridge</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="../index.html">Home</a>
+      <a href="./jobsearch.html">Jobs</a>
+      <a href="./student-profile.html" aria-current="page">Student Profile</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="page-heading" aria-labelledby="student-profile-title">
+      <p class="eyebrow"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Student location</p>
+      <h1 id="student-profile-title">Save your address for nearby jobs.</h1>
+      <p>Add your real location so StudentBridge can support better job matching and future distance-based search.</p>
+    </section>
+
+    <section class="form-card" aria-labelledby="student-address-title">
+      <div class="form-header">
+        <div>
+          <h2 id="student-address-title">Your address</h2>
+          <p>Search your address or click the map to set a precise point.</p>
+        </div>
+        <a href="./jobsearch.html">Find jobs</a>
+      </div>
+
+      <p class="form-message" id="studentLocationMessage" role="status" aria-live="polite"></p>
+
+      <form action="../StudentLocationServlet" method="post" id="studentLocationForm">
+        <div class="form-grid">
+          <div class="input-group full-width">
+            <label for="studentAddress">Real address *</label>
+            <div class="location-search-row">
+              <input type="text" id="studentAddress" name="studentAddress" placeholder="울산 남구 대학로 93" required>
+              <button type="button" class="secondary-btn" id="findStudentAddressBtn">
+                <i class="fa-solid fa-location-crosshairs" aria-hidden="true"></i>
+                Find on Map
+              </button>
+            </div>
+            <p class="field-help">Use a full Korean road address for best accuracy. Do not share sensitive private details publicly.</p>
+          </div>
+
+          <div class="map-panel full-width">
+            <div id="studentLocationMap" class="map-canvas" aria-label="Student address map"></div>
+            <p class="map-status" id="studentMapStatus" role="status" aria-live="polite"></p>
+          </div>
+
+          <div class="coordinate-grid full-width">
+            <div class="input-group">
+              <label for="studentLatitude">Latitude</label>
+              <input type="text" id="studentLatitude" name="studentLatitude" placeholder="35.5384000" readonly>
+            </div>
+
+            <div class="input-group">
+              <label for="studentLongitude">Longitude</label>
+              <input type="text" id="studentLongitude" name="studentLongitude" placeholder="129.3114000" readonly>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i>
+          Save Student Address
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <script src="./map-config.js"></script>
+  <script src="./location-map.js"></script>
+  <script>
+    const message = document.getElementById("studentLocationMessage");
+    const params = new URLSearchParams(window.location.search);
+
+    function showMessage(text, type) {
+      message.textContent = text;
+      message.className = `form-message show ${type}`;
+    }
+
+    if (params.get("success") === "1") {
+      showMessage("Your student address was saved successfully.", "success");
+    }
+
+    if (params.get("error") === "missing") {
+      showMessage("Please enter your address before saving.", "error");
+    } else if (params.get("error") === "notStudent") {
+      showMessage("Only student accounts can save a student address here.", "error");
+    } else if (params.get("error") === "db") {
+      showMessage("Your address could not be saved. Please check MySQL and try again.", "error");
+    }
+
+    StudentBridgeLocationMap.initPicker({
+      mapId: "studentLocationMap",
+      addressInputId: "studentAddress",
+      latitudeInputId: "studentLatitude",
+      longitudeInputId: "studentLongitude",
+      searchButtonId: "findStudentAddressBtn",
+      statusId: "studentMapStatus"
+    });
+  </script>
+</body>
+</html>
