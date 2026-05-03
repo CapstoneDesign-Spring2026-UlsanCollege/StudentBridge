@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Post a student-friendly job on StudentBridge.">
+  <title>Post a Job | StudentBridge</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="./post-job.css">
+</head>
+<body>
+  <header class="navbar">
+    <a class="logo" href="../index.html">
+      <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-bridge"></i></span>
+      <span>StudentBridge</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="../index.html">Home</a>
+      <a href="./jobsearch.html">Jobs</a>
+      <a href="./employer-dashboard.html">Dashboard</a>
+      <a href="./post-job.html" aria-current="page">Post Job</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="page-heading" aria-labelledby="post-job-title">
+      <p class="eyebrow"><i class="fa-solid fa-briefcase" aria-hidden="true"></i> Employer workspace</p>
+      <h1 id="post-job-title">Post a job for international students.</h1>
+      <p>Add the job details once. After saving, the listing appears on the StudentBridge job search page.</p>
+    </section>
+
+    <section class="form-card" aria-labelledby="form-title">
+      <div class="form-header">
+        <div>
+          <h2 id="form-title">Job details</h2>
+          <p>Fields marked with * are required.</p>
+        </div>
+        <a href="./jobsearch.html">View jobs</a>
+      </div>
+
+      <p class="form-message" id="postJobMessage" role="status" aria-live="polite"></p>
+
+      <form action="../PostJobServlet" method="post" id="postJobForm">
+        <div class="form-grid">
+          <div class="input-group">
+            <label for="title">Job title *</label>
+            <input type="text" id="title" name="title" placeholder="Cafe Assistant" required>
+          </div>
+
+          <div class="input-group">
+            <label for="company">Company / business name *</label>
+            <input type="text" id="company" name="company" placeholder="CoffeeDay Ulsan" required>
+          </div>
+
+          <div class="input-group">
+            <label for="location">Location *</label>
+            <select id="location" name="location" required>
+              <option value="">Select location</option>
+              <option value="Seoul">Seoul</option>
+              <option value="Busan">Busan</option>
+              <option value="Ulsan">Ulsan</option>
+              <option value="Daegu">Daegu</option>
+              <option value="Incheon">Incheon</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="category">Category *</label>
+            <select id="category" name="category" required>
+              <option value="">Select category</option>
+              <option value="Student">Student</option>
+              <option value="Cafe">Cafe</option>
+              <option value="Restaurant">Restaurant</option>
+              <option value="Tutoring">Tutoring</option>
+              <option value="IT">IT</option>
+              <option value="Design">Design</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Retail">Retail</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="type">Job type *</label>
+            <select id="type" name="type" required>
+              <option value="">Select type</option>
+              <option value="Part-time">Part-time</option>
+              <option value="Full-time">Full-time</option>
+              <option value="Internship">Internship</option>
+              <option value="Temporary">Temporary</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="salary">Salary *</label>
+            <input type="text" id="salary" name="salary" placeholder="₩10,000/hr" required>
+          </div>
+
+          <div class="input-group">
+            <label for="workingHours">Working hours</label>
+            <input type="text" id="workingHours" name="workingHours" placeholder="Weekends, 10:00-16:00">
+          </div>
+
+          <div class="input-group">
+            <label for="contactEmail">Contact email</label>
+            <input type="email" id="contactEmail" name="contactEmail" placeholder="owner@business.com">
+          </div>
+
+          <div class="input-group full-width">
+            <label for="description">Description *</label>
+            <textarea id="description" name="description" rows="5" placeholder="Describe the work, schedule, and workplace environment." required></textarea>
+          </div>
+
+          <div class="input-group full-width">
+            <label for="requirements">Requirements</label>
+            <textarea id="requirements" name="requirements" rows="4" placeholder="Example: basic English, friendly customer service, available weekends."></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+          Publish Job
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const message = document.getElementById("postJobMessage");
+    const params = new URLSearchParams(window.location.search);
+
+    function showMessage(text, type) {
+      message.textContent = text;
+      message.className = `form-message show ${type}`;
+    }
+
+    if (params.get("success") === "1") {
+      showMessage("Job posted successfully. It is now available on the job search page.", "success");
+    }
+
+    if (params.get("error") === "missing") {
+      showMessage("Please complete all required job fields.", "error");
+    } else if (params.get("error") === "notEmployer") {
+      showMessage("Only employer accounts can post jobs.", "error");
+    } else if (params.get("error") === "db") {
+      showMessage("The job could not be saved. Please check MySQL and try again.", "error");
+    }
+  </script>
+</body>
+</html>

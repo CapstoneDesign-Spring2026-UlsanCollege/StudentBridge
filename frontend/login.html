@@ -346,6 +346,10 @@
       showLoginMessage("Invalid email or password. Please try again.", "error");
     }
 
+    if (params.get("error") === "loginRequired") {
+      showLoginMessage("Please login before posting a job.", "error");
+    }
+
     if (params.get("registered") === "1") {
       showLoginMessage("Registration successful. You can login now.", "success");
     }

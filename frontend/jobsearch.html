@@ -396,26 +396,42 @@
   </main>
 
   <script>
-    const jobs = [
-      { id: 1, title: "Cafe Assistant", company: "CoffeeDay", location: "Ulsan", category: "Student", type: "Part-time", salary: "₩10,000/hr", description: "Serve drinks and assist customers.", tags: ["No Experience", "Flexible", "No Korean"] },
-      { id: 2, title: "Restaurant Server", company: "Seoul Kitchen", location: "Seoul", category: "Student", type: "Part-time", salary: "₩11,000/hr", description: "Take orders and serve food.", tags: ["Flexible", "Korean Required"] },
-      { id: 3, title: "English Tutor", company: "Bright Academy", location: "Busan", category: "Student", type: "Part-time", salary: "₩20,000/hr", description: "Teach English conversation.", tags: ["High Pay", "No Korean"] },
-      { id: 4, title: "Barista", company: "Cafe Aroma", location: "Daegu", category: "Student", type: "Part-time", salary: "₩10,500/hr", description: "Prepare coffee and assist customers.", tags: ["Flexible"] },
-      { id: 5, title: "Store Staff", company: "GS25", location: "Ulsan", category: "Student", type: "Part-time", salary: "₩9,860/hr", description: "Handle cashier and stock.", tags: ["Night Shift"] },
-      { id: 6, title: "Frontend Developer", company: "TechCorp", location: "Seoul", category: "IT", type: "Full-time", salary: "₩25,000/hr", description: "Build UI apps.", tags: ["High Pay"] },
-      { id: 7, title: "Backend Developer", company: "DevWorks", location: "Busan", category: "IT", type: "Full-time", salary: "₩30,000/hr", description: "Develop APIs.", tags: ["High Pay"] },
-      { id: 8, title: "UI Designer", company: "Creative Studio", location: "Seoul", category: "Design", type: "Full-time", salary: "₩22,000/hr", description: "Design interfaces.", tags: [] },
-      { id: 9, title: "Marketing Intern", company: "MarketPro", location: "Seoul", category: "Marketing", type: "Internship", salary: "₩12,000/hr", description: "Assist campaigns.", tags: ["Beginner Friendly"] }
-    ];
-
+    let jobs = [];
     const jobList = document.getElementById("jobList");
     const jobSearchForm = document.getElementById("jobSearchForm");
+
+    async function loadJobs() {
+      showStatus("Loading jobs...");
+
+      try {
+        const response = await fetch("../JobServlet");
+
+        if (!response.ok) {
+          throw new Error("Unable to load jobs from the server.");
+        }
+
+        jobs = await response.json();
+        displayJobs(jobs);
+      } catch (error) {
+        console.error(error);
+        showStatus("Jobs could not be loaded. Please check Tomcat, MySQL, and the jobs table.");
+      }
+    }
+
+    function showStatus(message) {
+      jobList.innerHTML = "";
+
+      const status = document.createElement("p");
+      status.className = "empty-state";
+      status.textContent = message;
+      jobList.appendChild(status);
+    }
 
     function displayJobs(list) {
       jobList.innerHTML = "";
 
       if (list.length === 0) {
-        jobList.innerHTML = '<p class="empty-state">No jobs found. Try a different search.</p>';
+        showStatus("No jobs found. Try a different search.");
         return;
       }
 
@@ -425,17 +441,45 @@
         const article = document.createElement("article");
         article.className = "job-card";
 
-        article.innerHTML = `
-          <p class="salary"><i class="fa-solid fa-won-sign" aria-hidden="true"></i>${job.salary}</p>
-          <h2 class="job-title">${job.title}</h2>
-          <p class="company">${job.company}</p>
-          <p class="location"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> ${job.location} · ${job.type}</p>
-          <div class="tags" aria-label="Job tags">
-            ${job.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}
-          </div>
-          <p class="desc">${job.description}</p>
-          <button type="button" class="apply-btn" data-job-id="${job.id}">Apply Now</button>
-        `;
+        const salary = document.createElement("p");
+        salary.className = "salary";
+        salary.innerHTML = '<i class="fa-solid fa-won-sign" aria-hidden="true"></i>';
+        salary.append(document.createTextNode(job.salary));
+
+        const title = document.createElement("h2");
+        title.className = "job-title";
+        title.textContent = job.title;
+
+        const company = document.createElement("p");
+        company.className = "company";
+        company.textContent = job.company;
+
+        const location = document.createElement("p");
+        location.className = "location";
+        location.innerHTML = '<i class="fa-solid fa-location-dot" aria-hidden="true"></i> ';
+        location.append(document.createTextNode(`${job.location} · ${job.type}`));
+
+        const tags = document.createElement("div");
+        tags.className = "tags";
+        tags.setAttribute("aria-label", "Job tags");
+        [job.category, job.type].forEach((tagText) => {
+          const tag = document.createElement("span");
+          tag.className = "tag";
+          tag.textContent = tagText;
+          tags.appendChild(tag);
+        });
+
+        const description = document.createElement("p");
+        description.className = "desc";
+        description.textContent = job.description;
+
+        const applyButton = document.createElement("button");
+        applyButton.type = "button";
+        applyButton.className = "apply-btn";
+        applyButton.dataset.jobId = job.id;
+        applyButton.textContent = "Apply Now";
+
+        article.append(salary, title, company, location, tags, description, applyButton);
 
         fragment.appendChild(article);
       });
@@ -450,7 +494,11 @@
       const type = document.getElementById("type").value;
 
       const filtered = jobs.filter((job) =>
-        job.title.toLowerCase().includes(keyword) &&
+        (
+          job.title.toLowerCase().includes(keyword) ||
+          job.company.toLowerCase().includes(keyword) ||
+          job.description.toLowerCase().includes(keyword)
+        ) &&
         (location === "" || job.location === location) &&
         (category === "" || job.category === category) &&
         (type === "" || job.type === type)
@@ -475,7 +523,7 @@
       alert(`Application flow is not connected yet. Selected job ID: ${jobId}`);
     });
 
-    displayJobs(jobs);
+    loadJobs();
   </script>
 </body>
 </html>
