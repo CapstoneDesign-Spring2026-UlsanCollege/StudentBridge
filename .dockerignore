@@ -1,0 +1,10 @@
+.git
+.github
+.vscode
+Assets
+bin
+docs
+*.class
+.DS_Store
+**/.DS_Store
+server/servlet-api.jar

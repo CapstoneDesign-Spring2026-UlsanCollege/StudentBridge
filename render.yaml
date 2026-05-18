@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: studentbridge
+    runtime: docker
+    plan: free
+    region: singapore
+    branch: main
+    autoDeployTrigger: commit
+    healthCheckPath: /
+    envVars:
+      - key: DB_URL
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
