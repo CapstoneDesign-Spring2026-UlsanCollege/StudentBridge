@@ -20,57 +20,98 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
+        // Set encoding
+        req.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=UTF-8");
+
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
-        if (email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
-            resp.sendRedirect("frontend/login.html?error=1");
+        // Validation
+        if (email == null || email.trim().isEmpty()
+                || password == null || password.trim().isEmpty()) {
+
+            resp.sendRedirect("frontend/login.html?error=empty");
             return;
         }
 
-        try {
-            Connection con = DBConnection.getConnection();
+        // Trim spaces
+        email = email.trim();
+        password = password.trim();
 
+        String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+
+        try (
+                Connection con = DBConnection.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+
+            // Check database connection
             if (con == null) {
+
                 resp.getWriter().println("Database connection failed.");
                 return;
             }
 
-            String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
-            PreparedStatement ps = con.prepareStatement(sql);
-
+            // Set query parameters
             ps.setString(1, email);
             ps.setString(2, password);
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery()) {
 
-            if (rs.next()) {
-                HttpSession session = req.getSession();
-                session.setAttribute("user", rs.getString("name"));
-                session.setAttribute("userEmail", rs.getString("email"));
-                session.setAttribute("accountType", safeGetString(rs, "account_type"));
+                // Login successful
+                if (rs.next()) {
 
-                String encodedEmail = URLEncoder.encode(rs.getString("email"), StandardCharsets.UTF_8);
-                resp.sendRedirect("index.html?login=success&email=" + encodedEmail);
-            } else {
-                resp.sendRedirect("frontend/login.html?error=1");
+                    HttpSession session = req.getSession();
+
+                    session.setAttribute("user", safeGetString(rs, "name"));
+                    session.setAttribute("userEmail", safeGetString(rs, "email"));
+                    session.setAttribute("accountType", safeGetString(rs, "account_type"));
+
+                    // Session timeout (30 minutes)
+                    session.setMaxInactiveInterval(30 * 60);
+
+                    String encodedEmail = URLEncoder.encode(
+                            safeGetString(rs, "email"),
+                            StandardCharsets.UTF_8
+                    );
+
+                    resp.sendRedirect(
+                            "index.html?login=success&email=" + encodedEmail
+                    );
+
+                } else {
+
+                    // Invalid login
+                    resp.sendRedirect("frontend/login.html?error=invalid");
+                }
             }
 
-            rs.close();
-            ps.close();
-            con.close();
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+
+            resp.sendRedirect("frontend/login.html?error=database");
 
         } catch (Exception e) {
+
             e.printStackTrace();
-            resp.getWriter().println("Error: " + e.getMessage());
+
+            resp.sendRedirect("frontend/login.html?error=server");
         }
     }
 
+    // Safe column getter
     private String safeGetString(ResultSet rs, String columnName) {
+
         try {
+
             String value = rs.getString(columnName);
+
             return value == null ? "" : value;
+
         } catch (SQLException e) {
+
             return "";
         }
     }
