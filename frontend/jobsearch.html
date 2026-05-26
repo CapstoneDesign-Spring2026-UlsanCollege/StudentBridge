@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Search student-friendly part-time jobs in Korea with StudentBridge.">
-  <title>Jobs | StudentBridge</title>
+  <title data-i18n="title.jobs">Jobs | StudentBridge</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
@@ -415,31 +415,32 @@
       <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-bridge"></i></span>
       <span>StudentBridge</span>
     </a>
-    <nav class="nav-links" aria-label="Primary navigation">
-      <a href="../index.html">Home</a>
-      <a href="./jobsearch.html" aria-current="page">Jobs</a>
-      <a href="./login.html">Login</a>
-      <a href="./register.html">Register</a>
+    <nav class="nav-links" aria-label="Primary navigation" data-i18n-aria-label="nav.primary">
+      <a href="../index.html" data-i18n="nav.home">Home</a>
+      <a href="./jobsearch.html" aria-current="page" data-i18n="nav.jobs">Jobs</a>
+      <a href="./login.html" data-i18n="nav.login">Login</a>
+      <a href="./register.html" data-i18n="nav.register">Register</a>
     </nav>
+    <div data-language-switcher></div>
   </header>
 
   <main>
     <section class="page-heading" aria-labelledby="jobs-title">
-      <p class="eyebrow"><i class="fa-solid fa-briefcase" aria-hidden="true"></i> Student-friendly job board</p>
-      <h1 id="jobs-title">Explore jobs that fit your student life</h1>
-      <p>Search by role, location, category, or schedule to find opportunities across Korea.</p>
+      <p class="eyebrow"><i class="fa-solid fa-briefcase" aria-hidden="true"></i> <span data-i18n="jobs.eyebrow">Student-friendly job board</span></p>
+      <h1 id="jobs-title" data-i18n="jobs.heading">Explore jobs that fit your student life</h1>
+      <p data-i18n="jobs.body">Search by role, location, category, or schedule to find opportunities across Korea.</p>
     </section>
 
     <form class="search-container" id="jobSearchForm" role="search">
       <div class="form-field">
-        <label for="keyword">Job title</label>
-        <input type="search" id="keyword" name="keyword" placeholder="Cafe Assistant">
+        <label for="keyword" data-i18n="jobs.keyword">Job title</label>
+        <input type="search" id="keyword" name="keyword" placeholder="Cafe Assistant" data-i18n-placeholder="jobs.keywordPlaceholder">
       </div>
 
       <div class="form-field">
-        <label for="location">Location</label>
+        <label for="location" data-i18n="jobs.location">Location</label>
         <select id="location" name="location">
-          <option value="">All Locations</option>
+          <option value="" data-i18n="option.allLocations">All Locations</option>
           <option value="Seoul">Seoul</option>
           <option value="Busan">Busan</option>
           <option value="Ulsan">Ulsan</option>
@@ -448,40 +449,42 @@
       </div>
 
       <div class="form-field">
-        <label for="category">Category</label>
+        <label for="category" data-i18n="jobs.category">Category</label>
         <select id="category" name="category">
-          <option value="">All Categories</option>
-          <option value="Student">Student</option>
-          <option value="IT">IT</option>
-          <option value="Design">Design</option>
-          <option value="Marketing">Marketing</option>
+          <option value="" data-i18n="option.allCategories">All Categories</option>
+          <option value="Student" data-i18n="option.student">Student</option>
+          <option value="IT" data-i18n="option.it">IT</option>
+          <option value="Design" data-i18n="option.design">Design</option>
+          <option value="Marketing" data-i18n="option.marketing">Marketing</option>
         </select>
       </div>
 
       <div class="form-field">
-        <label for="type">Job type</label>
+        <label for="type" data-i18n="jobs.type">Job type</label>
         <select id="type" name="type">
-          <option value="">All Types</option>
-          <option value="Part-time">Part-time</option>
-          <option value="Full-time">Full-time</option>
-          <option value="Internship">Internship</option>
+          <option value="" data-i18n="option.allTypes">All Types</option>
+          <option value="Part-time" data-i18n="option.partTime">Part-time</option>
+          <option value="Full-time" data-i18n="option.fullTime">Full-time</option>
+          <option value="Internship" data-i18n="option.internship">Internship</option>
         </select>
       </div>
 
-      <button type="submit"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Search</button>
+      <button type="submit"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> <span data-i18n="jobs.search">Search</span></button>
     </form>
 
-    <section class="jobs" id="jobList" aria-live="polite" aria-label="Job listings"></section>
+    <section class="jobs" id="jobList" aria-live="polite" aria-label="Job listings" data-i18n-aria-label="jobs.listLabel"></section>
 
     <section class="map-preview-card" aria-labelledby="job-map-title">
-      <h2 id="job-map-title">Job location map</h2>
-      <div id="jobMap" class="map-canvas" aria-label="Selected job location map"></div>
+      <h2 id="job-map-title" data-i18n="jobs.mapTitle">Job location map</h2>
+      <div id="jobMap" class="map-canvas" aria-label="Selected job location map" data-i18n-aria-label="jobs.selectedMapLabel"></div>
       <p class="map-status" id="jobMapStatus" role="status" aria-live="polite"></p>
     </section>
   </main>
 
   <script src="./runtime-config.js"></script>
   <script src="./platform.js"></script>
+  <script src="./translations.js"></script>
+  <script src="./i18n.js"></script>
   <script src="./map-config.js"></script>
   <script src="./location-map.js"></script>
   <script>
@@ -490,16 +493,24 @@
     const jobList = document.getElementById("jobList");
     const jobSearchForm = document.getElementById("jobSearchForm");
 
+    function t(key) {
+      return window.StudentBridgeI18n ? StudentBridgeI18n.t(key) : key;
+    }
+
+    function currentLanguage() {
+      return window.StudentBridgeI18n ? StudentBridgeI18n.getLanguage() : "en";
+    }
+
     async function loadJobs() {
       if (window.StudentBridgePlatform && !StudentBridgePlatform.canReachBackend()) {
-        showStatus("Live jobs are available on the Tomcat or Render deployment. This GitHub Pages site is a static preview.");
+        showStatus("jobs.staticPreview");
         return;
       }
 
-      showStatus("Loading jobs...");
+      showStatus("jobs.loading");
 
       try {
-        const response = await fetch(StudentBridgePlatform.toBackendUrl("JobServlet"));
+        const response = await fetch(`${StudentBridgePlatform.toBackendUrl("JobServlet")}?lang=${encodeURIComponent(currentLanguage())}`);
 
         if (!response.ok) {
           throw new Error("Unable to load jobs from the server.");
@@ -509,16 +520,16 @@
         displayJobs(jobs);
       } catch (error) {
         console.error(error);
-        showStatus("Jobs could not be loaded. Please check Tomcat, MySQL, and the jobs table.");
+        showStatus("jobs.loadError");
       }
     }
 
-    function showStatus(message) {
+    function showStatus(messageKey) {
       jobList.innerHTML = "";
 
       const status = document.createElement("p");
       status.className = "empty-state";
-      status.textContent = message;
+      status.textContent = t(messageKey);
       jobList.appendChild(status);
     }
 
@@ -526,7 +537,7 @@
       jobList.innerHTML = "";
 
       if (list.length === 0) {
-        showStatus("No jobs found. Try a different search.");
+        showStatus("jobs.none");
         return;
       }
 
@@ -557,11 +568,11 @@
         const address = document.createElement("p");
         address.className = "location";
         address.innerHTML = '<i class="fa-solid fa-map-pin" aria-hidden="true"></i> ';
-        address.append(document.createTextNode(job.address || "Detailed map address not added yet"));
+        address.append(document.createTextNode(job.address || t("jobs.addressMissing")));
 
         const tags = document.createElement("div");
         tags.className = "tags";
-        tags.setAttribute("aria-label", "Job tags");
+        tags.setAttribute("aria-label", t("jobs.tagsLabel"));
         [job.category, job.type].forEach((tagText) => {
           const tag = document.createElement("span");
           tag.className = "tag";
@@ -577,7 +588,7 @@
         applyButton.type = "button";
         applyButton.className = "apply-btn";
         applyButton.dataset.jobId = job.id;
-        applyButton.textContent = "Applications Coming Soon";
+        applyButton.textContent = t("jobs.applySoon");
         applyButton.disabled = true;
 
         const mapButton = document.createElement("button");
@@ -585,8 +596,8 @@
         mapButton.className = "map-btn";
         mapButton.dataset.mapJobId = job.id;
         mapButton.textContent = StudentBridgeLocationMap.hasCoordinates(job.latitude, job.longitude)
-          ? "View on Map"
-          : "Map Not Added";
+          ? t("jobs.viewMap")
+          : t("jobs.mapMissing");
         mapButton.disabled = !StudentBridgeLocationMap.hasCoordinates(job.latitude, job.longitude);
 
         article.append(salary, title, company, location, address, tags, description, mapButton, applyButton);
@@ -606,12 +617,14 @@
       const filtered = jobs.filter((job) =>
         (
           job.title.toLowerCase().includes(keyword) ||
+          String(job.originalTitle || "").toLowerCase().includes(keyword) ||
           job.company.toLowerCase().includes(keyword) ||
-          job.description.toLowerCase().includes(keyword)
+          job.description.toLowerCase().includes(keyword) ||
+          String(job.originalDescription || "").toLowerCase().includes(keyword)
         ) &&
-        (location === "" || job.location === location) &&
-        (category === "" || job.category === category) &&
-        (type === "" || job.type === type)
+        (location === "" || job.location === location || job.originalLocation === location) &&
+        (category === "" || job.category === category || job.originalCategory === category) &&
+        (type === "" || job.type === type || job.originalType === type)
       );
 
       displayJobs(filtered);
@@ -648,6 +661,10 @@
       statusId: "jobMapStatus"
     }).then((viewer) => {
       jobMapViewer = viewer;
+    });
+
+    window.addEventListener("studentbridge:languagechange", () => {
+      loadJobs();
     });
 
     loadJobs();

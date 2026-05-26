@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Manage your StudentBridge student profile and saved address.">
-  <title>Student Profile | StudentBridge</title>
+  <title data-i18n="title.studentProfile">Student Profile | StudentBridge</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="./post-job.css">
 </head>
@@ -14,27 +14,28 @@
       <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-bridge"></i></span>
       <span>StudentBridge</span>
     </a>
-    <nav class="nav-links" aria-label="Primary navigation">
-      <a href="../index.html">Home</a>
-      <a href="./jobsearch.html">Jobs</a>
-      <a href="./student-profile.html" aria-current="page">Student Profile</a>
+    <nav class="nav-links" aria-label="Primary navigation" data-i18n-aria-label="nav.primary">
+      <a href="../index.html" data-i18n="nav.home">Home</a>
+      <a href="./jobsearch.html" data-i18n="nav.jobs">Jobs</a>
+      <a href="./student-profile.html" aria-current="page" data-i18n="nav.studentProfile">Student Profile</a>
     </nav>
+    <div data-language-switcher></div>
   </header>
 
   <main class="page-shell">
     <section class="page-heading" aria-labelledby="student-profile-title">
-      <p class="eyebrow"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Student location</p>
-      <h1 id="student-profile-title">Save your address for nearby jobs.</h1>
-      <p>Add your real location so StudentBridge can support better job matching and future distance-based search.</p>
+      <p class="eyebrow"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> <span data-i18n="student.eyebrow">Student location</span></p>
+      <h1 id="student-profile-title" data-i18n="student.heading">Save your address for nearby jobs.</h1>
+      <p data-i18n="student.body">Add your real location so StudentBridge can support better job matching and future distance-based search.</p>
     </section>
 
     <section class="form-card" aria-labelledby="student-address-title">
       <div class="form-header">
         <div>
-          <h2 id="student-address-title">Your address</h2>
-          <p>Search your address or click the map to set a precise point.</p>
+          <h2 id="student-address-title" data-i18n="student.formTitle">Your address</h2>
+          <p data-i18n="student.formBody">Search your address or click the map to set a precise point.</p>
         </div>
-        <a href="./jobsearch.html">Find jobs</a>
+        <a href="./jobsearch.html" data-i18n="common.findJobs">Find jobs</a>
       </div>
 
       <p class="form-message" id="studentLocationMessage" role="status" aria-live="polite"></p>
@@ -42,30 +43,30 @@
       <form action="../StudentLocationServlet" method="post" id="studentLocationForm">
         <div class="form-grid">
           <div class="input-group full-width">
-            <label for="studentAddress">Real address *</label>
+            <label for="studentAddress" data-i18n="student.address">Real address *</label>
             <div class="location-search-row">
-              <input type="text" id="studentAddress" name="studentAddress" placeholder="울산 남구 대학로 93" required>
+              <input type="text" id="studentAddress" name="studentAddress" placeholder="울산 남구 대학로 93" data-i18n-placeholder="student.addressPlaceholder" required>
               <button type="button" class="secondary-btn" id="findStudentAddressBtn">
                 <i class="fa-solid fa-location-crosshairs" aria-hidden="true"></i>
-                Find on Map
+                <span data-i18n="student.findMap">Find on Map</span>
               </button>
             </div>
-            <p class="field-help">Use a full Korean road address for best accuracy. Do not share sensitive private details publicly.</p>
+            <p class="field-help" data-i18n="student.addressHelp">Use a full Korean road address for best accuracy. Do not share sensitive private details publicly.</p>
           </div>
 
           <div class="map-panel full-width">
-            <div id="studentLocationMap" class="map-canvas" aria-label="Student address map"></div>
+            <div id="studentLocationMap" class="map-canvas" aria-label="Student address map" data-i18n-aria-label="student.mapLabel"></div>
             <p class="map-status" id="studentMapStatus" role="status" aria-live="polite"></p>
           </div>
 
           <div class="coordinate-grid full-width">
             <div class="input-group">
-              <label for="studentLatitude">Latitude</label>
+              <label for="studentLatitude" data-i18n="student.latitude">Latitude</label>
               <input type="text" id="studentLatitude" name="studentLatitude" placeholder="35.5384000" readonly>
             </div>
 
             <div class="input-group">
-              <label for="studentLongitude">Longitude</label>
+              <label for="studentLongitude" data-i18n="student.longitude">Longitude</label>
               <input type="text" id="studentLongitude" name="studentLongitude" placeholder="129.3114000" readonly>
             </div>
           </div>
@@ -73,12 +74,14 @@
 
         <button type="submit" class="submit-btn">
           <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i>
-          Save Student Address
+          <span data-i18n="student.save">Save Student Address</span>
         </button>
       </form>
     </section>
   </main>
 
+  <script src="./translations.js"></script>
+  <script src="./i18n.js"></script>
   <script src="./map-config.js"></script>
   <script src="./location-map.js"></script>
   <script>
@@ -86,22 +89,22 @@
     const params = new URLSearchParams(window.location.search);
 
     function showMessage(text, type) {
-      message.textContent = text;
+      message.textContent = window.StudentBridgeI18n ? StudentBridgeI18n.t(text) : text;
       message.className = `form-message show ${type}`;
     }
 
     if (params.get("success") === "1") {
-      showMessage("Your student address was saved successfully.", "success");
+      showMessage("student.success", "success");
     }
 
     if (params.get("error") === "missing") {
-      showMessage("Please enter your address before saving.", "error");
+      showMessage("student.missing", "error");
     } else if (params.get("error") === "mapRequired") {
-      showMessage("Please choose your address on the map before saving.", "error");
+      showMessage("student.mapRequired", "error");
     } else if (params.get("error") === "notStudent") {
-      showMessage("Only student accounts can save a student address here.", "error");
+      showMessage("student.notStudent", "error");
     } else if (params.get("error") === "db") {
-      showMessage("Your address could not be saved. Please check MySQL and try again.", "error");
+      showMessage("student.dbError", "error");
     }
 
     document.getElementById("studentLocationForm").addEventListener("submit", (event) => {
@@ -113,7 +116,7 @@
       }
 
       event.preventDefault();
-      showMessage("Please choose your address on the map before saving.", "error");
+      showMessage("student.mapRequired", "error");
     });
 
     StudentBridgeLocationMap.initPicker({

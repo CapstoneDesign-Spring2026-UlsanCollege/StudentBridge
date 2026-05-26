@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Employer dashboard for StudentBridge.">
-  <title>Employer Dashboard | StudentBridge</title>
+  <title data-i18n="title.employerDashboard">Employer Dashboard | StudentBridge</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="./post-job.css">
 </head>
@@ -14,44 +14,47 @@
       <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-bridge"></i></span>
       <span>StudentBridge</span>
     </a>
-    <nav class="nav-links" aria-label="Primary navigation">
-      <a href="../index.html">Home</a>
-      <a href="./jobsearch.html">Jobs</a>
-      <a href="./employer-dashboard.html" aria-current="page">Dashboard</a>
-      <a href="./post-job.html">Post Job</a>
+    <nav class="nav-links" aria-label="Primary navigation" data-i18n-aria-label="nav.primary">
+      <a href="../index.html" data-i18n="nav.home">Home</a>
+      <a href="./jobsearch.html" data-i18n="nav.jobs">Jobs</a>
+      <a href="./employer-dashboard.html" aria-current="page" data-i18n="nav.dashboard">Dashboard</a>
+      <a href="./post-job.html" data-i18n="nav.postJob">Post Job</a>
     </nav>
+    <div data-language-switcher></div>
   </header>
 
   <main class="page-shell">
     <section class="dashboard-hero" aria-labelledby="dashboard-title">
-      <p class="eyebrow"><i class="fa-solid fa-store" aria-hidden="true"></i> Employer dashboard</p>
-      <h1 id="dashboard-title">Manage your hiring from one place.</h1>
-      <p>Post student-friendly jobs, review your listings, and connect with international students in Korea.</p>
+      <p class="eyebrow"><i class="fa-solid fa-store" aria-hidden="true"></i> <span data-i18n="dashboard.eyebrow">Employer dashboard</span></p>
+      <h1 id="dashboard-title" data-i18n="dashboard.heading">Manage your hiring from one place.</h1>
+      <p data-i18n="dashboard.body">Post student-friendly jobs, review your listings, and connect with international students in Korea.</p>
       <a class="submit-btn dashboard-cta" href="./post-job.html">
         <i class="fa-solid fa-plus" aria-hidden="true"></i>
-        Post a Job
+        <span data-i18n="nav.postJob">Post a Job</span>
       </a>
     </section>
 
     <section class="dashboard-grid" aria-label="Employer actions">
       <article>
         <i class="fa-solid fa-briefcase" aria-hidden="true"></i>
-        <h2>Create listings</h2>
-        <p>Add job title, salary, location, category, and details students need before applying.</p>
+        <h2 data-i18n="dashboard.createTitle">Create listings</h2>
+        <p data-i18n="dashboard.createBody">Add job title, salary, location, category, and details students need before applying.</p>
       </article>
 
       <article>
         <i class="fa-solid fa-magnifying-glass-chart" aria-hidden="true"></i>
-        <h2>Check visibility</h2>
-        <p>Use the public job search page to confirm that your new listing appears correctly.</p>
+        <h2 data-i18n="dashboard.visibilityTitle">Check visibility</h2>
+        <p data-i18n="dashboard.visibilityBody">Use the public job search page to confirm that your new listing appears correctly.</p>
       </article>
 
       <article>
         <i class="fa-solid fa-user-check" aria-hidden="true"></i>
-        <h2>Review applicants</h2>
-        <p>Applicant management can be connected next after the job application flow is added.</p>
+        <h2 data-i18n="dashboard.reviewTitle">Review applicants</h2>
+        <p data-i18n="dashboard.reviewBody">Applicant management can be connected next after the job application flow is added.</p>
       </article>
     </section>
   </main>
+  <script src="./translations.js"></script>
+  <script src="./i18n.js"></script>
 </body>
 </html>
