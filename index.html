@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="StudentBridge helps international students in Korea find student-friendly part-time jobs.">
-  <title>StudentBridge | Part-Time Jobs for International Students</title>
+  <title data-i18n="title.home">StudentBridge | Part-Time Jobs for International Students</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="./frontend/style.css">
 </head>
@@ -15,46 +15,17 @@
       <span>StudentBridge</span>
     </a>
 
-    <nav class="nav-center" aria-label="Primary navigation">
-      <a class="active" href="./index.html" aria-current="page">Home</a>
-      <a href="./frontend/jobsearch.html">Jobs</a>
+    <nav class="nav-center" aria-label="Primary navigation" data-i18n-aria-label="nav.primary">
+      <a class="active" href="./index.html" aria-current="page" data-i18n="nav.home">Home</a>
+      <a href="./frontend/jobsearch.html" data-i18n="nav.jobs">Jobs</a>
     </nav>
 
     <div class="nav-right" aria-label="Account actions">
-     <div class="guest-actions" data-guest-actions>
-
-  <a href="./frontend/login.html"
-     class="btn btn-outline">
-     Login
-  </a>
-
-  <a href="./frontend/register.html"
-     class="btn btn-primary">
-     Register
-  </a>
-
-  <!-- Language Selector -->
-  <div class="language-wrapper">
-
-    <button class="language-btn"
-            id="languageButton">
-
-      <i class="fa-solid fa-globe"></i>
-
-    </button>
-
-    <div class="language-menu"
-         id="languageMenu">
-
-      <div data-lang="en">English</div>
-      <div data-lang="ko">한국어</div>
-      <div data-lang="bn">বাংলা</div>
-
-    </div>
-
-  </div>
-
-</div>
+      <div data-language-switcher></div>
+      <div class="guest-actions" data-guest-actions>
+        <a href="./frontend/login.html" class="btn btn-outline" data-i18n="nav.login">Login</a>
+        <a href="./frontend/register.html" class="btn btn-primary" data-i18n="nav.register">Register</a>
+      </div>
 
       <div class="user-menu" data-user-menu hidden>
         <button type="button" class="user-menu-trigger" data-user-menu-trigger aria-haspopup="true" aria-expanded="false">
@@ -64,11 +35,11 @@
         </button>
 
         <div class="user-dropdown" data-user-dropdown hidden>
-          <a href="./frontend/employer-dashboard.html"><i class="fa-solid fa-table-columns" aria-hidden="true"></i> Dashboard</a>
-          <a href="./frontend/post-job.html"><i class="fa-solid fa-plus" aria-hidden="true"></i> Post Job</a>
-          <a href="./frontend/student-profile.html"><i class="fa-solid fa-id-card" aria-hidden="true"></i> Student Address</a>
-          <a data-user-mail href="mailto:user@email.com"><i class="fa-solid fa-envelope" aria-hidden="true"></i> Email</a>
-          <button type="button" data-logout-button><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Logout</button>
+          <a href="./frontend/employer-dashboard.html"><i class="fa-solid fa-table-columns" aria-hidden="true"></i> <span data-i18n="user.dashboard">Dashboard</span></a>
+          <a href="./frontend/post-job.html"><i class="fa-solid fa-plus" aria-hidden="true"></i> <span data-i18n="user.postJob">Post Job</span></a>
+          <a href="./frontend/student-profile.html"><i class="fa-solid fa-id-card" aria-hidden="true"></i> <span data-i18n="user.studentAddress">Student Address</span></a>
+          <a data-user-mail href="mailto:user@email.com"><i class="fa-solid fa-envelope" aria-hidden="true"></i> <span data-i18n="user.email">Email</span></a>
+          <button type="button" data-logout-button><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> <span data-i18n="user.logout">Logout</span></button>
         </div>
       </div>
     </div>
@@ -77,21 +48,21 @@
   <main>
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-content">
-        <p class="eyebrow"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Built for students in Korea</p>
-        <h1 id="hero-title">Build your career, one <span class="highlight">opportunity</span> at a time</h1>
-        <p>Discover student-friendly jobs, filter by city and schedule, and connect with employers who understand international students.</p>
+        <p class="eyebrow"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> <span data-i18n="home.eyebrow">Built for students in Korea</span></p>
+        <h1 id="hero-title" data-i18n="home.heroTitle">Build your career, one <span class="highlight">opportunity</span> at a time</h1>
+        <p data-i18n="home.heroBody">Discover student-friendly jobs, filter by city and schedule, and connect with employers who understand international students.</p>
 
         <div class="hero-actions">
           <a href="./frontend/jobsearch.html" class="search-btn">
             <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-            Explore Jobs
+            <span data-i18n="home.exploreJobs">Explore Jobs</span>
           </a>
-          <a href="./frontend/register.html" class="btn-browse">Create Account</a>
+          <a href="./frontend/register.html" class="btn-browse" data-i18n="home.createAccount">Create Account</a>
         </div>
 
         <div class="hero-trust" aria-label="Platform highlights">
-          <span class="trust-pill"><i class="fa-solid fa-star" aria-hidden="true"></i> 4.9 student rating</span>
-          <span class="trust-pill"><i class="fa-solid fa-language" aria-hidden="true"></i> English-friendly jobs</span>
+          <span class="trust-pill"><i class="fa-solid fa-star" aria-hidden="true"></i> <span data-i18n="home.rating">4.9 student rating</span></span>
+          <span class="trust-pill"><i class="fa-solid fa-language" aria-hidden="true"></i> <span data-i18n="home.englishFriendly">English-friendly jobs</span></span>
         </div>
       </div>
 
@@ -103,106 +74,106 @@
               <span>S</span>
               <span>A</span>
             </div>
-            <h2>Students are matching with local employers faster.</h2>
+            <h2 data-i18n="home.matchingTitle">Students are matching with local employers faster.</h2>
           </div>
 
           <div class="mini-stats">
             <div>
               <strong>500+</strong>
-              <span>job listings</span>
+              <span data-i18n="home.jobListings">job listings</span>
             </div>
             <div>
               <strong>150+</strong>
-              <span>partner companies</span>
+              <span data-i18n="home.partnerCompanies">partner companies</span>
             </div>
           </div>
         </div>
 
         <div class="floating-badge">
           <strong>2,000+</strong>
-          <span>student members building real work experience</span>
+          <span data-i18n="home.studentMembersBadge">student members building real work experience</span>
         </div>
       </div>
     </section>
 
     <section class="why" aria-labelledby="why-title">
       <div class="section-heading">
-        <h2 id="why-title">A smarter way to find student work</h2>
-        <p>StudentBridge keeps the job search simple, clear, and focused on opportunities students can actually use.</p>
+        <h2 id="why-title" data-i18n="home.whyTitle">A smarter way to find student work</h2>
+        <p data-i18n="home.whyBody">StudentBridge keeps the job search simple, clear, and focused on opportunities students can actually use.</p>
       </div>
 
       <div class="cards">
         <article class="card">
           <div class="icon" aria-hidden="true"><i class="fa-solid fa-filter"></i></div>
-          <h3>Easy Job Search</h3>
-          <p>Find jobs quickly with location, category, and job type filters.</p>
+          <h3 data-i18n="home.easySearchTitle">Easy Job Search</h3>
+          <p data-i18n="home.easySearchBody">Find jobs quickly with location, category, and job type filters.</p>
         </article>
 
         <article class="card">
           <div class="icon" aria-hidden="true"><i class="fa-solid fa-globe"></i></div>
-          <h3>International Student Friendly</h3>
-          <p>Focus on jobs suitable for students balancing study, language, and work.</p>
+          <h3 data-i18n="home.studentFriendlyTitle">International Student Friendly</h3>
+          <p data-i18n="home.studentFriendlyBody">Focus on jobs suitable for students balancing study, language, and work.</p>
         </article>
 
         <article class="card">
           <div class="icon" aria-hidden="true"><i class="fa-solid fa-handshake"></i></div>
-          <h3>Employer Connections</h3>
-          <p>Help employers discover motivated student workers near their business.</p>
+          <h3 data-i18n="home.employerConnectionsTitle">Employer Connections</h3>
+          <p data-i18n="home.employerConnectionsBody">Help employers discover motivated student workers near their business.</p>
         </article>
       </div>
     </section>
 
     <section class="steps" aria-labelledby="steps-title">
-      <h2 id="steps-title">How It Works</h2>
+      <h2 id="steps-title" data-i18n="home.stepsTitle">How It Works</h2>
 
       <div class="step-container">
         <article class="step">
           <div class="circle" aria-hidden="true">1</div>
-          <h3>Create Profile</h3>
-          <p>Register as a student or employer with a simple account form.</p>
+          <h3 data-i18n="home.stepProfileTitle">Create Profile</h3>
+          <p data-i18n="home.stepProfileBody">Register as a student or employer with a simple account form.</p>
         </article>
 
         <article class="step">
           <div class="circle" aria-hidden="true">2</div>
-          <h3>Search Jobs</h3>
-          <p>Browse jobs by city, category, and type.</p>
+          <h3 data-i18n="home.stepSearchTitle">Search Jobs</h3>
+          <p data-i18n="home.stepSearchBody">Browse jobs by city, category, and type.</p>
         </article>
 
         <article class="step">
           <div class="circle" aria-hidden="true">3</div>
-          <h3>Apply Online</h3>
-          <p>Submit applications from the platform once the application flow is connected.</p>
+          <h3 data-i18n="home.stepApplyTitle">Apply Online</h3>
+          <p data-i18n="home.stepApplyBody">Submit applications from the platform once the application flow is connected.</p>
         </article>
 
         <article class="step">
           <div class="circle" aria-hidden="true">4</div>
-          <h3>Get Hired</h3>
-          <p>Connect with employers and start gaining work experience.</p>
+          <h3 data-i18n="home.stepHiredTitle">Get Hired</h3>
+          <p data-i18n="home.stepHiredBody">Connect with employers and start gaining work experience.</p>
         </article>
       </div>
 
       <dl class="stats" aria-label="StudentBridge platform statistics">
         <div>
           <dt>500+</dt>
-          <dd>Active Job Listings</dd>
+          <dd data-i18n="home.activeListings">Active Job Listings</dd>
         </div>
         <div>
           <dt>2,000+</dt>
-          <dd>Student Members</dd>
+          <dd data-i18n="home.studentMembers">Student Members</dd>
         </div>
         <div>
           <dt>150+</dt>
-          <dd>Partner Companies</dd>
+          <dd data-i18n="home.partnerCompanies">Partner Companies</dd>
         </div>
       </dl>
     </section>
 
     <section class="cta" aria-labelledby="cta-title">
-      <h2 id="cta-title">Ready to find your next opportunity?</h2>
-      <p>Start with the job search, or create your account to prepare for applications.</p>
+      <h2 id="cta-title" data-i18n="home.ctaTitle">Ready to find your next opportunity?</h2>
+      <p data-i18n="home.ctaBody">Start with the job search, or create your account to prepare for applications.</p>
       <div class="cta-buttons">
-        <a href="./frontend/register.html" class="btn-light">Get Started</a>
-        <a href="./frontend/jobsearch.html" class="btn-browse">Browse Jobs</a>
+        <a href="./frontend/register.html" class="btn-light" data-i18n="home.getStarted">Get Started</a>
+        <a href="./frontend/jobsearch.html" class="btn-browse" data-i18n="home.browseJobs">Browse Jobs</a>
       </div>
     </section>
   </main>
@@ -211,35 +182,37 @@
     <div class="footer-grid">
       <section aria-labelledby="footer-brand">
         <h2 id="footer-brand">StudentBridge</h2>
-        <p>Connecting international students with opportunities in South Korea.</p>
+        <p data-i18n="home.footerBody">Connecting international students with opportunities in South Korea.</p>
       </section>
 
       <nav aria-labelledby="footer-students">
-        <h2 id="footer-students">For Students</h2>
-        <a href="./frontend/jobsearch.html">Find Jobs</a>
-        <a href="./frontend/student-profile.html">Save Address</a>
-        <a href="./frontend/register.html">Create Account</a>
+        <h2 id="footer-students" data-i18n="home.footerStudents">For Students</h2>
+        <a href="./frontend/jobsearch.html" data-i18n="home.footerFindJobs">Find Jobs</a>
+        <a href="./frontend/student-profile.html" data-i18n="home.footerSaveAddress">Save Address</a>
+        <a href="./frontend/register.html" data-i18n="home.createAccount">Create Account</a>
       </nav>
 
       <nav aria-labelledby="footer-employers">
-        <h2 id="footer-employers">For Employers</h2>
-        <a href="./frontend/register.html">Register Employer Account</a>
-        <a href="./frontend/post-job.html">Post a Job</a>
-        <a href="./frontend/jobsearch.html">View Listings</a>
+        <h2 id="footer-employers" data-i18n="home.footerEmployers">For Employers</h2>
+        <a href="./frontend/register.html" data-i18n="home.footerRegisterEmployer">Register Employer Account</a>
+        <a href="./frontend/post-job.html" data-i18n="nav.postJob">Post a Job</a>
+        <a href="./frontend/jobsearch.html" data-i18n="home.footerViewListings">View Listings</a>
       </nav>
 
       <nav aria-labelledby="footer-support">
-        <h2 id="footer-support">Support</h2>
-        <a href="./frontend/login.html">Login Help</a>
-        <a href="./frontend/register.html">Registration Help</a>
+        <h2 id="footer-support" data-i18n="home.footerSupport">Support</h2>
+        <a href="./frontend/login.html" data-i18n="home.footerLoginHelp">Login Help</a>
+        <a href="./frontend/register.html" data-i18n="home.footerRegistrationHelp">Registration Help</a>
       </nav>
     </div>
 
-    <p class="copyright">&copy; 2026 StudentBridge. All rights reserved.</p>
+    <p class="copyright" data-i18n="home.copyright">&copy; 2026 StudentBridge. All rights reserved.</p>
   </footer>
 
   <script src="./frontend/runtime-config.js"></script>
   <script src="./frontend/platform.js"></script>
+  <script src="./frontend/translations.js"></script>
+  <script src="./frontend/i18n.js"></script>
   <script src="./frontend/script.js" defer></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Login to your StudentBridge account.">
-  <title>Login | StudentBridge</title>
+  <title data-i18n="title.login">Login | StudentBridge</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
@@ -280,30 +280,31 @@
         <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-bridge"></i></span>
         <span>StudentBridge</span>
       </a>
+      <div class="auth-language" data-language-switcher></div>
 
-      <h1 id="login-title">Welcome back</h1>
-      <p>Login to continue exploring student-friendly jobs.</p>
+      <h1 id="login-title" data-i18n="login.heading">Welcome back</h1>
+      <p data-i18n="login.body">Login to continue exploring student-friendly jobs.</p>
 
       <p class="form-message" id="loginMessage" role="status" aria-live="polite"></p>
 
       <form action="../LoginServlet" method="post" id="loginForm">
         <div class="input-group">
-          <label for="email">Email address</label>
-          <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="email" required>
+          <label for="email" data-i18n="login.email">Email address</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" data-i18n-placeholder="login.emailPlaceholder" autocomplete="email" required>
         </div>
 
         <div class="input-group">
-          <label for="password">Password</label>
+          <label for="password" data-i18n="login.password">Password</label>
           <div class="password-row">
-            <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
-            <button type="button" class="toggle-password" aria-label="Show password" aria-controls="password" aria-pressed="false">Show</button>
+            <input type="password" id="password" name="password" placeholder="Enter your password" data-i18n-placeholder="login.passwordPlaceholder" autocomplete="current-password" required>
+            <button type="button" class="toggle-password" aria-label="Show password" data-i18n="common.show" data-i18n-aria-label="common.showPassword" aria-controls="password" aria-pressed="false">Show</button>
           </div>
         </div>
 
-        <button type="submit" class="submit-btn">Login</button>
+        <button type="submit" class="submit-btn" data-i18n="login.submit">Login</button>
       </form>
 
-      <div class="divider"><span>or continue with</span></div>
+      <div class="divider"><span data-i18n="common.orContinueWith">or continue with</span></div>
 
       <div class="social-grid" aria-label="Social login options">
         <button type="button" class="social-btn" data-social-placeholder>
@@ -325,13 +326,15 @@
       </div>
 
       <p class="switch">
-        Do not have an account? <a href="./register.html">Register</a>
+        <span data-i18n="login.noAccount">Do not have an account?</span> <a href="./register.html" data-i18n="login.registerLink">Register</a>
       </p>
     </section>
   </main>
 
   <script src="./runtime-config.js"></script>
   <script src="./platform.js"></script>
+  <script src="./translations.js"></script>
+  <script src="./i18n.js"></script>
   <script>
     const loginMessage = document.getElementById("loginMessage");
     const loginForm = document.getElementById("loginForm");
@@ -339,32 +342,32 @@
     const passwordInput = document.getElementById("password");
 
     function showLoginMessage(message, type = "info") {
-      loginMessage.textContent = message;
+      loginMessage.textContent = window.StudentBridgeI18n ? StudentBridgeI18n.t(message) : message;
       loginMessage.className = `form-message show ${type}`;
     }
 
     const params = new URLSearchParams(window.location.search);
 
     if (params.get("error") === "1") {
-      showLoginMessage("Invalid email or password. Please try again.", "error");
+      showLoginMessage("login.invalid", "error");
     }
 
     if (params.get("error") === "loginRequired") {
       const loginSource = params.get("source");
 
       if (loginSource === "studentAddress") {
-        showLoginMessage("Please login before saving your student address.", "error");
+        showLoginMessage("login.studentAddressRequired", "error");
       } else {
-        showLoginMessage("Please login before posting a job.", "error");
+        showLoginMessage("login.postJobRequired", "error");
       }
     }
 
     if (params.get("registered") === "1") {
-      showLoginMessage("Registration successful. You can login now.", "success");
+      showLoginMessage("login.registered", "success");
     }
 
     if (params.get("logout") === "1") {
-      showLoginMessage("You have been logged out successfully.", "success");
+      showLoginMessage("login.logout", "success");
     }
 
     if (window.StudentBridgePlatform && StudentBridgePlatform.canReachBackend()) {
@@ -374,8 +377,8 @@
     togglePasswordButton.addEventListener("click", () => {
       const isHidden = passwordInput.type === "password";
       passwordInput.type = isHidden ? "text" : "password";
-      togglePasswordButton.textContent = isHidden ? "Hide" : "Show";
-      togglePasswordButton.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+      togglePasswordButton.textContent = StudentBridgeI18n.t(isHidden ? "common.hide" : "common.show");
+      togglePasswordButton.setAttribute("aria-label", StudentBridgeI18n.t(isHidden ? "common.hidePassword" : "common.showPassword"));
       togglePasswordButton.setAttribute("aria-pressed", String(isHidden));
     });
 
@@ -385,13 +388,23 @@
       }
 
       event.preventDefault();
-      showLoginMessage("This page is a static preview. Login works on the Tomcat or Render deployment.", "info");
+      showLoginMessage("common.staticPreviewLogin", "info");
     });
 
     document.querySelectorAll("[data-social-placeholder]").forEach((button) => {
       button.addEventListener("click", () => {
-        showLoginMessage("Social login is prepared for future OAuth integration.", "info");
+        showLoginMessage("common.socialPlaceholder", "info");
       });
+    });
+
+    window.addEventListener("studentbridge:languagechange", () => {
+      if (passwordInput.type === "password") {
+        togglePasswordButton.textContent = StudentBridgeI18n.t("common.show");
+        togglePasswordButton.setAttribute("aria-label", StudentBridgeI18n.t("common.showPassword"));
+      } else {
+        togglePasswordButton.textContent = StudentBridgeI18n.t("common.hide");
+        togglePasswordButton.setAttribute("aria-label", StudentBridgeI18n.t("common.hidePassword"));
+      }
     });
   </script>
 </body>

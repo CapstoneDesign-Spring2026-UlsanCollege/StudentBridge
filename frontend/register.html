@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Create a StudentBridge account as a student or employer.">
-  <title>Register | StudentBridge</title>
+  <title data-i18n="title.register">Register | StudentBridge</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="./register.css">
 </head>
@@ -16,21 +16,22 @@
           <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-bridge"></i></span>
           <span>StudentBridge</span>
         </a>
+        <div class="auth-language" data-language-switcher></div>
 
-        <p class="eyebrow">Create your account</p>
-        <h1 id="register-title">Join as a student or employer.</h1>
-        <p>Choose your account type first. StudentBridge will show the right fields for your profile.</p>
+        <p class="eyebrow" data-i18n="register.eyebrow">Create your account</p>
+        <h1 id="register-title" data-i18n="register.heading">Join as a student or employer.</h1>
+        <p data-i18n="register.body">Choose your account type first. StudentBridge will show the right fields for your profile.</p>
       </div>
 
       <div class="auth-card">
-        <div class="account-tabs" role="tablist" aria-label="Choose account type">
+        <div class="account-tabs" role="tablist" aria-label="Choose account type" data-i18n-aria-label="register.chooseAccount">
           <button type="button" class="account-tab active" id="studentTab" data-panel="studentPanel" role="tab" aria-selected="true" aria-controls="studentPanel">
             <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
-            Student
+            <span data-i18n="register.student">Student</span>
           </button>
           <button type="button" class="account-tab" id="employerTab" data-panel="employerPanel" role="tab" aria-selected="false" aria-controls="employerPanel">
             <i class="fa-solid fa-store" aria-hidden="true"></i>
-            Employer
+            <span data-i18n="register.employer">Employer</span>
           </button>
         </div>
 
@@ -41,101 +42,101 @@
 
           <div class="form-grid">
             <div class="input-group">
-              <label for="studentName">Full name</label>
-              <input type="text" id="studentName" name="name" placeholder="Mezbah Uddin" autocomplete="name" required>
+              <label for="studentName" data-i18n="register.fullName">Full name</label>
+              <input type="text" id="studentName" name="name" placeholder="Mezbah Uddin" data-i18n-placeholder="register.fullNamePlaceholder" autocomplete="name" required>
             </div>
 
             <div class="input-group">
-              <label for="studentEmail">Email</label>
-              <input type="email" id="studentEmail" name="email" placeholder="student@email.com" autocomplete="email" required>
+              <label for="studentEmail" data-i18n="register.email">Email</label>
+              <input type="email" id="studentEmail" name="email" placeholder="student@email.com" data-i18n-placeholder="register.emailPlaceholder" autocomplete="email" required>
             </div>
 
             <div class="input-group">
-              <label for="studentPhone">Phone number</label>
-              <input type="tel" id="studentPhone" name="phone" placeholder="010-1234-5678" autocomplete="tel" required>
+              <label for="studentPhone" data-i18n="register.phone">Phone number</label>
+              <input type="tel" id="studentPhone" name="phone" placeholder="010-1234-5678" data-i18n-placeholder="register.phonePlaceholder" autocomplete="tel" required>
             </div>
 
             <div class="input-group">
-              <label for="studentUniversity">University name</label>
-              <input type="text" id="studentUniversity" name="universityName" placeholder="Ulsan College" required>
+              <label for="studentUniversity" data-i18n="register.university">University name</label>
+              <input type="text" id="studentUniversity" name="universityName" placeholder="Ulsan College" data-i18n-placeholder="register.universityPlaceholder" required>
             </div>
 
             <div class="input-group">
-              <label for="studentMajor">Major</label>
-              <input type="text" id="studentMajor" name="major" placeholder="Computer Science" required>
+              <label for="studentMajor" data-i18n="register.major">Major</label>
+              <input type="text" id="studentMajor" name="major" placeholder="Computer Science" data-i18n-placeholder="register.majorPlaceholder" required>
             </div>
 
             <div class="input-group">
-              <label for="studentId">Student ID</label>
-              <input type="text" id="studentId" name="studentId" placeholder="20260001" required>
+              <label for="studentId" data-i18n="register.studentId">Student ID</label>
+              <input type="text" id="studentId" name="studentId" placeholder="20260001" data-i18n-placeholder="register.studentIdPlaceholder" required>
             </div>
 
             <div class="input-group">
-              <label for="studentCategory">Preferred job category</label>
+              <label for="studentCategory" data-i18n="register.preferredCategory">Preferred job category</label>
               <select id="studentCategory" name="preferredJobCategory" required>
-                <option value="">Select category</option>
-                <option value="Cafe">Cafe</option>
-                <option value="Restaurant">Restaurant</option>
-                <option value="Tutoring">Tutoring</option>
-                <option value="IT">IT</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Retail">Retail</option>
+                <option value="" data-i18n="option.selectCategory">Select category</option>
+                <option value="Cafe" data-i18n="option.cafe">Cafe</option>
+                <option value="Restaurant" data-i18n="option.restaurant">Restaurant</option>
+                <option value="Tutoring" data-i18n="option.tutoring">Tutoring</option>
+                <option value="IT" data-i18n="option.it">IT</option>
+                <option value="Marketing" data-i18n="option.marketing">Marketing</option>
+                <option value="Retail" data-i18n="option.retail">Retail</option>
               </select>
             </div>
 
             <div class="input-group">
-              <label for="studentAvailability">Available working time</label>
+              <label for="studentAvailability" data-i18n="register.availableTime">Available working time</label>
               <select id="studentAvailability" name="availableWorkingTime" required>
-                <option value="">Select availability</option>
-                <option value="Weekday mornings">Weekday mornings</option>
-                <option value="Weekday evenings">Weekday evenings</option>
-                <option value="Weekends">Weekends</option>
-                <option value="Flexible">Flexible</option>
+                <option value="" data-i18n="option.selectAvailability">Select availability</option>
+                <option value="Weekday mornings" data-i18n="option.weekdayMornings">Weekday mornings</option>
+                <option value="Weekday evenings" data-i18n="option.weekdayEvenings">Weekday evenings</option>
+                <option value="Weekends" data-i18n="option.weekends">Weekends</option>
+                <option value="Flexible" data-i18n="option.flexible">Flexible</option>
               </select>
             </div>
 
             <div class="input-group">
-              <label for="studentKoreanLevel">Korean language level</label>
+              <label for="studentKoreanLevel" data-i18n="register.koreanLevel">Korean language level</label>
               <select id="studentKoreanLevel" name="koreanLanguageLevel" required>
-                <option value="">Select level</option>
-                <option value="Beginner">Beginner</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Advanced">Advanced</option>
-                <option value="Native-like">Native-like</option>
+                <option value="" data-i18n="option.selectLevel">Select level</option>
+                <option value="Beginner" data-i18n="option.beginner">Beginner</option>
+                <option value="Intermediate" data-i18n="option.intermediate">Intermediate</option>
+                <option value="Advanced" data-i18n="option.advanced">Advanced</option>
+                <option value="Native-like" data-i18n="option.nativeLike">Native-like</option>
               </select>
             </div>
 
             <div class="input-group password-group">
-              <label for="studentPassword">Password</label>
+              <label for="studentPassword" data-i18n="register.password">Password</label>
               <div class="password-row">
-                <input type="password" id="studentPassword" name="password" placeholder="Create password" autocomplete="new-password" required>
-                <button type="button" class="toggle-password" aria-label="Show password" aria-controls="studentPassword" aria-pressed="false">Show</button>
+                <input type="password" id="studentPassword" name="password" placeholder="Create password" data-i18n-placeholder="register.passwordPlaceholder" autocomplete="new-password" required>
+                <button type="button" class="toggle-password" aria-label="Show password" data-i18n="common.show" data-i18n-aria-label="common.showPassword" aria-controls="studentPassword" aria-pressed="false">Show</button>
               </div>
             </div>
 
             <div class="input-group password-group">
-              <label for="studentConfirmPassword">Confirm password</label>
+              <label for="studentConfirmPassword" data-i18n="register.confirmPassword">Confirm password</label>
               <div class="password-row">
-                <input type="password" id="studentConfirmPassword" name="confirmPassword" placeholder="Confirm password" autocomplete="new-password" required>
-                <button type="button" class="toggle-password" aria-label="Show password" aria-controls="studentConfirmPassword" aria-pressed="false">Show</button>
+                <input type="password" id="studentConfirmPassword" name="confirmPassword" placeholder="Confirm password" data-i18n-placeholder="register.confirmPasswordPlaceholder" autocomplete="new-password" required>
+                <button type="button" class="toggle-password" aria-label="Show password" data-i18n="common.show" data-i18n-aria-label="common.showPassword" aria-controls="studentConfirmPassword" aria-pressed="false">Show</button>
               </div>
             </div>
 
             <div class="upload-placeholder">
               <i class="fa-solid fa-file-arrow-up" aria-hidden="true"></i>
               <div>
-                <strong>Resume upload</strong>
-                <span>Placeholder only. File upload will be connected in a future update.</span>
+                <strong data-i18n="register.resumeTitle">Resume upload</strong>
+                <span data-i18n="register.resumeBody">Placeholder only. File upload will be connected in a future update.</span>
               </div>
             </div>
           </div>
 
           <div class="terms">
             <input type="checkbox" id="studentTerms" name="terms" value="accepted" required>
-            <label for="studentTerms">I agree to the Terms and Conditions.</label>
+            <label for="studentTerms" data-i18n="register.terms">I agree to the Terms and Conditions.</label>
           </div>
 
-          <button type="submit" class="submit-btn">Create Student Account</button>
+          <button type="submit" class="submit-btn" data-i18n="register.createStudent">Create Student Account</button>
         </form>
 
         <form class="register-form" id="employerPanel" action="../RegisterServlet" method="post" role="tabpanel" aria-labelledby="employerTab" novalidate hidden>
@@ -143,91 +144,91 @@
 
           <div class="form-grid">
             <div class="input-group">
-              <label for="businessName">Company / Business name</label>
-              <input type="text" id="businessName" name="businessName" placeholder="CoffeeDay Ulsan" required>
+              <label for="businessName" data-i18n="register.businessName">Company / Business name</label>
+              <input type="text" id="businessName" name="businessName" placeholder="CoffeeDay Ulsan" data-i18n-placeholder="register.businessNamePlaceholder" required>
             </div>
 
             <div class="input-group">
-              <label for="managerName">Owner / Manager name</label>
-              <input type="text" id="managerName" name="managerName" placeholder="John Kim" autocomplete="name" required>
+              <label for="managerName" data-i18n="register.managerName">Owner / Manager name</label>
+              <input type="text" id="managerName" name="managerName" placeholder="John Kim" data-i18n-placeholder="register.managerNamePlaceholder" autocomplete="name" required>
             </div>
 
             <div class="input-group">
-              <label for="businessEmail">Business email</label>
-              <input type="email" id="businessEmail" name="businessEmail" placeholder="owner@business.com" autocomplete="email" required>
+              <label for="businessEmail" data-i18n="register.businessEmail">Business email</label>
+              <input type="email" id="businessEmail" name="businessEmail" placeholder="owner@business.com" data-i18n-placeholder="register.businessEmailPlaceholder" autocomplete="email" required>
             </div>
 
             <div class="input-group">
-              <label for="businessPhone">Phone number</label>
-              <input type="tel" id="businessPhone" name="businessPhone" placeholder="010-9876-5432" autocomplete="tel" required>
+              <label for="businessPhone" data-i18n="register.phone">Phone number</label>
+              <input type="tel" id="businessPhone" name="businessPhone" placeholder="010-9876-5432" data-i18n-placeholder="register.phonePlaceholder" autocomplete="tel" required>
             </div>
 
             <div class="input-group">
-              <label for="businessLocation">Business location</label>
-              <input type="text" id="businessLocation" name="businessLocation" placeholder="Ulsan, Nam-gu" required>
+              <label for="businessLocation" data-i18n="register.businessLocation">Business location</label>
+              <input type="text" id="businessLocation" name="businessLocation" placeholder="Ulsan, Nam-gu" data-i18n-placeholder="register.businessLocationPlaceholder" required>
             </div>
 
             <div class="input-group">
-              <label for="businessType">Business type</label>
+              <label for="businessType" data-i18n="register.businessType">Business type</label>
               <select id="businessType" name="businessType" required>
-                <option value="">Select business type</option>
-                <option value="Cafe">Cafe</option>
-                <option value="Restaurant">Restaurant</option>
-                <option value="Convenience Store">Convenience Store</option>
-                <option value="Education">Education</option>
-                <option value="Office">Office</option>
-                <option value="Other">Other</option>
+                <option value="" data-i18n="option.selectBusinessType">Select business type</option>
+                <option value="Cafe" data-i18n="option.cafe">Cafe</option>
+                <option value="Restaurant" data-i18n="option.restaurant">Restaurant</option>
+                <option value="Convenience Store" data-i18n="option.convenienceStore">Convenience Store</option>
+                <option value="Education" data-i18n="option.education">Education</option>
+                <option value="Office" data-i18n="option.office">Office</option>
+                <option value="Other" data-i18n="option.other">Other</option>
               </select>
             </div>
 
             <div class="input-group">
-              <label for="jobPostingCategory">Job posting category</label>
+              <label for="jobPostingCategory" data-i18n="register.jobPostingCategory">Job posting category</label>
               <select id="jobPostingCategory" name="jobPostingCategory" required>
-                <option value="">Select category</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Internship">Internship</option>
-                <option value="Tutoring">Tutoring</option>
-                <option value="Service">Service</option>
-                <option value="IT">IT</option>
+                <option value="" data-i18n="option.selectCategory">Select category</option>
+                <option value="Part-time" data-i18n="option.partTime">Part-time</option>
+                <option value="Internship" data-i18n="option.internship">Internship</option>
+                <option value="Tutoring" data-i18n="option.tutoring">Tutoring</option>
+                <option value="Service" data-i18n="option.service">Service</option>
+                <option value="IT" data-i18n="option.it">IT</option>
               </select>
             </div>
 
             <div class="input-group">
-              <label for="companyRegistrationNumber">Company registration number</label>
-              <input type="text" id="companyRegistrationNumber" name="companyRegistrationNumber" placeholder="Placeholder for future verification">
+              <label for="companyRegistrationNumber" data-i18n="register.registrationNumber">Company registration number</label>
+              <input type="text" id="companyRegistrationNumber" name="companyRegistrationNumber" placeholder="Placeholder for future verification" data-i18n-placeholder="register.registrationNumberPlaceholder">
             </div>
 
             <div class="input-group password-group">
-              <label for="employerPassword">Password</label>
+              <label for="employerPassword" data-i18n="register.password">Password</label>
               <div class="password-row">
-                <input type="password" id="employerPassword" name="password" placeholder="Create password" autocomplete="new-password" required>
-                <button type="button" class="toggle-password" aria-label="Show password" aria-controls="employerPassword" aria-pressed="false">Show</button>
+                <input type="password" id="employerPassword" name="password" placeholder="Create password" data-i18n-placeholder="register.passwordPlaceholder" autocomplete="new-password" required>
+                <button type="button" class="toggle-password" aria-label="Show password" data-i18n="common.show" data-i18n-aria-label="common.showPassword" aria-controls="employerPassword" aria-pressed="false">Show</button>
               </div>
             </div>
 
             <div class="input-group password-group">
-              <label for="employerConfirmPassword">Confirm password</label>
+              <label for="employerConfirmPassword" data-i18n="register.confirmPassword">Confirm password</label>
               <div class="password-row">
-                <input type="password" id="employerConfirmPassword" name="confirmPassword" placeholder="Confirm password" autocomplete="new-password" required>
-                <button type="button" class="toggle-password" aria-label="Show password" aria-controls="employerConfirmPassword" aria-pressed="false">Show</button>
+                <input type="password" id="employerConfirmPassword" name="confirmPassword" placeholder="Confirm password" data-i18n-placeholder="register.confirmPasswordPlaceholder" autocomplete="new-password" required>
+                <button type="button" class="toggle-password" aria-label="Show password" data-i18n="common.show" data-i18n-aria-label="common.showPassword" aria-controls="employerConfirmPassword" aria-pressed="false">Show</button>
               </div>
             </div>
 
             <div class="input-group full-width">
-              <label for="companyDescription">Short company description</label>
-              <textarea id="companyDescription" name="companyDescription" rows="4" placeholder="Tell students about your business and work environment." required></textarea>
+              <label for="companyDescription" data-i18n="register.companyDescription">Short company description</label>
+              <textarea id="companyDescription" name="companyDescription" rows="4" placeholder="Tell students about your business and work environment." data-i18n-placeholder="register.companyDescriptionPlaceholder" required></textarea>
             </div>
           </div>
 
           <div class="terms">
             <input type="checkbox" id="employerTerms" name="terms" value="accepted" required>
-            <label for="employerTerms">I agree to the Terms and Conditions.</label>
+            <label for="employerTerms" data-i18n="register.terms">I agree to the Terms and Conditions.</label>
           </div>
 
-          <button type="submit" class="submit-btn">Create Employer Account</button>
+          <button type="submit" class="submit-btn" data-i18n="register.createEmployer">Create Employer Account</button>
         </form>
 
-        <div class="divider"><span>or continue with</span></div>
+        <div class="divider"><span data-i18n="common.orContinueWith">or continue with</span></div>
 
         <div class="social-grid" aria-label="Social login options">
           <button type="button" class="social-btn" data-social-placeholder>
@@ -249,7 +250,7 @@
         </div>
 
         <p class="switch">
-          Already have an account? <a href="./login.html">Login</a>
+          <span data-i18n="register.haveAccount">Already have an account?</span> <a href="./login.html" data-i18n="register.loginLink">Login</a>
         </p>
       </div>
     </section>
@@ -257,13 +258,15 @@
 
   <script src="./runtime-config.js"></script>
   <script src="./platform.js"></script>
+  <script src="./translations.js"></script>
+  <script src="./i18n.js"></script>
   <script>
     const accountTabs = document.querySelectorAll(".account-tab");
     const registerForms = document.querySelectorAll(".register-form");
     const registerMessage = document.getElementById("registerMessage");
 
     function showMessage(message, type = "info") {
-      registerMessage.textContent = message;
+      registerMessage.textContent = window.StudentBridgeI18n ? StudentBridgeI18n.t(message) : message;
       registerMessage.className = `form-message show ${type}`;
     }
 
@@ -271,11 +274,11 @@
     const serverError = params.get("error");
 
     if (serverError === "password") {
-      showMessage("Passwords do not match.", "error");
+      showMessage("register.passwordMismatch", "error");
     } else if (serverError === "email") {
-      showMessage("Email is required.", "error");
+      showMessage("register.emailRequired", "error");
     } else if (serverError === "accountType") {
-      showMessage("Please choose an account type.", "error");
+      showMessage("register.accountTypeRequired", "error");
     }
 
     accountTabs.forEach((tab) => {
@@ -305,8 +308,8 @@
         const input = document.getElementById(button.getAttribute("aria-controls"));
         const isHidden = input.type === "password";
         input.type = isHidden ? "text" : "password";
-        button.textContent = isHidden ? "Hide" : "Show";
-        button.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+        button.textContent = StudentBridgeI18n.t(isHidden ? "common.hide" : "common.show");
+        button.setAttribute("aria-label", StudentBridgeI18n.t(isHidden ? "common.hidePassword" : "common.showPassword"));
         button.setAttribute("aria-pressed", String(isHidden));
       });
     });
@@ -326,33 +329,33 @@
 
         if (!accountTypeInput.value) {
           event.preventDefault();
-          showMessage("Please choose an account type.", "error");
+          showMessage("register.accountTypeRequired", "error");
           return;
         }
 
         if (!emailInput.value.trim()) {
           event.preventDefault();
-          showMessage("Email is required.", "error");
+          showMessage("register.emailRequired", "error");
           emailInput.focus();
           return;
         }
 
         if (passwordInput.value !== confirmInput.value) {
           event.preventDefault();
-          showMessage("Passwords do not match.", "error");
+          showMessage("register.passwordMismatch", "error");
           confirmInput.focus();
           return;
         }
 
         if (window.StudentBridgePlatform && !StudentBridgePlatform.canReachBackend()) {
           event.preventDefault();
-          showMessage("This page is a static preview. Registration works on the Tomcat or Render deployment.", "info");
+          showMessage("common.staticPreviewRegister", "info");
           return;
         }
 
         if (!form.checkValidity()) {
           event.preventDefault();
-          showMessage("Please complete all required fields.", "error");
+          showMessage("register.completeRequired", "error");
           form.reportValidity();
           return;
         }
@@ -361,7 +364,16 @@
 
     document.querySelectorAll("[data-social-placeholder]").forEach((button) => {
       button.addEventListener("click", () => {
-        showMessage("Social login is prepared for future OAuth integration.", "info");
+        showMessage("common.socialPlaceholder", "info");
+      });
+    });
+
+    window.addEventListener("studentbridge:languagechange", () => {
+      document.querySelectorAll(".toggle-password").forEach((button) => {
+        const input = document.getElementById(button.getAttribute("aria-controls"));
+        const isHidden = input.type === "password";
+        button.textContent = StudentBridgeI18n.t(isHidden ? "common.show" : "common.hide");
+        button.setAttribute("aria-label", StudentBridgeI18n.t(isHidden ? "common.showPassword" : "common.hidePassword"));
       });
     });
   </script>
