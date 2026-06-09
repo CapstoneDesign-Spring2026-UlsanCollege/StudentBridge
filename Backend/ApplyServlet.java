@@ -3,6 +3,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -78,7 +79,9 @@ public class ApplyServlet extends HttpServlet {
 
             DatabaseSchemaManager.ensureApplicationsTable(con);
 
-            if (!jobExists(con, jobId)) {
+            JobSummary job = getJobSummary(con, jobId);
+
+            if (job == null) {
                 sendApplyResponse(
                         response,
                         jsonResponse,
@@ -113,7 +116,8 @@ public class ApplyServlet extends HttpServlet {
                 return;
             }
 
-            saveApplication(con, jobId, studentEmail, cvLink);
+            int applicationId = saveApplication(con, jobId, studentEmail, cvLink);
+            createApplicationNotifications(con, job, applicationId, studentEmail);
             sendApplyResponse(
                     response,
                     jsonResponse,
@@ -153,18 +157,27 @@ public class ApplyServlet extends HttpServlet {
         response.sendRedirect("frontend/jobsearch.html");
     }
 
-    private boolean jobExists(Connection con,
-                              int jobId) throws SQLException {
+    private JobSummary getJobSummary(Connection con,
+                                     int jobId) throws SQLException {
 
-        String sql = "SELECT id FROM jobs WHERE id = ?";
+        String sql = "SELECT id, title, company, employer_email FROM jobs WHERE id = ?";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, jobId);
 
             try (ResultSet rs = ps.executeQuery()) {
-                return rs.next();
+                if (rs.next()) {
+                    return new JobSummary(
+                            rs.getInt("id"),
+                            clean(rs.getString("title")),
+                            clean(rs.getString("company")),
+                            clean(rs.getString("employer_email"))
+                    );
+                }
             }
         }
+
+        return null;
     }
 
     private String getStudentCvLink(Connection con,
@@ -202,19 +215,63 @@ public class ApplyServlet extends HttpServlet {
         }
     }
 
-    private void saveApplication(Connection con,
-                                 int jobId,
-                                 String studentEmail,
-                                 String cvLink) throws SQLException {
+    private int saveApplication(Connection con,
+                                int jobId,
+                                String studentEmail,
+                                String cvLink) throws SQLException {
 
         String sql = "INSERT INTO applications (job_id, student_email, cv_link) " +
                 "VALUES (?, ?, ?)";
 
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, jobId);
             ps.setString(2, studentEmail);
             ps.setString(3, cvLink);
             ps.executeUpdate();
+
+            try (ResultSet keys = ps.getGeneratedKeys()) {
+                if (keys.next()) {
+                    return keys.getInt(1);
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    private void createApplicationNotifications(Connection con,
+                                                JobSummary job,
+                                                int applicationId,
+                                                String studentEmail) {
+
+        try {
+            NotificationService.createNotification(
+                    con,
+                    studentEmail,
+                    "Student",
+                    "application_sent",
+                    "Application sent",
+                    "Your saved CV was sent for " + job.title + ".",
+                    "/frontend/jobsearch.html?apply=success",
+                    job.id,
+                    applicationId
+            );
+
+            if (!job.employerEmail.isEmpty()) {
+                NotificationService.createNotification(
+                        con,
+                        job.employerEmail,
+                        "Employer",
+                        "new_application",
+                        "New job application",
+                        studentEmail + " applied to " + job.title + ".",
+                        "/frontend/employer-dashboard.html",
+                        job.id,
+                        applicationId
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -273,5 +330,22 @@ public class ApplyServlet extends HttpServlet {
 
     private String clean(String value) {
         return value == null ? "" : value.trim();
+    }
+
+    private static class JobSummary {
+        private final int id;
+        private final String title;
+        private final String company;
+        private final String employerEmail;
+
+        private JobSummary(int id,
+                           String title,
+                           String company,
+                           String employerEmail) {
+            this.id = id;
+            this.title = title.isEmpty() ? company : title;
+            this.company = company;
+            this.employerEmail = employerEmail;
+        }
     }
 }

@@ -6,6 +6,7 @@
   <meta name="description" content="Search student-friendly part-time jobs in Korea with StudentBridge.">
   <title data-i18n="title.jobs">Jobs | StudentBridge</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="./notifications.css?v=20260609-notifications">
 
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
@@ -769,6 +770,7 @@
       <a href="./register.html" data-i18n="nav.register">Register</a>
     </nav>
     <div data-language-switcher></div>
+    <div data-notification-root hidden></div>
   </header>
 
   <main>
@@ -876,6 +878,7 @@
   <script src="./platform.js"></script>
   <script src="./translations.js"></script>
   <script src="./i18n.js?v=20260609-navbar-fix"></script>
+  <script src="./notifications.js?v=20260609-notifications"></script>
   <script src="./map-config.js?v=20260609-map-fix"></script>
   <script src="./location-map.js?v=20260609-map-fix"></script>
   <script>
@@ -1311,6 +1314,7 @@
           showApplyMessage("jobs.applySuccess", "success");
           jobModalApplyBtn.textContent = t("jobs.applied");
           jobModalApplyBtn.disabled = true;
+          window.dispatchEvent(new CustomEvent("studentbridge:notifications:refresh"));
           return;
         }
 
