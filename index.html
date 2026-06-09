@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="./frontend/style.css?v=20260609-navbar-fix">
   <link rel="stylesheet" href="./frontend/notifications.css?v=20260609-notifications">
+  <link rel="stylesheet" href="./frontend/messages.css?v=20260609-messages">
 </head>
 <body data-auth-state="checking">
   <header class="navbar">
@@ -23,6 +24,7 @@
 
     <div class="nav-right" aria-label="Account actions">
       <div data-language-switcher></div>
+      <div data-message-root hidden></div>
       <div data-notification-root hidden></div>
       <div class="guest-actions" data-guest-actions>
         <a href="./frontend/login.html" class="btn btn-outline" data-i18n="nav.login">Login</a>
@@ -39,6 +41,7 @@
         <div class="user-dropdown" data-user-dropdown hidden>
           <p class="dropdown-user" data-user-name>Account</p>
           <a href="./frontend/employer-dashboard.html"><i class="fa-solid fa-table-columns" aria-hidden="true"></i> <span data-i18n="user.dashboard">Dashboard</span></a>
+          <a href="./frontend/messages.html"><i class="fa-solid fa-message" aria-hidden="true"></i> <span data-i18n="messages.label">Messages</span></a>
           <a href="./frontend/post-job.html"><i class="fa-solid fa-plus" aria-hidden="true"></i> <span data-i18n="user.postJob">Post Job</span></a>
           <a href="./frontend/student-profile.html"><i class="fa-solid fa-id-card" aria-hidden="true"></i> <span data-i18n="user.studentAddress">Student Address</span></a>
           <a data-user-mail href="#"><i class="fa-solid fa-envelope" aria-hidden="true"></i> <span data-i18n="user.email">Email</span></a>
@@ -217,6 +220,7 @@
   <script src="./frontend/translations.js"></script>
   <script src="./frontend/i18n.js?v=20260609-navbar-fix"></script>
   <script src="./frontend/notifications.js?v=20260609-notifications" defer></script>
+  <script src="./frontend/messages.js?v=20260609-messages" defer></script>
   <script src="./frontend/script.js?v=20260609-navbar-fix" defer></script>
 </body>
 </html>

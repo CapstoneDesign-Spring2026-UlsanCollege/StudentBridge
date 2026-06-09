@@ -9,7 +9,8 @@
     "notifications.empty": "No notifications yet.",
     "notifications.unread": "unread notifications",
     "notifications.applicationSentTitle": "Application sent",
-    "notifications.newApplicationTitle": "New job application"
+    "notifications.newApplicationTitle": "New job application",
+    "notifications.newMessageTitle": "New message"
   };
 
   function t(key) {
@@ -50,7 +51,8 @@
   function localTitle(notification) {
     const titleKeys = {
       application_sent: "notifications.applicationSentTitle",
-      new_application: "notifications.newApplicationTitle"
+      new_application: "notifications.newApplicationTitle",
+      new_message: "notifications.newMessageTitle"
     };
 
     const titleKey = titleKeys[notification.type];

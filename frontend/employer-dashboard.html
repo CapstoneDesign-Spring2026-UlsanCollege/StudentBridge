@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="./post-job.css">
   <link rel="stylesheet" href="./notifications.css?v=20260609-notifications">
+  <link rel="stylesheet" href="./messages.css?v=20260609-messages">
 </head>
 <body>
   <header class="navbar">
@@ -22,6 +23,7 @@
       <a href="./post-job.html" data-i18n="nav.postJob">Post Job</a>
     </nav>
     <div data-language-switcher></div>
+    <div data-message-root hidden></div>
     <div data-notification-root hidden></div>
   </header>
 
@@ -52,8 +54,19 @@
       <article>
         <i class="fa-solid fa-user-check" aria-hidden="true"></i>
         <h2 data-i18n="dashboard.reviewTitle">Review applicants</h2>
-        <p data-i18n="dashboard.reviewBody">Applicant management can be connected next after the job application flow is added.</p>
+        <p data-i18n="dashboard.reviewBody">Review submitted applications and message students from your dashboard.</p>
       </article>
+    </section>
+
+    <section class="employer-applications" data-employer-applications aria-labelledby="applications-title">
+      <div class="employer-applications-header">
+        <div>
+          <h2 id="applications-title" data-i18n="dashboard.applicationsTitle">Applications</h2>
+          <p data-i18n="dashboard.applicationsBody">Review students who applied to your jobs and message them from one place.</p>
+        </div>
+      </div>
+      <p class="message-status" data-application-status role="status" aria-live="polite"></p>
+      <div class="application-list" data-application-list></div>
     </section>
   </main>
   <script src="./runtime-config.js"></script>
@@ -61,5 +74,6 @@
   <script src="./translations.js"></script>
   <script src="./i18n.js?v=20260609-navbar-fix"></script>
   <script src="./notifications.js?v=20260609-notifications"></script>
+  <script src="./messages.js?v=20260609-messages"></script>
 </body>
 </html>

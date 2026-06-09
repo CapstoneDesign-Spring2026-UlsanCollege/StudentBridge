@@ -4,7 +4,13 @@
   }
 
   function isStaticPreview() {
-    return window.location.protocol === "file:" || window.location.hostname.endsWith("github.io");
+    const isLocalStaticServer = ["127.0.0.1", "localhost", "::1"].includes(window.location.hostname)
+      && window.location.port
+      && window.location.port !== "8080";
+
+    return window.location.protocol === "file:"
+      || window.location.hostname.endsWith("github.io")
+      || isLocalStaticServer;
   }
 
   function getConfiguredBackendBase() {
@@ -24,7 +30,12 @@
       : pathname;
 
     const lastSlash = normalizedPath.lastIndexOf("/");
-    return lastSlash > 0 ? normalizedPath.slice(0, lastSlash) : "";
+
+    if (lastSlash > 0) {
+      return normalizedPath.slice(0, lastSlash);
+    }
+
+    return normalizedPath.length > 1 ? normalizedPath : "";
   }
 
   function getBackendBase() {
