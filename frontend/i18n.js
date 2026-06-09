@@ -2,6 +2,7 @@
   const STORAGE_KEY = "studentBridgeLanguage";
   const DEFAULT_LANGUAGE = "en";
   const config = window.StudentBridgeTranslations || { languages: {}, messages: {} };
+  const dynamicCache = new Map();
 
   function getSupportedLanguages() {
     return Object.keys(config.languages || {});
@@ -27,6 +28,132 @@
     });
 
     return value;
+  }
+
+  function hasLocalTranslation(language, key) {
+    return Boolean(config.messages[language] && config.messages[language][key]);
+  }
+
+  function canUseBackend() {
+    return window.StudentBridgePlatform && StudentBridgePlatform.canReachBackend();
+  }
+
+  function translationUrl() {
+    return StudentBridgePlatform.toBackendUrl("TranslationServlet");
+  }
+
+  function dynamicCacheKey(language, text) {
+    return `${language}:${text}`;
+  }
+
+  async function translateText(text, targetLanguage) {
+    const sourceText = String(text || "");
+    const language = normalizeLanguage(targetLanguage || getLanguage());
+
+    if (!sourceText.trim() || language === DEFAULT_LANGUAGE || !canUseBackend()) {
+      return sourceText;
+    }
+
+    const cacheKey = dynamicCacheKey(language, sourceText);
+
+    if (dynamicCache.has(cacheKey)) {
+      return dynamicCache.get(cacheKey);
+    }
+
+    try {
+      const body = new URLSearchParams();
+      body.set("target", language);
+      body.append("text", sourceText);
+
+      const response = await fetch(translationUrl(), {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+          "X-Requested-With": "XMLHttpRequest"
+        },
+        body
+      });
+
+      if (!response.ok) {
+        return sourceText;
+      }
+
+      const data = await response.json().catch(() => ({}));
+      const translatedText = data.translatedText || sourceText;
+      dynamicCache.set(cacheKey, translatedText);
+      return translatedText;
+    } catch (error) {
+      console.error(error);
+      return sourceText;
+    }
+  }
+
+  async function translateBatch(items, targetLanguage) {
+    const language = normalizeLanguage(targetLanguage || getLanguage());
+    const safeItems = Array.isArray(items) ? items : [];
+    const output = {};
+    const requestItems = [];
+
+    safeItems.forEach((item, index) => {
+      const key = String(item && item.key ? item.key : `item${index}`);
+      const text = String(item && item.text ? item.text : "");
+      output[key] = text;
+
+      if (!text.trim() || language === DEFAULT_LANGUAGE || !canUseBackend()) {
+        return;
+      }
+
+      const cacheKey = dynamicCacheKey(language, text);
+
+      if (dynamicCache.has(cacheKey)) {
+        output[key] = dynamicCache.get(cacheKey);
+        return;
+      }
+
+      requestItems.push({ key, text, cacheKey });
+    });
+
+    if (!requestItems.length) {
+      return output;
+    }
+
+    try {
+      const body = new URLSearchParams();
+      body.set("target", language);
+
+      requestItems.forEach((item) => {
+        body.append("key", item.key);
+        body.append("text", item.text);
+      });
+
+      const response = await fetch(translationUrl(), {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+          "X-Requested-With": "XMLHttpRequest"
+        },
+        body
+      });
+
+      if (!response.ok) {
+        return output;
+      }
+
+      const data = await response.json().catch(() => ({}));
+      const translations = data.translations || {};
+
+      requestItems.forEach((item) => {
+        const translatedText = translations[item.key] || item.text;
+        dynamicCache.set(item.cacheKey, translatedText);
+        output[item.key] = translatedText;
+      });
+    } catch (error) {
+      console.error(error);
+    }
+
+    return output;
   }
 
   function applyText(element, key) {
@@ -57,6 +184,70 @@
     });
 
     document.documentElement.lang = getLanguage();
+    translateMissingStaticText(scope);
+  }
+
+  async function translateMissingStaticText(scope) {
+    const language = getLanguage();
+
+    if (language === DEFAULT_LANGUAGE || !canUseBackend()) {
+      return;
+    }
+
+    const englishMessages = config.messages[DEFAULT_LANGUAGE] || {};
+    const items = [];
+    const targets = [];
+
+    function addMissing(element, kind, attribute, key) {
+      if (!key || hasLocalTranslation(language, key) || !englishMessages[key]) {
+        return;
+      }
+
+      const itemKey = `${kind}-${items.length}`;
+      items.push({ key: itemKey, text: englishMessages[key] });
+      targets.push({ itemKey, element, attribute });
+    }
+
+    scope.querySelectorAll("[data-i18n]").forEach((element) => {
+      addMissing(element, "text", "textContent", element.dataset.i18n);
+    });
+
+    scope.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
+      addMissing(element, "placeholder", "placeholder", element.dataset.i18nPlaceholder);
+    });
+
+    scope.querySelectorAll("[data-i18n-aria-label]").forEach((element) => {
+      addMissing(element, "aria", "aria-label", element.dataset.i18nAriaLabel);
+    });
+
+    scope.querySelectorAll("[data-i18n-title]").forEach((element) => {
+      addMissing(element, "title", "title", element.dataset.i18nTitle);
+    });
+
+    if (!items.length) {
+      return;
+    }
+
+    const languageAtRequest = language;
+    const translated = await translateBatch(items, languageAtRequest);
+
+    if (getLanguage() !== languageAtRequest) {
+      return;
+    }
+
+    targets.forEach((target) => {
+      const translatedValue = translated[target.itemKey];
+
+      if (!target.element.isConnected || !translatedValue) {
+        return;
+      }
+
+      if (target.attribute === "textContent") {
+        target.element.textContent = translatedValue;
+      } else {
+        target.element.setAttribute(target.attribute, translatedValue);
+      }
+    });
   }
 
   function setLanguage(language) {
@@ -183,6 +374,8 @@
     getLanguage,
     setLanguage,
     t: translate,
+    translateText,
+    translateBatch,
     translatePage,
     isSupported: (language) => getSupportedLanguages().includes(String(language || "").toLowerCase())
   };

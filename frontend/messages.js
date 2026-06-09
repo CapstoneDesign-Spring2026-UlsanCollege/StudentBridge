@@ -103,6 +103,61 @@
     }
   }
 
+  function translateDisplayText(element, text) {
+    const sourceText = String(text || "");
+    element.textContent = sourceText;
+
+    if (!window.StudentBridgeI18n || StudentBridgeI18n.getLanguage() === "en" || !sourceText.trim()) {
+      return;
+    }
+
+    const languageAtRequest = StudentBridgeI18n.getLanguage();
+
+    StudentBridgeI18n.translateText(sourceText, languageAtRequest).then((translatedText) => {
+      if (element.isConnected && StudentBridgeI18n.getLanguage() === languageAtRequest) {
+        element.textContent = translatedText || sourceText;
+      }
+    });
+  }
+
+  function translateMetaParts(element, parts) {
+    const safeParts = parts.filter((part) => part && part.value);
+    element.textContent = safeParts.map((part) => part.value).join(" · ");
+
+    if (!window.StudentBridgeI18n || StudentBridgeI18n.getLanguage() === "en") {
+      return;
+    }
+
+    const languageAtRequest = StudentBridgeI18n.getLanguage();
+    const translationItems = safeParts
+      .filter((part) => part.translate)
+      .map((part, index) => ({
+        key: `part${index}`,
+        text: part.value
+      }));
+
+    if (!translationItems.length) {
+      return;
+    }
+
+    StudentBridgeI18n.translateBatch(translationItems, languageAtRequest).then((translated) => {
+      if (!element.isConnected || StudentBridgeI18n.getLanguage() !== languageAtRequest) {
+        return;
+      }
+
+      let translatedIndex = 0;
+      element.textContent = safeParts.map((part) => {
+        if (!part.translate) {
+          return part.value;
+        }
+
+        const key = `part${translatedIndex}`;
+        translatedIndex += 1;
+        return translated[key] || part.value;
+      }).join(" · ");
+    });
+  }
+
   function setupRoot(root) {
     root.classList.add("message-root");
     root.innerHTML = "";
@@ -287,11 +342,11 @@
 
       const title = document.createElement("span");
       title.className = "message-item-title";
-      title.textContent = conversation.jobTitle || t("messages.label");
+      translateDisplayText(title, conversation.jobTitle || t("messages.label"));
 
       const preview = document.createElement("span");
       preview.className = "message-item-preview";
-      preview.textContent = conversation.lastMessage || t("messages.noPreview");
+      translateDisplayText(preview, conversation.lastMessage || t("messages.noPreview"));
 
       const meta = document.createElement("span");
       meta.className = "message-item-meta";
@@ -355,7 +410,7 @@
       accountType: ""
     };
 
-    list.addEventListener("click", (event) => {
+      list.addEventListener("click", (event) => {
       const itemButton = event.target.closest("[data-message-conversation-id]");
 
       if (!itemButton) {
@@ -425,6 +480,10 @@
       }
     }
 
+    window.addEventListener("studentbridge:languagechange", () => {
+      loadConversations();
+    });
+
     async function openConversation(conversationId, updateUrl = true) {
       if (!conversationId) {
         renderEmptyThread();
@@ -466,12 +525,12 @@
     function renderThread(conversation, messages) {
       textarea.disabled = false;
       sendButton.disabled = false;
-      threadTitle.textContent = conversation.jobTitle || t("messages.label");
-      threadMeta.textContent = [
-        conversation.company,
-        conversation.location,
-        conversation.otherEmail
-      ].filter(Boolean).join(" · ");
+      translateDisplayText(threadTitle, conversation.jobTitle || t("messages.label"));
+      translateMetaParts(threadMeta, [
+        { value: conversation.company, translate: true },
+        { value: conversation.location, translate: true },
+        { value: conversation.otherEmail, translate: false }
+      ]);
       threadBody.innerHTML = "";
 
       if (!messages.length) {
@@ -489,7 +548,7 @@
           : "message-bubble";
 
         const text = document.createElement("p");
-        text.textContent = message.body || "";
+        translateDisplayText(text, message.body || "");
 
         const time = document.createElement("span");
         time.textContent = [
@@ -602,16 +661,16 @@
 
         const title = document.createElement("h3");
         title.className = "application-title";
-        title.textContent = application.jobTitle || "Job application";
+        translateDisplayText(title, application.jobTitle || "Job application");
 
         const meta = document.createElement("p");
         meta.className = "application-meta";
-        meta.textContent = [
-          application.studentEmail,
-          application.company,
-          application.location,
-          `${t("dashboard.appliedAt")}: ${formatDate(application.appliedAt)}`
-        ].filter(Boolean).join(" · ");
+        translateMetaParts(meta, [
+          { value: application.studentEmail, translate: false },
+          { value: application.company, translate: true },
+          { value: application.location, translate: true },
+          { value: `${t("dashboard.appliedAt")}: ${formatDate(application.appliedAt)}`, translate: false }
+        ]);
 
         content.append(title, meta);
 
@@ -648,6 +707,10 @@
         list.appendChild(card);
       });
     }
+
+    window.addEventListener("studentbridge:languagechange", () => {
+      loadApplications();
+    });
   }
 
   function showStatus(element, text, type) {

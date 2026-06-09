@@ -59,6 +59,14 @@
     return titleKey ? t(titleKey) : notification.title;
   }
 
+  async function translateItems(items) {
+    if (!window.StudentBridgeI18n || StudentBridgeI18n.getLanguage() === "en") {
+      return {};
+    }
+
+    return StudentBridgeI18n.translateBatch(items, StudentBridgeI18n.getLanguage());
+  }
+
   function formatDate(value) {
     const cleanValue = String(value || "").trim();
 
@@ -217,7 +225,7 @@
     }
   }
 
-  function render(controller) {
+  async function render(controller) {
     controller.heading.textContent = t("notifications.label");
     controller.readAllButton.textContent = t("notifications.markAllRead");
     controller.readAllButton.disabled = controller.unreadCount <= 0;
@@ -244,6 +252,24 @@
       return;
     }
 
+    const translationItems = [];
+
+    controller.notifications.forEach((notification) => {
+      if (!["application_sent", "new_application", "new_message"].includes(notification.type)) {
+        translationItems.push({
+          key: `title-${notification.id}`,
+          text: notification.title || ""
+        });
+      }
+
+      translationItems.push({
+        key: `message-${notification.id}`,
+        text: notification.message || ""
+      });
+    });
+
+    const translated = await translateItems(translationItems);
+
     controller.notifications.forEach((notification) => {
       const item = document.createElement("button");
       item.type = "button";
@@ -252,11 +278,11 @@
 
       const title = document.createElement("span");
       title.className = "notification-item-title";
-      title.textContent = localTitle(notification);
+      title.textContent = translated[`title-${notification.id}`] || localTitle(notification);
 
       const message = document.createElement("span");
       message.className = "notification-item-message";
-      message.textContent = notification.message || "";
+      message.textContent = translated[`message-${notification.id}`] || notification.message || "";
 
       const time = document.createElement("span");
       time.className = "notification-item-time";

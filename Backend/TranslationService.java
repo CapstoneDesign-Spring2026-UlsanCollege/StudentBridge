@@ -11,13 +11,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class TranslationService {
 
-    private static final String API_KEY_ENV = "GOOGLE_TRANSLATE_API_KEY";
-    private static final String SOURCE_LANGUAGE = "auto";
+    private static final String API_URL_ENV = "TRANSLATE_API_URL";
+    private static final String DEFAULT_API_URL = "http://localhost:5000/translate";
+    private static final String SOURCE_LANGUAGE = "en";
     private static final Set<String> SUPPORTED_LANGUAGES = Set.of("en", "ko", "ne", "bn");
+    private static final Map<String, String> MEMORY_CACHE = new ConcurrentHashMap<>();
 
     public static String normalizeLanguage(String requestedLanguage) {
         if (requestedLanguage == null || requestedLanguage.isBlank()) {
@@ -42,14 +46,8 @@ public class TranslationService {
             return cachedTranslation;
         }
 
-        String apiKey = System.getenv(API_KEY_ENV);
-
-        if (apiKey == null || apiKey.isBlank()) {
-            return text;
-        }
-
         try {
-            String translatedText = requestGoogleTranslation(apiKey, text, normalizedLanguage);
+            String translatedText = translateText(text, normalizedLanguage);
 
             if (translatedText == null || translatedText.isBlank()) {
                 return text;
@@ -59,6 +57,36 @@ public class TranslationService {
             return translatedText;
         } catch (Exception e) {
             System.out.println("Translation failed. Returning original text.");
+            e.printStackTrace();
+            return text;
+        }
+    }
+
+    public String translateText(String text, String targetLanguage) {
+        String normalizedLanguage = normalizeLanguage(targetLanguage);
+
+        if (text == null || text.isBlank() || "en".equals(normalizedLanguage)) {
+            return text == null ? "" : text;
+        }
+
+        String cacheKey = normalizedLanguage + ":" + sha256(text);
+        String cachedTranslation = MEMORY_CACHE.get(cacheKey);
+
+        if (cachedTranslation != null && !cachedTranslation.isBlank()) {
+            return cachedTranslation;
+        }
+
+        try {
+            String translatedText = requestLibreTranslation(text, normalizedLanguage);
+
+            if (translatedText == null || translatedText.isBlank()) {
+                return text;
+            }
+
+            MEMORY_CACHE.put(cacheKey, translatedText);
+            return translatedText;
+        } catch (Exception e) {
+            System.out.println("LibreTranslate request failed. Returning original text.");
             e.printStackTrace();
             return text;
         }
@@ -107,11 +135,10 @@ public class TranslationService {
         }
     }
 
-    private String requestGoogleTranslation(String apiKey, String text, String targetLanguage) throws IOException {
-        URI uri = URI.create("https://translation.googleapis.com/language/translate/v2?key="
-                + URLEncoder.encode(apiKey, StandardCharsets.UTF_8));
-
+    private String requestLibreTranslation(String text, String targetLanguage) throws IOException {
+        URI uri = URI.create(getTranslateApiUrl());
         String body = "q=" + URLEncoder.encode(text, StandardCharsets.UTF_8)
+                + "&source=" + URLEncoder.encode(SOURCE_LANGUAGE, StandardCharsets.UTF_8)
                 + "&target=" + URLEncoder.encode(targetLanguage, StandardCharsets.UTF_8)
                 + "&format=text";
 
@@ -130,10 +157,20 @@ public class TranslationService {
         String responseBody = readResponse(connection, statusCode);
 
         if (statusCode < 200 || statusCode >= 300) {
-            throw new IOException("Google Translation API returned " + statusCode + ": " + responseBody);
+            throw new IOException("LibreTranslate API returned " + statusCode + ": " + responseBody);
         }
 
         return decodeBasicHtmlEntities(extractTranslatedText(responseBody));
+    }
+
+    private String getTranslateApiUrl() {
+        String configuredUrl = System.getenv(API_URL_ENV);
+
+        if (configuredUrl == null || configuredUrl.isBlank()) {
+            return DEFAULT_API_URL;
+        }
+
+        return configuredUrl.trim();
     }
 
     private String readResponse(HttpURLConnection connection, int statusCode) throws IOException {

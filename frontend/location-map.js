@@ -6,12 +6,44 @@
 
   let kakaoLoaderPromise = null;
 
+  const fallbackMessages = {
+    "map.keyMissing": "Add your Kakao JavaScript key in frontend/map-config.js to enable the map.",
+    "map.viewerKeyMissing": "Add your Kakao JavaScript key in frontend/map-config.js to enable job map previews.",
+    "map.loadFailed": "Kakao map could not load. Check that this exact domain is registered in Kakao Developers.",
+    "map.enterAddress": "Please enter a full address first.",
+    "map.addressNotFound": "Address not found. Try a more specific Korean road address.",
+    "map.locationSelected": "Location selected. Coordinates will be saved with this form.",
+    "map.markerMoved": "Marker moved. Coordinates will be saved with this form.",
+    "map.searchOrClick": "Search an address or click the map to choose the exact location.",
+    "map.selectJob": "Select a job with saved coordinates to preview it on the map.",
+    "map.noCoordinates": "This job does not have saved map coordinates yet."
+  };
+
+  function t(key) {
+    if (window.StudentBridgeI18n) {
+      return StudentBridgeI18n.t(key);
+    }
+
+    return fallbackMessages[key] || key;
+  }
+
   function setStatus(element, message, type = "info") {
     if (!element) {
       return;
     }
 
+    delete element.dataset.mapStatusKey;
     element.textContent = message;
+    element.className = `map-status ${type}`;
+  }
+
+  function setStatusKey(element, key, type = "info") {
+    if (!element) {
+      return;
+    }
+
+    element.dataset.mapStatusKey = key;
+    element.textContent = t(key);
     element.className = `map-status ${type}`;
   }
 
@@ -24,11 +56,11 @@
   function getLoadFailureMessage(kind) {
     if (!getKakaoKey()) {
       return kind === "viewer"
-        ? "Add your Kakao JavaScript key in frontend/map-config.js to enable job map previews."
-        : "Add your Kakao JavaScript key in frontend/map-config.js to enable the map.";
+        ? "map.viewerKeyMissing"
+        : "map.keyMissing";
     }
 
-    return "Kakao map could not load. Check that this exact domain is registered in Kakao Developers.";
+    return "map.loadFailed";
   }
 
   function loadKakaoMaps() {
@@ -139,30 +171,36 @@
         const address = addressInput.value.trim();
 
         if (!address) {
-          setStatus(statusElement, "Please enter a full address first.", "error");
+          setStatusKey(statusElement, "map.enterAddress", "error");
           addressInput.focus();
           return;
         }
 
         geocoder.addressSearch(address, (result, status) => {
           if (status !== kakao.maps.services.Status.OK || result.length === 0) {
-            setStatus(statusElement, "Address not found. Try a more specific Korean road address.", "error");
+            setStatusKey(statusElement, "map.addressNotFound", "error");
             return;
           }
 
           const coordinates = new kakao.maps.LatLng(result[0].y, result[0].x);
-          updateCoordinates(coordinates, "Location selected. Coordinates will be saved with this form.");
+          updateCoordinates(coordinates, t("map.locationSelected"));
+          if (statusElement) {
+            statusElement.dataset.mapStatusKey = "map.locationSelected";
+          }
         });
       });
 
       kakao.maps.event.addListener(map, "click", (mouseEvent) => {
-        updateCoordinates(mouseEvent.latLng, "Marker moved. Coordinates will be saved with this form.");
+        updateCoordinates(mouseEvent.latLng, t("map.markerMoved"));
+        if (statusElement) {
+          statusElement.dataset.mapStatusKey = "map.markerMoved";
+        }
       });
 
-      setStatus(statusElement, "Search an address or click the map to choose the exact location.", "info");
+      setStatusKey(statusElement, "map.searchOrClick", "info");
     } catch (error) {
       console.error("StudentBridge map setup failed:", error);
-      setStatus(statusElement, getLoadFailureMessage("picker"), "error");
+      setStatusKey(statusElement, getLoadFailureMessage("picker"), "error");
     }
   }
 
@@ -189,12 +227,12 @@
         zIndex: 1
       });
 
-      setStatus(statusElement, "Select a job with saved coordinates to preview it on the map.", "info");
+      setStatusKey(statusElement, "map.selectJob", "info");
 
       return {
         showLocation(job) {
           if (!hasCoordinates(job.latitude, job.longitude)) {
-            setStatus(statusElement, "This job does not have saved map coordinates yet.", "error");
+            setStatusKey(statusElement, "map.noCoordinates", "error");
             return;
           }
 
@@ -208,7 +246,7 @@
       };
     } catch (error) {
       console.error("StudentBridge job map setup failed:", error);
-      setStatus(statusElement, getLoadFailureMessage("viewer"), "error");
+      setStatusKey(statusElement, getLoadFailureMessage("viewer"), "error");
       return null;
     }
   }
@@ -227,4 +265,10 @@
     initViewer,
     hasCoordinates
   };
+
+  window.addEventListener("studentbridge:languagechange", () => {
+    document.querySelectorAll(".map-status[data-map-status-key]").forEach((element) => {
+      element.textContent = t(element.dataset.mapStatusKey);
+    });
+  });
 })();
