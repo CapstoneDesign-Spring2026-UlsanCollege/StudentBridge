@@ -7,6 +7,7 @@
   <title data-i18n="title.employerDashboard">Employer Dashboard | StudentBridge</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="./post-job.css">
+  <link rel="stylesheet" href="./notifications.css?v=20260609-notifications">
 </head>
 <body>
   <header class="navbar">
@@ -21,6 +22,7 @@
       <a href="./post-job.html" data-i18n="nav.postJob">Post Job</a>
     </nav>
     <div data-language-switcher></div>
+    <div data-notification-root hidden></div>
   </header>
 
   <main class="page-shell">
@@ -54,7 +56,10 @@
       </article>
     </section>
   </main>
+  <script src="./runtime-config.js"></script>
+  <script src="./platform.js"></script>
   <script src="./translations.js"></script>
   <script src="./i18n.js?v=20260609-navbar-fix"></script>
+  <script src="./notifications.js?v=20260609-notifications"></script>
 </body>
 </html>
