@@ -4,6 +4,10 @@ StudentBridge is a university capstone web platform that helps international stu
 
 The current implementation uses a static HTML/CSS/JavaScript frontend, Java Servlets running on Apache Tomcat, and a MySQL database accessed through JDBC.
 
+## Final Portfolio
+
+The Spring 2026 final portfolio is available at [`portfolio/README.md`](portfolio/README.md). It includes the final MVP scope, semester journey, QA report, AI/code ownership notes, presentation package, and individual portfolio pages.
+
 ## Current Status
 
 | Area | Status | Notes |
@@ -22,8 +26,8 @@ The current implementation uses a static HTML/CSS/JavaScript frontend, Java Serv
 | Local Tomcat demo | <http://localhost:8080/StudentBridge/> | Use for the midterm live demo after running setup. |
 | Static GitHub Pages demo | <https://capstonedesign-spring2026-ulsancollege.github.io/StudentBridge/> | Verify before using in a presentation. |
 real page link  | https://studentbridge-6jn2.onrender.com
-| Demo video | `[TODO: add demo video link]` | Required backup evidence. |
-| Screenshots | `[TODO: add screenshot folder or issue links]` | Required for sprint packets and brochure QR support. |
+| Demo video | Not available in this repo | Use screenshots and local/Render demo as backup evidence. |
+| Screenshots | [demo-screenshots](demo-screenshots) | Final backup screenshots for homepage, login, register, jobs, employer dashboard, post job, and student profile. |
 
 ## Tech Stack
 
@@ -48,7 +52,7 @@ real page link  | https://studentbridge-6jn2.onrender.com
 
 | Document | Purpose |
 |---|---|
-| [Project Overview](docs/PROJECT_OVERVIEW.md) | Problem, users, solution, MVP scope, and evidence placeholders. |
+| [Project Overview](docs/PROJECT_OVERVIEW.md) | Problem, users, solution, MVP scope, and evidence links. |
 | [Architecture](docs/ARCHITECTURE.md) | Frontend/backend/database structure and key risks. |
 | [Setup Guide](docs/SETUP_GUIDE.md) | Java Servlet, Tomcat, and MySQL setup steps. |
 | [User Stories](docs/USER_STORIES.md) | MVP stories, acceptance criteria, and status. |
