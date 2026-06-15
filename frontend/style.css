@@ -486,10 +486,10 @@ a {
 
 .floating-badge {
   position: absolute;
-  left: 22px;
-  bottom: 70px;
-  max-width: 230px;
-  padding: 18px;
+  left: -80px;
+  bottom: -60px;
+  width: 320px;
+  padding: 24px;
   border-radius: 20px;
   color: var(--text);
   background: #ffffff;
