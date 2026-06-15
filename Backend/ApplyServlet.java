@@ -64,6 +64,7 @@ public class ApplyServlet extends HttpServlet {
         }
 
         String studentEmail = clean((String) session.getAttribute("userEmail"));
+        int studentId = parseSessionInt(session.getAttribute("userId"));
 
         try (Connection con = DBConnection.getConnection()) {
             if (con == null) {
@@ -92,19 +93,6 @@ public class ApplyServlet extends HttpServlet {
                 return;
             }
 
-            String cvLink = getStudentCvLink(con, studentEmail);
-
-            if (cvLink.isEmpty()) {
-                sendApplyResponse(
-                        response,
-                        jsonResponse,
-                        "missingCv",
-                        "frontend/student-profile.html?error=cvRequired",
-                        HttpServletResponse.SC_BAD_REQUEST
-                );
-                return;
-            }
-
             if (alreadyApplied(con, jobId, studentEmail)) {
                 sendApplyResponse(
                         response,
@@ -116,7 +104,8 @@ public class ApplyServlet extends HttpServlet {
                 return;
             }
 
-            int applicationId = saveApplication(con, jobId, studentEmail, cvLink);
+            String cvLink = getStudentCvLink(con, studentEmail);
+            int applicationId = saveApplication(con, jobId, studentId, studentEmail, cvLink);
             createApplicationNotifications(con, job, applicationId, studentEmail);
             sendApplyResponse(
                     response,
@@ -217,16 +206,22 @@ public class ApplyServlet extends HttpServlet {
 
     private int saveApplication(Connection con,
                                 int jobId,
+                                int studentId,
                                 String studentEmail,
                                 String cvLink) throws SQLException {
 
-        String sql = "INSERT INTO applications (job_id, student_email, cv_link) " +
-                "VALUES (?, ?, ?)";
+        String sql = "INSERT INTO applications (job_id, student_id, student_email, cv_link) " +
+                "VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, jobId);
-            ps.setString(2, studentEmail);
-            ps.setString(3, cvLink);
+            if (studentId > 0) {
+                ps.setInt(2, studentId);
+            } else {
+                ps.setNull(2, java.sql.Types.INTEGER);
+            }
+            ps.setString(3, studentEmail);
+            ps.setString(4, cvLink);
             ps.executeUpdate();
 
             try (ResultSet keys = ps.getGeneratedKeys()) {
@@ -251,7 +246,7 @@ public class ApplyServlet extends HttpServlet {
                     "Student",
                     "application_sent",
                     "Application sent",
-                    "Your saved CV was sent for " + job.title + ".",
+                    "Application submitted successfully for " + job.title + ".",
                     "/frontend/jobsearch.html?apply=success",
                     job.id,
                     applicationId
@@ -278,6 +273,18 @@ public class ApplyServlet extends HttpServlet {
     private int parseJobId(String value) {
         try {
             return Integer.parseInt(clean(value));
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    private int parseSessionInt(Object value) {
+        if (value instanceof Number) {
+            return ((Number) value).intValue();
+        }
+
+        try {
+            return Integer.parseInt(clean(value == null ? "" : String.valueOf(value)));
         } catch (NumberFormatException e) {
             return -1;
         }
@@ -313,8 +320,29 @@ public class ApplyServlet extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(
                 "{\"status\":\"" + escapeJson(status) + "\","
+                        + "\"message\":\"" + escapeJson(messageForStatus(status)) + "\","
                         + "\"redirect\":\"" + escapeJson(redirectUrl) + "\"}"
         );
+    }
+
+    private String messageForStatus(String status) {
+        if ("success".equals(status)) {
+            return "Application submitted successfully.";
+        }
+
+        if ("duplicate".equals(status)) {
+            return "You already applied for this job.";
+        }
+
+        if ("loginRequired".equals(status)) {
+            return "Please log in as a student to apply.";
+        }
+
+        if ("notStudent".equals(status)) {
+            return "Only student accounts can apply for jobs.";
+        }
+
+        return "Unable to submit application.";
     }
 
     private String escapeJson(String value) {

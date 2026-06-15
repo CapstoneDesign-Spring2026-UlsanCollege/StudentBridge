@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="./notifications.css?v=20260609-notifications">
   <link rel="stylesheet" href="./messages.css?v=20260609-messages">
+  <link rel="stylesheet" href="./navbar-auth.css?v=20260615-demo-flow">
 
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
@@ -865,7 +866,7 @@
       <footer class="modal-actions">
         <button type="button" class="modal-primary-btn" id="jobModalApplyBtn">
           <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
-          <span data-i18n="jobs.applyWithCv">Apply with Saved CV</span>
+          <span data-i18n="jobs.applyNow">Apply Now</span>
         </button>
         <button type="button" class="modal-secondary-btn" id="jobModalMapBtn">
           <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
@@ -882,8 +883,9 @@
   <script src="./i18n.js?v=20260609-navbar-fix"></script>
   <script src="./notifications.js?v=20260609-notifications"></script>
   <script src="./messages.js?v=20260609-messages"></script>
-  <script src="./map-config.js?v=20260609-map-fix"></script>
-  <script src="./location-map.js?v=20260609-map-fix"></script>
+  <script src="./script.js?v=20260615-demo-flow"></script>
+  <script src="./map-config.js?v=20260615-demo-flow"></script>
+  <script src="./location-map.js?v=20260615-demo-flow"></script>
   <script>
     let jobs = [];
     let jobMapViewer = null;
@@ -1109,7 +1111,7 @@
 
       jobModalMapBtn.hidden = !hasJobCoordinates(job);
       jobModalApplyBtn.disabled = false;
-      jobModalApplyBtn.innerHTML = `<i class="fa-solid fa-paper-plane" aria-hidden="true"></i> ${t("jobs.applyWithCv")}`;
+      jobModalApplyBtn.innerHTML = `<i class="fa-solid fa-paper-plane" aria-hidden="true"></i> ${t("jobs.applyNow")}`;
 
       jobDetailModal.hidden = false;
       document.body.classList.add("modal-open");
@@ -1259,7 +1261,10 @@
         const job = jobs.find((item) => String(item.id) === String(applyButton.dataset.jobId));
 
         if (job) {
-          openJobDetails(job);
+          submitApplication(job.id, {
+            button: applyButton,
+            showMessage: (key, type) => showApplyMessage(key, type)
+          });
         } else {
           showApplyMessage("jobs.applyMissingJob", "error");
         }
@@ -1278,21 +1283,23 @@
       return value || "./jobsearch.html";
     }
 
-    async function submitApplicationFromModal() {
-      const jobId = selectedJob ? selectedJob.id : "";
+    async function submitApplication(jobId, options = {}) {
+      const button = options.button || jobModalApplyBtn;
+      const messageTarget = options.showMessage || showModalMessage;
+      const resetText = options.resetText || "jobs.applyNow";
 
       if (!jobId) {
-        showModalMessage("jobs.applyMissingJob", "error");
+        messageTarget("jobs.applyMissingJob", "error");
         return;
       }
 
       if (window.StudentBridgePlatform && !StudentBridgePlatform.canReachBackend()) {
-        showModalMessage("jobs.staticPreview", "info");
+        messageTarget("jobs.staticPreview", "info");
         return;
       }
 
-      jobModalApplyBtn.disabled = true;
-      jobModalApplyBtn.textContent = t("jobs.applying");
+      button.disabled = true;
+      button.textContent = t("jobs.applying");
 
       const body = new URLSearchParams();
       body.set("jobId", jobId);
@@ -1313,18 +1320,19 @@
         const result = await response.json();
 
         if (result.status === "success") {
-          showModalMessage("jobs.applySuccess", "success");
+          messageTarget("jobs.applySuccess", "success");
           showApplyMessage("jobs.applySuccess", "success");
-          jobModalApplyBtn.textContent = t("jobs.applied");
-          jobModalApplyBtn.disabled = true;
+          button.textContent = t("jobs.applied");
+          button.disabled = true;
           window.dispatchEvent(new CustomEvent("studentbridge:notifications:refresh"));
           return;
         }
 
         if (result.status === "duplicate") {
-          showModalMessage("jobs.applyDuplicate", "info");
-          jobModalApplyBtn.textContent = t("jobs.applied");
-          jobModalApplyBtn.disabled = true;
+          messageTarget("jobs.applyDuplicate", "info");
+          showApplyMessage("jobs.applyDuplicate", "info");
+          button.textContent = t("jobs.applied");
+          button.disabled = true;
           return;
         }
 
@@ -1333,34 +1341,32 @@
           return;
         }
 
-        if (result.status === "missingCv") {
-          showModalMessage(
-            "jobs.applyMissingCv",
-            "error",
-            clientRedirectUrl(result.redirect),
-            "jobs.addCvLink"
-          );
-          jobModalApplyBtn.disabled = false;
-          jobModalApplyBtn.innerHTML = `<i class="fa-solid fa-paper-plane" aria-hidden="true"></i> ${t("jobs.applyWithCv")}`;
-          return;
-        }
-
         if (result.status === "notStudent") {
-          showModalMessage("jobs.applyNotStudent", "error");
+          messageTarget("jobs.applyNotStudent", "error");
         } else if (result.status === "missingJob") {
-          showModalMessage("jobs.applyMissingJob", "error");
+          messageTarget("jobs.applyMissingJob", "error");
         } else {
-          showModalMessage("jobs.applyDbError", "error");
+          messageTarget("jobs.applyDbError", "error");
         }
 
-        jobModalApplyBtn.disabled = false;
-        jobModalApplyBtn.innerHTML = `<i class="fa-solid fa-paper-plane" aria-hidden="true"></i> ${t("jobs.applyWithCv")}`;
+        button.disabled = false;
+        button.innerHTML = `<i class="fa-solid fa-paper-plane" aria-hidden="true"></i> ${t(resetText)}`;
       } catch (error) {
         console.error(error);
-        showModalMessage("jobs.applyDbError", "error");
-        jobModalApplyBtn.disabled = false;
-        jobModalApplyBtn.innerHTML = `<i class="fa-solid fa-paper-plane" aria-hidden="true"></i> ${t("jobs.applyWithCv")}`;
+        messageTarget("jobs.applyDbError", "error");
+        button.disabled = false;
+        button.innerHTML = `<i class="fa-solid fa-paper-plane" aria-hidden="true"></i> ${t(resetText)}`;
       }
+    }
+
+    async function submitApplicationFromModal() {
+      const jobId = selectedJob ? selectedJob.id : "";
+
+      await submitApplication(jobId, {
+        button: jobModalApplyBtn,
+        showMessage: showModalMessage,
+        resetText: "jobs.applyNow"
+      });
     }
 
     jobModalApplyBtn.addEventListener("click", submitApplicationFromModal);

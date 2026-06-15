@@ -9,6 +9,59 @@ public final class DatabaseSchemaManager {
     private DatabaseSchemaManager() {
     }
 
+    public static void ensureStudentProfilesTable(Connection con) throws SQLException {
+        try (Statement statement = con.createStatement()) {
+            statement.executeUpdate(
+                    "CREATE TABLE IF NOT EXISTS student_profiles (" +
+                            "id INT AUTO_INCREMENT PRIMARY KEY, " +
+                            "user_email VARCHAR(255) NOT NULL, " +
+                            "university_name VARCHAR(255), " +
+                            "major VARCHAR(255), " +
+                            "student_id VARCHAR(100), " +
+                            "preferred_job_category VARCHAR(100), " +
+                            "available_working_time VARCHAR(100), " +
+                            "korean_language_level VARCHAR(100), " +
+                            "cv_link VARCHAR(500), " +
+                            "address VARCHAR(255), " +
+                            "latitude DECIMAL(10, 7), " +
+                            "longitude DECIMAL(10, 7), " +
+                            "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
+                            "INDEX idx_student_profiles_coordinates (latitude, longitude), " +
+                            "INDEX idx_student_profiles_user_email (user_email)" +
+                            ")"
+            );
+        }
+
+        ensureColumn(con, "student_profiles", "cv_link", "VARCHAR(500)");
+        ensureColumn(con, "student_profiles", "address", "VARCHAR(255)");
+        ensureColumn(con, "student_profiles", "latitude", "DECIMAL(10, 7)");
+        ensureColumn(con, "student_profiles", "longitude", "DECIMAL(10, 7)");
+        ensureIndex(con, "student_profiles", "idx_student_profiles_user_email", "user_email");
+        ensureIndex(con, "student_profiles", "idx_student_profiles_coordinates", "latitude, longitude");
+    }
+
+    public static void ensureEmployerProfilesTable(Connection con) throws SQLException {
+        try (Statement statement = con.createStatement()) {
+            statement.executeUpdate(
+                    "CREATE TABLE IF NOT EXISTS employer_profiles (" +
+                            "id INT AUTO_INCREMENT PRIMARY KEY, " +
+                            "user_email VARCHAR(255) NOT NULL, " +
+                            "business_name VARCHAR(255), " +
+                            "manager_name VARCHAR(255), " +
+                            "business_location VARCHAR(255), " +
+                            "business_type VARCHAR(100), " +
+                            "job_posting_category VARCHAR(100), " +
+                            "company_registration_number VARCHAR(100), " +
+                            "company_description TEXT, " +
+                            "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
+                            "INDEX idx_employer_profiles_user_email (user_email)" +
+                            ")"
+            );
+        }
+
+        ensureIndex(con, "employer_profiles", "idx_employer_profiles_user_email", "user_email");
+    }
+
     public static void ensureJobsTable(Connection con) throws SQLException {
         try (Statement statement = con.createStatement()) {
             statement.executeUpdate(
@@ -21,6 +74,7 @@ public final class DatabaseSchemaManager {
                             "type VARCHAR(50) NOT NULL, " +
                             "salary VARCHAR(100) NOT NULL, " +
                             "description TEXT NOT NULL, " +
+                            "employer_id INT, " +
                             "employer_email VARCHAR(255), " +
                             "working_hours VARCHAR(150), " +
                             "requirements TEXT, " +
@@ -37,6 +91,7 @@ public final class DatabaseSchemaManager {
             );
         }
 
+        ensureColumn(con, "employer_id", "INT");
         ensureColumn(con, "employer_email", "VARCHAR(255)");
         ensureColumn(con, "working_hours", "VARCHAR(150)");
         ensureColumn(con, "requirements", "TEXT");
@@ -50,6 +105,7 @@ public final class DatabaseSchemaManager {
         ensureColumn(con, "longitude", "DECIMAL(10, 7)");
         ensureColumn(con, "created_at", "TIMESTAMP DEFAULT CURRENT_TIMESTAMP");
 
+        ensureIndex(con, "idx_jobs_employer_id", "employer_id");
         ensureIndex(con, "idx_jobs_employer_email", "employer_email");
         ensureIndex(con, "idx_jobs_coordinates", "latitude, longitude");
         ensureIndex(con, "idx_jobs_location", "location");
@@ -58,8 +114,7 @@ public final class DatabaseSchemaManager {
     }
 
     public static void ensureStudentProfilesCvColumn(Connection con) throws SQLException {
-        ensureColumn(con, "student_profiles", "cv_link", "VARCHAR(500)");
-        ensureIndex(con, "student_profiles", "idx_student_profiles_user_email", "user_email");
+        ensureStudentProfilesTable(con);
     }
 
     public static void ensureApplicationsTable(Connection con) throws SQLException {
@@ -70,6 +125,7 @@ public final class DatabaseSchemaManager {
                     "CREATE TABLE IF NOT EXISTS applications (" +
                             "id INT AUTO_INCREMENT PRIMARY KEY, " +
                             "job_id INT NOT NULL, " +
+                            "student_id INT, " +
                             "student_email VARCHAR(255) NOT NULL, " +
                             "cv_link VARCHAR(500) NOT NULL, " +
                             "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
@@ -79,6 +135,9 @@ public final class DatabaseSchemaManager {
                             ")"
             );
         }
+
+        ensureColumn(con, "applications", "student_id", "INT");
+        ensureIndex(con, "applications", "idx_applications_student_id", "student_id");
     }
 
     public static void ensureNotificationsTable(Connection con) throws SQLException {

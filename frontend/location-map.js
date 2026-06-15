@@ -12,9 +12,8 @@
     "map.loadFailed": "Kakao map could not load. Check that this exact domain is registered in Kakao Developers.",
     "map.enterAddress": "Please enter a full address first.",
     "map.addressNotFound": "Address not found. Try a more specific Korean road address.",
-    "map.locationSelected": "Location selected. Coordinates will be saved with this form.",
-    "map.markerMoved": "Marker moved. Coordinates will be saved with this form.",
-    "map.searchOrClick": "Search an address or click the map to choose the exact location.",
+    "map.locationSelected": "Location found. The address will be saved with this form.",
+    "map.searchOrClick": "Enter an address, then use Search Location to show it on the map.",
     "map.selectJob": "Select a job with saved coordinates to preview it on the map.",
     "map.noCoordinates": "This job does not have saved map coordinates yet."
   };
@@ -190,16 +189,9 @@
         });
       });
 
-      kakao.maps.event.addListener(map, "click", (mouseEvent) => {
-        updateCoordinates(mouseEvent.latLng, t("map.markerMoved"));
-        if (statusElement) {
-          statusElement.dataset.mapStatusKey = "map.markerMoved";
-        }
-      });
-
       setStatusKey(statusElement, "map.searchOrClick", "info");
     } catch (error) {
-      console.error("StudentBridge map setup failed:", error);
+      console.warn("StudentBridge map setup failed:", error);
       setStatusKey(statusElement, getLoadFailureMessage("picker"), "error");
     }
   }
@@ -245,7 +237,7 @@
         }
       };
     } catch (error) {
-      console.error("StudentBridge job map setup failed:", error);
+      console.warn("StudentBridge job map setup failed:", error);
       setStatusKey(statusElement, getLoadFailureMessage("viewer"), "error");
       return null;
     }
