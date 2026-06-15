@@ -33,6 +33,7 @@ public class MessageServlet extends HttpServlet {
 
         String userEmail = clean((String) session.getAttribute("userEmail"));
         String accountType = normalizeAccountType((String) session.getAttribute("accountType"));
+        int userId = parseSessionInt(session.getAttribute("userId"));
 
         if (accountType.isEmpty()) {
             sendError(response, HttpServletResponse.SC_FORBIDDEN,
@@ -91,6 +92,7 @@ public class MessageServlet extends HttpServlet {
 
         String userEmail = clean((String) session.getAttribute("userEmail"));
         String accountType = normalizeAccountType((String) session.getAttribute("accountType"));
+        int userId = parseSessionInt(session.getAttribute("userId"));
 
         if (accountType.isEmpty()) {
             sendError(response, HttpServletResponse.SC_FORBIDDEN,
@@ -111,7 +113,7 @@ public class MessageServlet extends HttpServlet {
             DatabaseSchemaManager.ensureMessagingTables(con);
 
             if ("start".equalsIgnoreCase(action)) {
-                startConversation(con, request, response, userEmail, accountType);
+                startConversation(con, request, response, userEmail, userId, accountType);
                 return;
             }
 
@@ -138,6 +140,7 @@ public class MessageServlet extends HttpServlet {
                                    HttpServletRequest request,
                                    HttpServletResponse response,
                                    String employerEmail,
+                                   int employerId,
                                    String accountType)
             throws SQLException, IOException {
 
@@ -155,7 +158,8 @@ public class MessageServlet extends HttpServlet {
             return;
         }
 
-        ApplicationSummary application = getEmployerApplication(con, applicationId, employerEmail);
+        ApplicationSummary application = getEmployerApplication(
+                con, applicationId, employerEmail, employerId);
 
         if (application == null) {
             sendError(response, HttpServletResponse.SC_NOT_FOUND,
@@ -386,24 +390,33 @@ public class MessageServlet extends HttpServlet {
 
     private ApplicationSummary getEmployerApplication(Connection con,
                                                        int applicationId,
-                                                       String employerEmail)
+                                                       String employerEmail,
+                                                       int employerId)
             throws SQLException {
 
         String sql = "SELECT a.id AS application_id, a.job_id, a.student_email, " +
                 "j.employer_email, j.title, j.company " +
                 "FROM applications a JOIN jobs j ON j.id = a.job_id " +
-                "WHERE a.id = ? AND j.employer_email = ?";
+                "WHERE a.id = ? AND (j.employer_email = ? " +
+                "OR (j.employer_id IS NOT NULL AND j.employer_id = ?))";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, applicationId);
             ps.setString(2, employerEmail);
+            ps.setInt(3, employerId);
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
+                    String ownerEmail = clean(rs.getString("employer_email"));
+
+                    if (ownerEmail.isEmpty()) {
+                        ownerEmail = employerEmail;
+                    }
+
                     return new ApplicationSummary(
                             rs.getInt("application_id"),
                             rs.getInt("job_id"),
-                            clean(rs.getString("employer_email")),
+                            ownerEmail,
                             clean(rs.getString("student_email")),
                             clean(rs.getString("title")),
                             clean(rs.getString("company"))
@@ -637,6 +650,18 @@ public class MessageServlet extends HttpServlet {
     private int parseId(String value) {
         try {
             return Integer.parseInt(clean(value));
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    private int parseSessionInt(Object value) {
+        if (value instanceof Number) {
+            return ((Number) value).intValue();
+        }
+
+        try {
+            return Integer.parseInt(clean(value == null ? "" : String.valueOf(value)));
         } catch (NumberFormatException e) {
             return -1;
         }

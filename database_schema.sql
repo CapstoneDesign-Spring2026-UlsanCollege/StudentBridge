@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS jobs (
   type VARCHAR(50) NOT NULL,
   salary VARCHAR(100) NOT NULL,
   description TEXT NOT NULL,
+  employer_id INT,
   employer_email VARCHAR(255),
   working_hours VARCHAR(150),
   requirements TEXT,
@@ -67,6 +68,7 @@ CREATE TABLE IF NOT EXISTS jobs (
   latitude DECIMAL(10, 7),
   longitude DECIMAL(10, 7),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_jobs_employer_id (employer_id),
   INDEX idx_jobs_employer_email (employer_email),
   INDEX idx_jobs_coordinates (latitude, longitude),
   INDEX idx_jobs_location (location),
@@ -77,11 +79,13 @@ CREATE TABLE IF NOT EXISTS jobs (
 CREATE TABLE IF NOT EXISTS applications (
   id INT AUTO_INCREMENT PRIMARY KEY,
   job_id INT NOT NULL,
+  student_id INT,
   student_email VARCHAR(255) NOT NULL,
   cv_link VARCHAR(500) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY unique_application (job_id, student_email),
   INDEX idx_applications_job_id (job_id),
+  INDEX idx_applications_student_id (student_id),
   INDEX idx_applications_student_email (student_email)
 );
 

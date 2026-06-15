@@ -6,9 +6,10 @@
   <meta name="description" content="Manage your StudentBridge student profile, CV link, and saved address.">
   <title data-i18n="title.studentProfile">Student Profile | StudentBridge</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="./post-job.css">
+  <link rel="stylesheet" href="./post-job.css?v=20260615-demo-flow">
   <link rel="stylesheet" href="./notifications.css?v=20260609-notifications">
   <link rel="stylesheet" href="./messages.css?v=20260609-messages">
+  <link rel="stylesheet" href="./navbar-auth.css?v=20260615-demo-flow">
 </head>
 <body>
   <header class="navbar">
@@ -37,7 +38,7 @@
       <div class="form-header">
         <div>
           <h2 id="student-address-title" data-i18n="student.formTitle">Your profile details</h2>
-          <p data-i18n="student.formBody">Paste your CV link, then optionally search your address or click the map to set a precise point.</p>
+          <p data-i18n="student.formBody">Paste your CV link, then optionally search your address to show it on the map.</p>
         </div>
         <a href="./jobsearch.html" data-i18n="common.findJobs">Find jobs</a>
       </div>
@@ -58,7 +59,7 @@
               <input type="text" id="studentAddress" name="studentAddress" placeholder="울산 남구 대학로 93" data-i18n-placeholder="student.addressPlaceholder">
               <button type="button" class="secondary-btn" id="findStudentAddressBtn">
                 <i class="fa-solid fa-location-crosshairs" aria-hidden="true"></i>
-                <span data-i18n="student.findMap">Find on Map</span>
+                <span data-i18n="student.findMap">Search Location</span>
               </button>
             </div>
             <p class="field-help" data-i18n="student.addressHelp">Use a full Korean road address for best accuracy. Do not share sensitive private details publicly.</p>
@@ -69,7 +70,7 @@
             <p class="map-status" id="studentMapStatus" role="status" aria-live="polite"></p>
           </div>
 
-          <div class="coordinate-grid full-width">
+          <div class="coordinate-grid full-width" hidden aria-hidden="true">
             <div class="input-group">
               <label for="studentLatitude" data-i18n="student.latitude">Latitude</label>
               <input type="text" id="studentLatitude" name="studentLatitude" placeholder="35.5384000" readonly>
@@ -96,8 +97,9 @@
   <script src="./i18n.js?v=20260609-navbar-fix"></script>
   <script src="./notifications.js?v=20260609-notifications"></script>
   <script src="./messages.js?v=20260609-messages"></script>
-  <script src="./map-config.js?v=20260609-map-fix"></script>
-  <script src="./location-map.js?v=20260609-map-fix"></script>
+  <script src="./script.js?v=20260615-demo-flow"></script>
+  <script src="./map-config.js?v=20260615-demo-flow"></script>
+  <script src="./location-map.js?v=20260615-demo-flow"></script>
   <script>
     const message = document.getElementById("studentLocationMessage");
     const studentLocationForm = document.getElementById("studentLocationForm");
@@ -166,17 +168,13 @@
         return;
       }
 
-      if (address && latitude && longitude) {
+      if (address) {
         return;
       }
 
       event.preventDefault();
 
-      if (address) {
-        showMessage("student.mapRequired", "error");
-      } else {
-        showMessage("student.missing", "error");
-      }
+      showMessage("student.missing", "error");
     });
 
     loadStudentProfile().finally(() => {

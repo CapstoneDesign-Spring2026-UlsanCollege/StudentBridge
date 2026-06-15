@@ -37,6 +37,7 @@ public class EmployerApplicationsServlet extends HttpServlet {
         }
 
         String employerEmail = clean((String) session.getAttribute("userEmail"));
+        int employerId = parseSessionInt(session.getAttribute("userId"));
 
         try (Connection con = DBConnection.getConnection()) {
             if (con == null) {
@@ -50,7 +51,7 @@ public class EmployerApplicationsServlet extends HttpServlet {
 
             response.getWriter().write(
                     "{\"loggedIn\":true,\"applications\":"
-                            + listApplications(con, employerEmail)
+                            + listApplications(con, employerEmail, employerId)
                             + "}"
             );
         } catch (SQLException e) {
@@ -61,7 +62,8 @@ public class EmployerApplicationsServlet extends HttpServlet {
     }
 
     private String listApplications(Connection con,
-                                    String employerEmail) throws SQLException {
+                                    String employerEmail,
+                                    int employerId) throws SQLException {
 
         String sql = "SELECT a.id AS application_id, a.job_id, a.student_email, " +
                 "a.cv_link, a.created_at AS applied_at, j.title, j.company, " +
@@ -72,12 +74,13 @@ public class EmployerApplicationsServlet extends HttpServlet {
                 "FROM applications a " +
                 "JOIN jobs j ON j.id = a.job_id " +
                 "LEFT JOIN conversations c ON c.application_id = a.id " +
-                "WHERE j.employer_email = ? " +
+                "WHERE (j.employer_email = ? OR (j.employer_id IS NOT NULL AND j.employer_id = ?)) " +
                 "ORDER BY a.created_at DESC, a.id DESC";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, employerEmail);
             ps.setString(2, employerEmail);
+            ps.setInt(3, employerId);
 
             try (ResultSet rs = ps.executeQuery()) {
                 StringBuilder json = new StringBuilder();
@@ -151,6 +154,18 @@ public class EmployerApplicationsServlet extends HttpServlet {
 
     private String clean(String value) {
         return value == null ? "" : value.trim();
+    }
+
+    private int parseSessionInt(Object value) {
+        if (value instanceof Number) {
+            return ((Number) value).intValue();
+        }
+
+        try {
+            return Integer.parseInt(clean(value == null ? "" : String.valueOf(value)));
+        } catch (NumberFormatException e) {
+            return -1;
+        }
     }
 
     private String escapeJson(String value) {

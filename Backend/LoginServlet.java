@@ -63,8 +63,10 @@ public class LoginServlet extends HttpServlet {
                         String userName = safeGetString(rs, "name");
                         String userEmail = safeGetString(rs, "email");
                         String accountType = getAccountType(rs);
+                        int userId = safeGetInt(rs, "id");
 
                         session.setAttribute("user", userName.isEmpty() ? userEmail : userName);
+                        session.setAttribute("userId", userId);
                         session.setAttribute("userEmail", userEmail);
                         session.setAttribute("accountType", accountType);
 
@@ -131,6 +133,14 @@ public class LoginServlet extends HttpServlet {
         } catch (SQLException e) {
 
             return "";
+        }
+    }
+
+    private int safeGetInt(ResultSet rs, String columnName) {
+        try {
+            return rs.getInt(columnName);
+        } catch (SQLException e) {
+            return -1;
         }
     }
 

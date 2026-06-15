@@ -76,6 +76,7 @@ public class PostJobServlet extends HttpServlet {
         String employerEmail = clean(
                 (String) session.getAttribute("userEmail")
         );
+        int employerId = parseSessionInt(session.getAttribute("userId"));
 
         // Required field validation
         if (title.isEmpty()
@@ -84,7 +85,8 @@ public class PostJobServlet extends HttpServlet {
                 || category.isEmpty()
                 || type.isEmpty()
                 || salary.isEmpty()
-                || description.isEmpty()) {
+                || description.isEmpty()
+                || address.isEmpty()) {
 
             response.sendRedirect(
                     "frontend/post-job.html?error=missing"
@@ -104,6 +106,8 @@ public class PostJobServlet extends HttpServlet {
                 return;
             }
 
+            DatabaseSchemaManager.ensureJobsTable(con);
+
             insertJob(
                     con,
                     title,
@@ -113,6 +117,7 @@ public class PostJobServlet extends HttpServlet {
                     type,
                     salary,
                     description,
+                    employerId,
                     employerEmail,
                     workingHours,
                     requirements,
@@ -145,6 +150,7 @@ public class PostJobServlet extends HttpServlet {
             String type,
             String salary,
             String description,
+            int employerId,
             String employerEmail,
             String workingHours,
             String requirements,
@@ -157,9 +163,9 @@ public class PostJobServlet extends HttpServlet {
         String extendedSql =
                 "INSERT INTO jobs " +
                 "(title, company, location, category, type, salary, " +
-                "description, employer_email, working_hours, requirements, " +
+                "description, employer_id, employer_email, working_hours, requirements, " +
                 "contact_email, address, latitude, longitude) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps =
                      con.prepareStatement(extendedSql)) {
@@ -172,15 +178,20 @@ public class PostJobServlet extends HttpServlet {
             ps.setString(6, salary);
             ps.setString(7, description);
 
-            ps.setString(8, employerEmail);
-            ps.setString(9, workingHours);
-            ps.setString(10, requirements);
-            ps.setString(11, contactEmail);
+            if (employerId > 0) {
+                ps.setInt(8, employerId);
+            } else {
+                ps.setNull(8, Types.INTEGER);
+            }
+            ps.setString(9, employerEmail);
+            ps.setString(10, workingHours);
+            ps.setString(11, requirements);
+            ps.setString(12, contactEmail);
 
-            ps.setString(12, address);
+            ps.setString(13, address);
 
-            setNullableDecimal(ps, 13, latitude);
-            setNullableDecimal(ps, 14, longitude);
+            setNullableDecimal(ps, 14, latitude);
+            setNullableDecimal(ps, 15, longitude);
 
             ps.executeUpdate();
 
@@ -222,6 +233,7 @@ public class PostJobServlet extends HttpServlet {
                 : e.getMessage().toLowerCase();
 
         return "42S22".equals(e.getSQLState())
+                || message.contains("employer_id")
                 || message.contains("employer_email")
                 || message.contains("working_hours")
                 || message.contains("requirements")
@@ -253,6 +265,18 @@ public class PostJobServlet extends HttpServlet {
         } catch (NumberFormatException e) {
 
             return null;
+        }
+    }
+
+    private int parseSessionInt(Object value) {
+        if (value instanceof Number) {
+            return ((Number) value).intValue();
+        }
+
+        try {
+            return Integer.parseInt(clean(value == null ? "" : String.valueOf(value)));
+        } catch (NumberFormatException e) {
+            return -1;
         }
     }
 

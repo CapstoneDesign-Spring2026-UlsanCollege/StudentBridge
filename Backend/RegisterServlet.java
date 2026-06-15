@@ -95,7 +95,7 @@ public class RegisterServlet extends HttpServlet {
             }
 
             // Insert main user
-            insertUser(
+            int userId = insertUser(
                     con,
                     name,
                     email,
@@ -126,6 +126,7 @@ public class RegisterServlet extends HttpServlet {
 
             HttpSession session = request.getSession(true);
             session.setAttribute("user", name);
+            session.setAttribute("userId", userId);
             session.setAttribute("userEmail", email);
             session.setAttribute("accountType", accountType);
             session.setMaxInactiveInterval(30 * 60);
@@ -144,7 +145,7 @@ public class RegisterServlet extends HttpServlet {
         }
     }
 
-    private void insertUser(
+    private int insertUser(
             Connection con,
             String name,
             String email,
@@ -159,7 +160,7 @@ public class RegisterServlet extends HttpServlet {
                 "VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps =
-                     con.prepareStatement(sqlWithAccountType)) {
+                     con.prepareStatement(sqlWithAccountType, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, name);
             ps.setString(2, email);
@@ -169,7 +170,7 @@ public class RegisterServlet extends HttpServlet {
 
             ps.executeUpdate();
 
-            return;
+            return getGeneratedId(ps, email, con);
 
         } catch (SQLException e) {
 
@@ -185,7 +186,7 @@ public class RegisterServlet extends HttpServlet {
                 "VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement ps =
-                     con.prepareStatement(oldSql)) {
+                     con.prepareStatement(oldSql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, name);
             ps.setString(2, email);
@@ -193,7 +194,32 @@ public class RegisterServlet extends HttpServlet {
             ps.setString(4, password);
 
             ps.executeUpdate();
+            return getGeneratedId(ps, email, con);
         }
+    }
+
+    private int getGeneratedId(PreparedStatement ps,
+                               String email,
+                               Connection con) throws SQLException {
+        try (ResultSet keys = ps.getGeneratedKeys()) {
+            if (keys.next()) {
+                return keys.getInt(1);
+            }
+        }
+
+        String sql = "SELECT id FROM users WHERE email = ?";
+
+        try (PreparedStatement lookup = con.prepareStatement(sql)) {
+            lookup.setString(1, email);
+
+            try (ResultSet rs = lookup.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id");
+                }
+            }
+        }
+
+        return -1;
     }
 
     private boolean isEmailExists(Connection con,
@@ -283,33 +309,37 @@ public class RegisterServlet extends HttpServlet {
                 "company_registration_number, company_description) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement ps =
-                     con.prepareStatement(sql)) {
+        try {
+            DatabaseSchemaManager.ensureEmployerProfilesTable(con);
 
-            ps.setString(1, email);
+            try (PreparedStatement ps =
+                         con.prepareStatement(sql)) {
 
-            ps.setString(2,
-                    clean(request.getParameter("businessName")));
+                ps.setString(1, email);
 
-            ps.setString(3,
-                    clean(request.getParameter("managerName")));
+                ps.setString(2,
+                        clean(request.getParameter("businessName")));
 
-            ps.setString(4,
-                    clean(request.getParameter("businessLocation")));
+                ps.setString(3,
+                        clean(request.getParameter("managerName")));
 
-            ps.setString(5,
-                    clean(request.getParameter("businessType")));
+                ps.setString(4,
+                        clean(request.getParameter("businessLocation")));
 
-            ps.setString(6,
-                    clean(request.getParameter("jobPostingCategory")));
+                ps.setString(5,
+                        clean(request.getParameter("businessType")));
 
-            ps.setString(7,
-                    clean(request.getParameter("companyRegistrationNumber")));
+                ps.setString(6,
+                        clean(request.getParameter("jobPostingCategory")));
 
-            ps.setString(8,
-                    clean(request.getParameter("companyDescription")));
+                ps.setString(7,
+                        clean(request.getParameter("companyRegistrationNumber")));
 
-            ps.executeUpdate();
+                ps.setString(8,
+                        clean(request.getParameter("companyDescription")));
+
+                ps.executeUpdate();
+            }
 
         } catch (SQLException e) {
 

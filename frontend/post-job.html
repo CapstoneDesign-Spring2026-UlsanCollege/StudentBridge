@@ -6,9 +6,10 @@
   <meta name="description" content="Post a student-friendly job on StudentBridge.">
   <title data-i18n="title.postJob">Post a Job | StudentBridge</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="./post-job.css">
+  <link rel="stylesheet" href="./post-job.css?v=20260615-demo-flow">
   <link rel="stylesheet" href="./notifications.css?v=20260609-notifications">
   <link rel="stylesheet" href="./messages.css?v=20260609-messages">
+  <link rel="stylesheet" href="./navbar-auth.css?v=20260615-demo-flow">
 </head>
 <body>
   <header class="navbar">
@@ -117,7 +118,7 @@
               <input type="text" id="address" name="address" placeholder="울산 남구 대학로 93" data-i18n-placeholder="post.addressPlaceholder" required>
               <button type="button" class="secondary-btn" id="findJobAddressBtn">
                 <i class="fa-solid fa-location-crosshairs" aria-hidden="true"></i>
-                <span data-i18n="post.findMap">Find on Map</span>
+                <span data-i18n="post.findMap">Search Location</span>
               </button>
             </div>
             <p class="field-help" data-i18n="post.addressHelp">Use a full Korean road address for the most accurate map pin.</p>
@@ -128,7 +129,7 @@
             <p class="map-status" id="jobMapStatus" role="status" aria-live="polite"></p>
           </div>
 
-          <div class="coordinate-grid full-width">
+          <div class="coordinate-grid full-width" hidden aria-hidden="true">
             <div class="input-group">
               <label for="latitude" data-i18n="post.latitude">Latitude</label>
               <input type="text" id="latitude" name="latitude" placeholder="35.5384000" readonly>
@@ -165,8 +166,9 @@
   <script src="./i18n.js?v=20260609-navbar-fix"></script>
   <script src="./notifications.js?v=20260609-notifications"></script>
   <script src="./messages.js?v=20260609-messages"></script>
-  <script src="./map-config.js?v=20260609-map-fix"></script>
-  <script src="./location-map.js?v=20260609-map-fix"></script>
+  <script src="./script.js?v=20260615-demo-flow"></script>
+  <script src="./map-config.js?v=20260615-demo-flow"></script>
+  <script src="./location-map.js?v=20260615-demo-flow"></script>
   <script>
     const message = document.getElementById("postJobMessage");
     const params = new URLSearchParams(window.location.search);
@@ -187,18 +189,6 @@
     } else if (params.get("error") === "db") {
       showMessage("post.dbError", "error");
     }
-
-    document.getElementById("postJobForm").addEventListener("submit", (event) => {
-      const latitude = document.getElementById("latitude").value.trim();
-      const longitude = document.getElementById("longitude").value.trim();
-
-      if (latitude && longitude) {
-        return;
-      }
-
-      event.preventDefault();
-      showMessage("post.mapRequired", "error");
-    });
 
     StudentBridgeLocationMap.initPicker({
       mapId: "jobLocationMap",

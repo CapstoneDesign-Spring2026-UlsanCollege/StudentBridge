@@ -29,6 +29,7 @@ public class AuthStatusServlet extends HttpServlet {
         }
 
         String name = safeString(session.getAttribute("user"));
+        String userId = safeString(session.getAttribute("userId"));
         String email = safeString(session.getAttribute("userEmail"));
         String accountType = safeString(session.getAttribute("accountType"));
 
@@ -36,6 +37,7 @@ public class AuthStatusServlet extends HttpServlet {
                 "{"
                         + "\"loggedIn\":true,"
                         + "\"name\":\"" + escapeJson(name) + "\","
+                        + "\"userId\":\"" + escapeJson(userId) + "\","
                         + "\"email\":\"" + escapeJson(email) + "\","
                         + "\"accountType\":\"" + escapeJson(accountType) + "\""
                         + "}"

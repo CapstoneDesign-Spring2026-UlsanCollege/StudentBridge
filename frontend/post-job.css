@@ -285,6 +285,10 @@ textarea {
   gap: 16px;
 }
 
+.coordinate-grid[hidden] {
+  display: none !important;
+}
+
 .full-width {
   grid-column: 1 / -1;
 }

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT="/Users/mezbahuddin/Capstone Design/Student Brigde /StudentBridge"
+PROJECT="$(cd "$(dirname "$0")" && pwd)"
 TOMCAT="/Users/mezbahuddin/Desktop/apache-tomcat-10.1.54/webapps/StudentBridge"
 
 echo "🚀 Deploying StudentBridge..."
