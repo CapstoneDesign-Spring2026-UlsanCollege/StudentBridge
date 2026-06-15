@@ -1,4 +1,4 @@
-# Guramg Roman Individual Portfolio
+# Gurung Roman Individual Portfolio
 
 ## Role
 
